@@ -58,27 +58,27 @@ def signup():
 #         else:
 #             flash ("You must choose your Account Type")
 
-# @app.route('/delete_all_entries', methods=['GET', 'POST'])
-# def delete_all_entries():
-#     if request.method == 'GET':
-#         try:
-#             # Delete all entries in the User table
-#             db.session.query(User).delete()
+@app.route('/delete_all_entries', methods=['GET', 'POST'])
+def delete_all_entries():
+    if request.method == 'GET':
+        try:
+            # Delete all entries in the User table
+            db.session.query(User).delete()
 
-#             # Delete all entries in the Owner table
-#             db.session.query(Owner).delete()
+            # Delete all entries in the Owner table
+            db.session.query(Owner).delete()
 
-#             # Commit the changes to the database
-#             db.session.commit()
+            # Commit the changes to the database
+            db.session.commit()
 
-#             flash('All entries deleted successfully!')
-#         except Exception as e:
-#             # Handle exceptions if any
-#             flash(f'Error deleting entries: {str(e)}')
+            flash('All entries deleted successfully!')
+        except Exception as e:
+            # Handle exceptions if any
+            flash(f'Error deleting entries: {str(e)}')
 
-#         return redirect(url_for('home'))  # Redirect to the home page or any other page
+        return redirect(url_for('home'))  # Redirect to the home page or any other page
 
-#     return render_template('delete_entries.html')  # Create a template for the delete_entries page
+    return render_template('delete_entries.html')  # Create a template for the delete_entries page
         
 # @app.route('/delete_tables', methods=['GET', 'POST'])
 # def delete_tables():
