@@ -7,14 +7,17 @@
 </head>
 <body>
     <form action="/login" method="POST">
-    <select name="user_type" required>
-        <option value="user">User</option>
-        <option value="owner">Owner</option>
-    </select>
+        <h3> Login</h3>
     <label for="username"> Username</label>
         <input type="text" name="username" required><br>
     <label for="password">Password</label>
         <input type="password" name="password" required><br>
+    <label for="user_type">User Type:</label>
+    <select name="user_type" required>
+        <option value="user">User</option>
+        <option value="owner">Owner</option>
+    </select><br>
+    
     <button type="submit" value="login">Login</button>
 </form>
 </body>
