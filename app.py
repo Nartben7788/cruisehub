@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.exc import IntegrityError
 
 import bcrypt
 from databases import*
@@ -22,15 +23,35 @@ def signup():
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         if user_type == 'user':
-            new_user = User(name=name, phone_number=phone_number, email=email,username=username, password=hashed_password)
-            db.session.add(new_user)
+            new_user = User(
+                name=name, 
+                phone_number=phone_number, 
+                email=email,
+                username=username, 
+                password=hashed_password)
+            new_user_or_owner = new_user
         elif user_type == 'owner':
-            new_owner = Owner(name=name, phone_number=phone_number, email=email, password=hashed_password)
-            db.session.add(new_owner)
-
-        db.session.commit()
-
-        return redirect(url_for('home'))
+            new_owner = Owner(
+                name=name,
+                phone_number=phone_number, 
+                email=email, 
+                username=username, 
+                password=hashed_password)
+            new_user_or_owner = new_owner
+        try:
+            # Try to add the new user or owner to the database
+            db.session.add(new_user_or_owner)
+            db.session.commit()
+            return redirect(url_for('home'))
+        except IntegrityError as e:
+            db.session.rollback()
+            print(f"IntegrityError: {e}")
+            if "UNIQUE constraint failed: user.email" in str(e) or "UNIQUE constraint failed: owner.email" in str(e):
+                flash("Email already exists. Please choose a different one.", "error")
+            elif "UNIQUE constraint failed: user.username" in str(e) or "UNIQUE constraint failed: owner.username" in str(e):
+                flash("Username already exists. Please choose a different one.", "error")
+            else:
+                flash("Email or username already exists. Please choose a different one.", "error")
 
     return render_template('signup.html')
 
@@ -82,10 +103,10 @@ def login():
 #             # Commit the changes to the database
 #             db.session.commit()
 
-#             flash('All entries deleted successfully!')
+#             flash('All entries deleted successfully!', 'delete)
 #         except Exception as e:
 #             # Handle exceptions if any
-#             flash(f'Error deleting entries: {str(e)}')
+#             flash(f'Error deleting entries: {str(e)}', 'delete')
 
 #         return redirect(url_for('home'))  # Redirect to the home page or any other page
 
@@ -104,7 +125,7 @@ def login():
 #             flash('Tables deleted successfully!')
 #         except Exception as e:
 #             # Handle exceptions if any
-#             flash(f'Error deleting tables: {str(e)}')
+#             flash(f'Error deleting tables: {str(e)}', 'delete')
 
 #         return redirect(url_for('home'))  # Redirect to the home page or any other page
 
