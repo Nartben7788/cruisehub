@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Car</title>
+</head>
+<body>
+    <h1>Add Car</h1>
+    <form method="post" action="{{ url_for('add_car') }}" enctype="multipart/form-data">
+        <label for="model">Model:</label>
+        <input type="text" name="model" required><br>
+
+        <label for="make">Make:</label>
+        <input type="text" name="make" required><br>
+
+        <label for="year">Year:</label>
+        <input type="text" name="year" required><br>
+
+        <label for="price">Price:</label>
+        <input type="text" name="price" required><br>
+
+        <label for="additional_info">Additional Information:</label>
+        <textarea name="additional_info" required></textarea><br>
+
+        <label for="picture">Picture:</label>
+        <input type="file" name="picture" required><br>
+
+       
+
+        <button type="submit">Add Car</button>
+    </form>
+</body>
+</html>
