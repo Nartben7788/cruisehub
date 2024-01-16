@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,flash
+from flask import render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 import bcrypt
 from databases import*
@@ -45,7 +45,7 @@ def login():
             if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
                 return "Login Successfull!"
             else:
-                return "Invalid Username or Pasword!"
+                return "Invalid Username or Password!"
             
         elif account_type == "owner":
             owner = Owner.query.filter_by(user_name=user_name, password=password).first()
