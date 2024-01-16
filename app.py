@@ -35,50 +35,61 @@ def signup():
     return render_template('signup.html')
 
 
-# @app.route("/login", methods=['POST', 'GET'])
-# def login():
-#     if request.method == 'POST':
-#         user_name = request.form['user_name']
-#         password = request.form['password']
-#         account_type = request.form['account_type']
+@app.route("/login", methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user_type = request.form['user_type']
 
-#         if account_type == "user":
-#             user = User.query.filter_by(user_name=user_name, password=password).first()
-#             if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
-#                 return "Login Successfull!"
-#             else:
-#                 return "Invalid Username or Pasword!"
+        if user_type == "user":
+            user = User.query.filter_by(username=username).first()
+            if user and check_password_hash(user.password, password):
+                return "Login Successfull!"
+            else:
+                flash ("Invalid Username or Pasword!")
             
-#         elif account_type == "owner":
-#             owner = Owner.query.filter_by(user_name=user_name, password=password).first()
-#             if owner and bcrypt.checkpw(password.encode('utf-8'), owner.password.encode('utf-8')):
-#                 return "Login Successful"
-#             else:
-#                 return "Invalid Username or Pasword!"
-#         else:
-#             flash ("You must choose your Account Type")
+        elif user_type == "owner":
+            owner = Owner.query.filter_by(username=username).first()
+            if owner and check_password_hash(owner.password, password):
+                return "Login Successful"
+            else:
+                return "Invalid Username or Pasword!"
+        else:
+            flash ("You must choose your Account Type")
+    return render_template('login.html')
 
-@app.route('/delete_all_entries', methods=['GET', 'POST'])
-def delete_all_entries():
-    if request.method == 'GET':
-        try:
-            # Delete all entries in the User table
-            db.session.query(User).delete()
 
-            # Delete all entries in the Owner table
-            db.session.query(Owner).delete()
 
-            # Commit the changes to the database
-            db.session.commit()
 
-            flash('All entries deleted successfully!')
-        except Exception as e:
-            # Handle exceptions if any
-            flash(f'Error deleting entries: {str(e)}')
 
-        return redirect(url_for('home'))  # Redirect to the home page or any other page
 
-    return render_template('delete_entries.html')  # Create a template for the delete_entries page
+
+
+
+
+
+# @app.route('/delete_all_entries', methods=['GET', 'POST'])
+# def delete_all_entries():
+#     if request.method == 'GET':
+#         try:
+#             # Delete all entries in the User table
+#             db.session.query(User).delete()
+
+#             # Delete all entries in the Owner table
+#             db.session.query(Owner).delete()
+
+#             # Commit the changes to the database
+#             db.session.commit()
+
+#             flash('All entries deleted successfully!')
+#         except Exception as e:
+#             # Handle exceptions if any
+#             flash(f'Error deleting entries: {str(e)}')
+
+#         return redirect(url_for('home'))  # Redirect to the home page or any other page
+
+#     return render_template('delete_entries.html')  # Create a template for the delete_entries page
         
 # @app.route('/delete_tables', methods=['GET', 'POST'])
 # def delete_tables():
