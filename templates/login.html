@@ -1,6 +1,10 @@
 {% extends "index.html"%}
 
 <form action="/login" method="POST">
+    <select name="account_type" required>
+        <option value="user">User</option>
+            <option value="owner">Owner</option>
+    </select>
     <label for="user_name"> Username</label>
         <input type="text" name="user_name" required><br>
     <label for="password">Password</label>

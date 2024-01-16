@@ -1,37 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+import bcrypt
+from databases import*
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cruisehub.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'yWNZU7s8'
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-# Define the User model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    user_type = db.Column(db.String, nullable=False, default='user')  
-#Define the Owner model
-class Owner(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    user_type = db.Column(db.String, nullable=False, default='owner') 
-
-
-
-
-with app.app_context():
-    db.create_all()
 
 @app.route("/")
 def home():
@@ -60,6 +31,31 @@ def signup():
         return redirect(url_for('home'))
 
     return render_template('signup.html')
+
+
+@app.route("/login", methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        user_name = request.form['user_name']
+        password = request.form['password']
+        account_type = request.form['account_type']
+
+        if account_type == "user":
+            user = User.query.filter_by(user_name=user_name, password=password).first()
+            if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+                return "Login Successfull!"
+            else:
+                return "Invalid Username or Pasword!"
+            
+        elif account_type == "owner":
+            owner = Owner.query.filter_by(user_name=user_name, password=password).first()
+            if owner and bcrypt.checkpw(password.encode('utf-8'), owner.password.encode('utf-8')):
+                return "Login Successful"
+            else:
+                return "Invalid Username or Pasword!"
+        else:
+            flash ("You must choose your Account Type")
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
