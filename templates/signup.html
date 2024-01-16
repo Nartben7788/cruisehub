@@ -7,7 +7,7 @@
 </head>
 <body>
     <h3>Sign Up </h3>
-    <form action="{{ url_for('signup') }}" method="POST">
+    <form action="/signup.html" method="POST">
     <label for="name">Name:</label>
         <input type="text" name="name" required><br>
     <label for="email">Email:</label>
@@ -21,7 +21,7 @@
         </select><br>
     <label for="password">Password:</label>
         <input type="password" name="password" required><br>
-    <input type="submit" value="Signup">
+    <button type="submit" value="Signup">Submit</button>
     </form>
 </body>
 </html>
