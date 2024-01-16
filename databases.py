@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'yWNZU7s8'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+ 
 
 
 with app.app_context():
@@ -20,8 +21,9 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
+    username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    user_type = db.Column(db.String, nullable=False, default='user') 
+    user_type = db.Column(db.String, nullable=False, default='user')
 
 #Define the Owner model
 class Owner(db.Model):
@@ -29,6 +31,9 @@ class Owner(db.Model):
     name = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
+    username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     user_type = db.Column(db.String, nullable=False, default='owner') 
 
+if __name__ == "__main__":
+    app.run(debug=True)
