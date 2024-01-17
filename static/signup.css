@@ -5,6 +5,7 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 80px;
+    font-family: var(--main-font);
 
 }
 
@@ -12,6 +13,7 @@ h3{
     color: #333;
     text-align: center;
     padding: 20px 0;
+   
 }
 img{
     width:700px;
@@ -32,13 +34,14 @@ form {
 label {
     display: block;
     margin-bottom: 8px;
-    color: #555;
+    color: #1a1919;
+    font-weight: bold;
 }
 
 input[type="text"],
 input[type="password"],
 input[type="email"],
-textarea,
+textarea,   
 select,
 option {
     width: 100%;
