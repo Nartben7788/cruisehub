@@ -73,11 +73,7 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-a {
-    text-decoration: none;
-    color: black;
-}
-
-a:hover {
-    color: gray;
+li.flash-message{
+    list-style:none;
+    color: var(--flash);
 }
