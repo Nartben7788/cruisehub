@@ -66,9 +66,9 @@ def login():
         if user_type == "user":
             user = User.query.filter_by(username=username).first()
             if user and check_password_hash(user.password, password):
-                return "Login Successfull!"
+                flash( "Login Successfull!", 'login')
             else:
-                flash ("Invalid Username or Pasword!")
+                flash ("Invalid Username or Pasword!", 'login')
             
         elif user_type == "owner":
             owner = Owner.query.filter_by(username=username).first()

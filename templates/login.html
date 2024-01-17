@@ -6,6 +6,19 @@
     <title>Document</title>
 </head>
 <body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category,  message in messages %}
+                    <li class="flash-message">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+
     <form action="/login" method="POST">
         <h3> Login</h3>
     <label for="username"> Username</label>
@@ -20,6 +33,19 @@
     
     <button type="submit" value="login">Login</button>
 </form>
+
+
+<script>
+    // Function to automatically hide flash messages after 3 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+        var flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(function (message) {
+            setTimeout(function () {
+                message.style.display = 'none';
+            }, 2000);
+        });
+    });
+</script>
 </body>
 </html>
 
