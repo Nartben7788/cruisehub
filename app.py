@@ -69,7 +69,7 @@ def login():
             if user and check_password_hash(user.password, password):
                 flash( "Login Successfull!", 'login')
             else:
-                flash ("Invalid Username or Pasword!", 'login')
+                flash ("Invalid Username or Password!", 'login')
             
         elif user_type == "owner":
             owner = Owner.query.filter_by(username=username).first()
