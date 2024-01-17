@@ -44,8 +44,16 @@ class Car(db.Model):
     additional_info = db.Column(db.String, nullable=False)
     picture = db.Column(db.String)  # You might want to store the file path or use a proper file storage solution
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
-    
 
+#Reservation Model
+class Reservations(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    start_date = db.Column(db.DateTime, nullable = False)
+    end_date = db.Column(db.DateTime, nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reserved_car_id = db.Column(db.Integer, db.ForeignKey('cars.id'))
+    user_id = db.relationship('User', backref='reservations')
+    reserved_car = db.relationship('Car', backref='reservations')
 
 if __name__ == "__main__":
     app.run(debug=True)
