@@ -1,1 +1,8 @@
 .venv/
+
+git commit -m "Remove __pycache__ folder from tracking"
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
