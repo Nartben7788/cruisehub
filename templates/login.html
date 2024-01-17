@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signup.css') }}">
 </head>
 <body>
 
@@ -18,8 +19,8 @@
     {% endwith %}
 
 
-
-    <form action="/login" method="POST">
+<img src="{{ url_for('static', filename='car1.jpg') }}" alt="Car">
+<form action="/login" method="POST">
         <h3> Login</h3>
     <label for="username"> Username</label>
         <input type="text" name="username" required><br>
