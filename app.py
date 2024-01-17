@@ -107,7 +107,6 @@ def add_car():
         additional_info = request.form['additional_info']
         
 
-        # Assuming you handle file upload and save the file path
         picture = save_picture(request.files['picture'])
 
         new_car = Car(
