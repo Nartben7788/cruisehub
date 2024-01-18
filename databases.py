@@ -45,25 +45,31 @@ class Car(db.Model):
     picture = db.Column(db.String)  # You might want to store the file path or use a proper file storage solution
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
 
-#Reservation Model
-# class Reservations(db.Model):
-#     id = db.Column(db.Integer, primary_key = True)
-#     start_date = db.Column(db.DateTime, nullable = False)
-#     end_date = db.Column(db.DateTime, nullable = False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     reserved_car_id = db.Column(db.Integer, db.ForeignKey('cars.id'))
-#     # user_id = db.relationship('User', backref='reservations')
-#     # reserved_car = db.relationship('Car', backref='reservations')
-    
+
 class Reservations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     reserved_car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
-    
     user = db.relationship('User', backref='reservations')
     reserved_car = db.relationship('Car', backref='reservations')
+
+
+
+car_info = {
+            'model':'Ask wiki',
+            'make':'Rolls Royce',
+            'year':2024,
+            'price':5000,
+            'additional_info':'Beautiful and fast',
+            'picture':'static/images.jpg',
+            'owner_id': 3}
+
+new_car = Car(**car_info)
+db.session.add(new_car)
+db.session.commit()
+
 
 if __name__ == "__main__":
     app.run(debug=True)
