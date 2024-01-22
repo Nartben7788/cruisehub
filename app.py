@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from databases import*
 
 
+
 @app.route("/")
 def home():
     return render_template("index.html")
