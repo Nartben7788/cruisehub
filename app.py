@@ -165,10 +165,12 @@ def save_picture(picture):
 #     if request.method == 'GET':
 #         try:
 #             # Delete the User table
-#             User.__table__.drop(db.engine)
+           
 
 #             # Delete the Owner table
-#             Owner.__table__.drop(db.engine)
+            
+#             Car.__table__.drop(db.engine)
+#             Reservations.__table__.drop(db.engine)
 
 #             flash('Tables deleted successfully!')
 #         except Exception as e:

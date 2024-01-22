@@ -42,7 +42,7 @@ class Car(db.Model):
     year = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     additional_info = db.Column(db.String, nullable=False)
-    picture = db.Column(db.String)  # You might want to store the file path or use a proper file storage solution
+    picture = db.Column(db.String)  
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
 
 
@@ -57,18 +57,7 @@ class Reservations(db.Model):
 
 
 
-car_info = {
-            'model':'Ask wiki',
-            'make':'Rolls Royce',
-            'year':2024,
-            'price':5000,
-            'additional_info':'Beautiful and fast',
-            'picture':'static/images.jpg',
-            'owner_id': 3}
 
-new_car = Car(**car_info)
-db.session.add(new_car)
-db.session.commit()
 
 
 if __name__ == "__main__":
