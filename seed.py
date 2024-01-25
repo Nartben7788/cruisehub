@@ -104,7 +104,7 @@ def seed_data():
             year=2022, 
             price=27000, 
             additional_info='Modern design, spacious', 
-            picture='static/uploads/car4.jpg', 
+            picture='static/uploads/chevrolet_malibu.jpg', 
             owner_id=4
             )
         
@@ -114,7 +114,7 @@ def seed_data():
             year=2022, 
             price=35000, 
             additional_info='Powerful and sporty', 
-            picture='static/uploads/car3.jpg', 
+            picture='static/uploads/ford_mustard.jpg', 
             owner_id=3
         )
         car6 = Car(
@@ -123,7 +123,7 @@ def seed_data():
             year=2022, 
             price=28000, 
             additional_info='Comfortable and stylish', 
-            picture='static/uploads/car2.jpg', 
+            picture='static/uploads/honda_accord.jpg', 
             owner_id=2
             )
         
