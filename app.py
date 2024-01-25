@@ -132,36 +132,39 @@ def save_picture(picture):
     picture.save(picture_path)
     return picture_path
 
+@app.route('/user_dashboard')
+def user_dashboard():
+    cars = Car.query.all()
+    return render_template('user_dashboard.html', cars=cars)
 
 
 
 
 
 
+# @app.route('/delete_all_entries', methods=['GET', 'POST'])
+# def delete_all_entries():
+#     if request.method == 'GET':
+#         try:
+#             # Delete all entries in the User table
+#             db.session.query(Car).delete()
 
-@app.route('/delete_all_entries', methods=['GET', 'POST'])
-def delete_all_entries():
-    if request.method == 'GET':
-        try:
-            # Delete all entries in the User table
-            db.session.query(Car).delete()
+#             # Delete all entries in the Owner table
+#             db.session.query(User).delete()
+#             db.session.query(Reservations).delete()
+#             db.session.query(Owner).delete()
 
-            # Delete all entries in the Owner table
-            db.session.query(User).delete()
-            db.session.query(Reservations).delete()
-            db.session.query(Owner).delete()
+#             # # Commit the changes to the database
+#             db.session.commit()
 
-            # # Commit the changes to the database
-            db.session.commit()
+#             flash('All entries deleted successfully!', 'delete')
+#         except Exception as e:
+#             # Handle exceptions if any
+#             flash(f'Error deleting entries: {str(e)}', 'delete')
 
-            flash('All entries deleted successfully!', 'delete')
-        except Exception as e:
-            # Handle exceptions if any
-            flash(f'Error deleting entries: {str(e)}', 'delete')
+#         return redirect(url_for('home'))  # Redirect to the home page or any other page
 
-        return redirect(url_for('home'))  # Redirect to the home page or any other page
-
-    return render_template('delete_entries.html')  # Create a template for the delete_entries page
+#     return render_template('delete_entries.html')  # Create a template for the delete_entries page
         
 # @app.route('/delete_tables', methods=['GET', 'POST'])
 # def delete_tables():
