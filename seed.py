@@ -75,7 +75,7 @@ def seed_data():
             year=2022,
             price=25000,
             additional_info='Sleek and fuel-efficient',
-            picture='static/toyota_camry.jpg',
+            picture='static/uploads/toyota_camry.jpg',
             owner_id=1
         )
 
@@ -85,7 +85,7 @@ def seed_data():
             year=2023,
             price=22000,
             additional_info='Compact and reliable',
-            picture='static/honda_civic.jpg',
+            picture='static/uploads/honda_civic.jpg',
             owner_id=2
         )
 
@@ -95,7 +95,7 @@ def seed_data():
             year=2023,
             price=22000,
             additional_info='Compact and reliable',
-            picture='static/honda_civic.jpg',
+            picture='static/uploads/honda_civic.jpg',
             owner_id=1
         )
         car4 = Car(
@@ -104,7 +104,7 @@ def seed_data():
             year=2022, 
             price=27000, 
             additional_info='Modern design, spacious', 
-            picture='static/car4.jpg', 
+            picture='static/uploads/car4.jpg', 
             owner_id=4
             )
         
@@ -114,7 +114,7 @@ def seed_data():
             year=2022, 
             price=35000, 
             additional_info='Powerful and sporty', 
-            picture='static/car3.jpg', 
+            picture='static/uploads/car3.jpg', 
             owner_id=3
         )
         car6 = Car(
@@ -123,7 +123,7 @@ def seed_data():
             year=2022, 
             price=28000, 
             additional_info='Comfortable and stylish', 
-            picture='static/car2.jpg', 
+            picture='static/uploads/car2.jpg', 
             owner_id=2
             )
         
