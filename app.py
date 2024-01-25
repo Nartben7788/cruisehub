@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
-
+import os
 
 from databases import*
 
@@ -106,9 +106,12 @@ def add_car():
         year = request.form['year']
         price = request.form['price']
         additional_info = request.form['additional_info']
+
+         
+       
         
 
-        picture = save_picture(request.files['picture'])
+        picture = save_picture(request.files['picture'],owner_id)
 
         new_car = Car(
             model=model, 
@@ -124,14 +127,17 @@ def add_car():
 
         return redirect(url_for('home'))
 
-def save_picture(picture):
-    # Ensure the 'static/uploads' folder exists in your project directory
-    # Adjust the implementation based on your requirements
+def save_picture(picture, owner_id):
+    owner = Owner.query.get(owner_id)
+    owner_username = owner.username
+    uploads_folder = os.path.join('static', 'uploads', owner_username)
+    if not os.path.exists(uploads_folder):
+        os.makedirs(uploads_folder)
+
     picture_filename = secure_filename(picture.filename)
-    picture_path = f'static/uploads/{picture_filename}'
+    picture_path = os.path.join(uploads_folder, picture_filename)
     picture.save(picture_path)
     return picture_path
-
 @app.route('/user_dashboard')
 def user_dashboard():
     cars = Car.query.all()
@@ -157,10 +163,10 @@ def user_dashboard():
 #             # # Commit the changes to the database
 #             db.session.commit()
 
-#             flash('All entries deleted successfully!', 'delete')
+#            
 #         except Exception as e:
 #             # Handle exceptions if any
-#             flash(f'Error deleting entries: {str(e)}', 'delete')
+#             
 
 #         return redirect(url_for('home'))  # Redirect to the home page or any other page
 
