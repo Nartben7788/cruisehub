@@ -138,6 +138,7 @@ def save_picture(picture, owner_id):
     picture_path = os.path.join(uploads_folder, picture_filename)
     picture.save(picture_path)
     return picture_path
+
 @app.route('/user_dashboard')
 def user_dashboard():
     cars = Car.query.all()
