@@ -144,8 +144,6 @@ def user_dashboard():
             per_page = 6
             cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
             return render_template('user_dashboard.html', cars=cars, user=user)
-            # cars = Car.query.all()
-            # return render_template('user_dashboard.html', cars=cars, user=user)
     return redirect(url_for('login'))
         
 
