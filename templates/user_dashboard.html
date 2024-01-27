@@ -8,7 +8,7 @@
     <title>User Dashboard</title>
 </head>
 <body>
-    <h1>Welcome to Your Dashboard</h1>
+    <h1>Welcome to Your Dashboard {{user.username}}</h1>
     <div class="car-gallery">
         {% for car in cars %}
             <div class="car">
@@ -20,5 +20,6 @@
         {% endfor %}
     </div>
 
+    <a href="/logout">Logout</a>
 </body>
 </html>
