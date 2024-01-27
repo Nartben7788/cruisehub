@@ -47,7 +47,6 @@ def signup():
             return redirect(url_for('login'))
         except IntegrityError as e: 
             db.session.rollback()
-            print(f"IntegrityError: {e}")
             if "UNIQUE constraint failed: user.email" in str(e) or "UNIQUE constraint failed: owner.email" in str(e):
                 flash("Email already exists. Please choose a different one.", "error")
             elif "UNIQUE constraint failed: user.username" in str(e) or "UNIQUE constraint failed: owner.username" in str(e):
@@ -108,11 +107,6 @@ def add_car():
         year = request.form['year']
         price = request.form['price']
         additional_info = request.form['additional_info']
-
-         
-       
-        
-
         picture = save_picture(request.files['picture'],owner_id)
 
         new_car = Car(
@@ -134,7 +128,7 @@ def save_picture(picture, owner_id):
     owner_username = owner.username
     uploads_folder = os.path.join('static', 'uploads', owner_username)
     if not os.path.exists(uploads_folder):
-        os.makedirs(uploads_folder)
+        os.makedirs(uploads_folder) 
 
     picture_filename = secure_filename(picture.filename)
     picture_path = os.path.join(uploads_folder, picture_filename)
@@ -146,7 +140,9 @@ def user_dashboard():
     if 'user_id' in session:
         user = User.query.get(session['user_id'])
         if user:
-            cars = Car.query.all()
+            page = request.args.get('page', 1, type=int)
+            per_page = 6
+            cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
             return render_template('user_dashboard.html', cars=cars, user=user)
     return redirect(url_for('login'))
         
