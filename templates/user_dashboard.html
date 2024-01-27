@@ -20,6 +20,29 @@
         {% endfor %}
     </div>
 
+
+<!-- Pagination controls -->
+<div class="pagination">
+    {% if cars.has_prev %}
+        <a href="{{ url_for('user_dashboard', page=cars.prev_num) }}">Previous</a>
+    {% endif %}
+    {% for num in cars.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+        {% if num %}
+            {% if num != cars.page %}
+                <a href="{{ url_for('user_dashboard', page=num) }}">{{ num }}</a>
+            {% else %}
+                <strong>{{ num }}</strong>
+            {% endif %}
+        {% else %}
+            <span>...</span>
+        {% endif %}
+    {% endfor %}
+    {% if cars.has_next %}
+        <a href="{{ url_for('user_dashboard', page=cars.next_num) }}">Next</a>
+    {% endif %}
+</div>
+
+
     <a href="/logout">Logout</a>
 </body>
 </html>

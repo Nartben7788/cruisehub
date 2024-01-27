@@ -127,6 +127,7 @@ def seed_data():
             owner_id=2
             )
         
+        
 
         # Create sample reservations
         reservation1 = Reservations(
