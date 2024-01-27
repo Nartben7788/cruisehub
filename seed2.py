@@ -132,7 +132,7 @@ def seed_data():
 
        
         # Add data to the database
-        db.session.add_all([car1, car2,car3,car4, car5, car6,  reservation1, reservation2, reservation3])
+        db.session.add_all([car1, car2,car3,car4, car5, car6,])
         db.session.commit()
 
 if __name__ == "__main__":
