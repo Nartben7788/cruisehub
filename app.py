@@ -44,8 +44,8 @@ def signup():
             # Try to add the new user or owner to the database
             db.session.add(new_user_or_owner)
             db.session.commit()
-            return redirect(url_for('home'))
-        except IntegrityError as e:
+            return redirect(url_for('login'))
+        except IntegrityError as e: 
             db.session.rollback()
             print(f"IntegrityError: {e}")
             if "UNIQUE constraint failed: user.email" in str(e) or "UNIQUE constraint failed: owner.email" in str(e):
@@ -68,7 +68,9 @@ def login():
         if user_type == "user":
             user = User.query.filter_by(username=username).first()
             if user and check_password_hash(user.password, password):
-                flash( "Login Successfull!", 'login')
+                session['user_id'] = user.id
+                return redirect(url_for('user_dashboard'))
+
             else:
                 flash ("Invalid Username or Password!", 'login')
             
@@ -141,8 +143,13 @@ def save_picture(picture, owner_id):
 
 @app.route('/user_dashboard')
 def user_dashboard():
-    cars = Car.query.all()
-    return render_template('user_dashboard.html', cars=cars)
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        if user:
+            cars = Car.query.all()
+            return render_template('user_dashboard.html', cars=cars, user=user)
+    return redirect(url_for('login'))
+        
 
 
 
