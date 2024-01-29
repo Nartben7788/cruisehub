@@ -191,6 +191,11 @@ def car_profile(car_id):
     return render_template('car_profile.html', car=car, owner=owner)
     
 
+@app.route('/car/owner/<int:owner_id>')
+def owner_profile(owner_id):
+    owner = Owner.query.get_or_404(owner_id)
+    cars = Car.query.filter_by(owner_id=owner_id).all()
+    return render_template('owner_profile.html', owner=owner, cars=cars)
 
 
 

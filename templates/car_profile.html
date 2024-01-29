@@ -13,7 +13,7 @@
         <p><strong>Year:</strong> {{ car.year }}</p>
         <p><strong>Price:</strong> ${{ car.price }}</p>
         <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
-        <p><strong>Owner:</strong>{{ owner.name}}</p>
+        <p><strong>Owner:</strong><a href="{{url_for('owner_profile', owner_id = car.owner_id)}}">{{ owner.name}}</p></a> 
     </div>
   
 
