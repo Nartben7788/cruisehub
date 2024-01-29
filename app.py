@@ -187,7 +187,8 @@ def user_dashboard():
 @app.route('/car_profile/<int:car_id>')
 def car_profile(car_id):
     car = Car.query.get_or_404(car_id)
-    return render_template('car_profile.html', car=car)
+    owner = Owner.query.get_or_404(car.owner_id)
+    return render_template('car_profile.html', car=car, owner=owner)
     
 
 

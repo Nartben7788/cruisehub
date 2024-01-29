@@ -13,8 +13,9 @@
         <p><strong>Year:</strong> {{ car.year }}</p>
         <p><strong>Price:</strong> ${{ car.price }}</p>
         <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
-        
+        <p><strong>Owner:</strong>{{ owner.name}}</p>
     </div>
+  
 
     <a href="{{ url_for('user_dashboard') }}">Explore Fleet</a>
 </body>
