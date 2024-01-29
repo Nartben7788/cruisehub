@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Profile</title>
+</head>
+<body>
+    <h1>Car Profile</h1>
+    <div class="car-details">
+        <p><strong>Model:</strong> {{ car.model }}</p>
+        <p><strong>Make:</strong> {{ car.make }}</p>
+        <p><strong>Year:</strong> {{ car.year }}</p>
+        <p><strong>Price:</strong> ${{ car.price }}</p>
+        <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
+        
+    </div>
+
+    <a href="{{ url_for('user_dashboard') }}">Explore Fleet</a>
+</body>
+</html>
+
+    

@@ -184,7 +184,11 @@ def user_dashboard():
             return render_template('user_dashboard.html', cars=cars, user=user)
     return redirect(url_for('login'))
         
-
+@app.route('/car_profile/<int:car_id>')
+def car_profile(car_id):
+    car = Car.query.get_or_404(car_id)
+    return render_template('car_profile.html', car=car)
+    
 
 
 
