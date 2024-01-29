@@ -123,9 +123,10 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # Remove owner_id from the session during logout
+    # Remove owner_id from the session during logout 
+    session.pop('user_id', None)
     session.pop('owner_id', None)
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 # Route for handling the car form submission
@@ -183,7 +184,12 @@ def user_dashboard():
             return render_template('user_dashboard.html', cars=cars, user=user)
     return redirect(url_for('login'))
         
-
+@app.route('/car_profile/<int:car_id>')
+def car_profile(car_id):
+    car = Car.query.get_or_404(car_id)
+    owner = Owner.query.get_or_404(car.owner_id)
+    return render_template('car_profile.html', car=car, owner=owner)
+    
 
 
 
