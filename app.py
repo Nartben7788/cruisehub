@@ -123,9 +123,10 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # Remove owner_id from the session during logout
+    # Remove owner_id from the session during logout 
+    session.pop('user_id', None)
     session.pop('owner_id', None)
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 # Route for handling the car form submission
