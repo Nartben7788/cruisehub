@@ -42,7 +42,7 @@ def signup():
                     has_uppercase = True
                 elif char.islower():
                     has_lowercase = True
-                elif char in "!@#$%^&*()_+{}|<>?~-":
+                elif char in "!@#$%^&*.()_+{}|<>?~-":
                     has_symbol = True
 
         if not has_uppercase:
@@ -191,7 +191,7 @@ def car_profile(car_id):
     return render_template('car_profile.html', car=car, owner=owner)
     
 
-@app.route('/car/owner/<int:owner_id>')
+@app.route('/owner/<int:owner_id>')
 def owner_profile(owner_id):
     owner = Owner.query.get_or_404(owner_id)
     cars = Car.query.filter_by(owner_id=owner_id).all()

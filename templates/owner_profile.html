@@ -8,7 +8,10 @@
 <body>
     Welcome {{owner.name}}
     {% for car in cars%}
-        <img src="{{ car.picture }}" alt="cars">
+    <div>
+        {{car.make}} {{car.id}}
+        <img src="/{{ car.picture }}" alt="{{car.picture}}">
+    </div>
     {% endfor %}
 </body>
 </html>
