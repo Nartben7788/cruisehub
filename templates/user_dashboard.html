@@ -12,7 +12,7 @@
     <div class="car-gallery">
         {% for car in cars %}
             <div class="car">
-                <a href="{{ url_for('car_profile', car_id=car.id)}}">
+                <a href="{{ url_for('car_profile', car_id=car.id)}}", target="_blank">
                     <img src="{{ car.picture }}" alt="Car Picture">
                 </a> 
             </div>
