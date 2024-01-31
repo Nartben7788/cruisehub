@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owner_profile.css') }}">
     <title>Document</title>
 </head>
 <body>
-    Welcome {{owner.name}}
+    <h1>Meet {{owner.name}}</h1>
     {% for car in cars%}
     <div>
-        {{car.make}} {{car.id}}
-        <img src="/{{ car.picture }}" alt="{{car.picture}}">
+        {{car.make}} {{car.model}}
+       <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
     </div>
     {% endfor %}
+    <a href="{{url_for('user_dashboard')}}">Back to Explore fleet</a>
 </body>
 </html>
