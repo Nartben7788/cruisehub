@@ -1,57 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signup.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='definitions.css') }}">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login | cruiseHub</title>
 
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='definitions.css') }}" />
+    </head>
+    <body>
+        <section
+            class="bg-blue h-dvh bg-blend-multiply bg-cover bg-center"
+            style="background-image: url('../static/auth-bg.png')">
+            <div class="container flex items-center">
+                <h1 class="font-extrabold text-blue-light text-7xl italic">CruiseHub</h1>
+                <form action="/login" method="POST">
+                    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+                    %}
+                    <ul>
+                        {% for category, message in messages %}
+                        <li class="flash-message">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} {% endwith %}
+                    <h3>Login</h3>
+                    <label for="username"> Username</label>
+                    <input type="text" name="username" required /><br />
+                    <label for="password">Password</label>
+                    <input type="password" name="password" required /><br />
+                    <label for="user_type">User Type:</label>
+                    <select name="user_type" required>
+                        <option value="user">User</option>
+                        <option value="owner">Owner</option></select
+                    ><br />
 
-<img src="{{ url_for('static', filename='car1.jpg') }}" alt="Car">
-<form action="/login" method="POST">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category,  message in messages %}
-                    <li class="flash-message">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-        <h3> Login</h3>
-    <label for="username"> Username</label>
-        <input type="text" name="username" required><br>
-    <label for="password">Password</label>
-        <input type="password" name="password" required><br>
-    <label for="user_type">User Type:</label>
-    <select name="user_type" required>
-        <option value="user">User</option>
-        <option value="owner">Owner</option>
-    </select><br>
+                    <button type="submit" value="login">Login</button>
 
-    <button type="submit" value="login">Login</button>
+                    <a href="/signup">Create an account</a>
+                </form>
+            </div>
+        </section>
 
-    <a href="/signup">Create an account</a>
-</form>
-
-
-<script>
-    // Function to automatically hide flash messages after 3 seconds
-    document.addEventListener('DOMContentLoaded', function () {
-        var flashMessages = document.querySelectorAll('.flash-message');
-        flashMessages.forEach(function (message) {
-            setTimeout(function () {
-                message.style.display = 'none';
-            }, 2000);
-        });
-    });
-</script>
-</body>
+        <script>
+            // Function to automatically hide flash messages after 3 seconds
+            document.addEventListener("DOMContentLoaded", function () {
+                var flashMessages = document.querySelectorAll(".flash-message");
+                flashMessages.forEach(function (message) {
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 2000);
+                });
+            });
+        </script>
+    </body>
 </html>
-
