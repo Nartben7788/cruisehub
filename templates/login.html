@@ -18,9 +18,9 @@
         <section
             class="bg-blue h-dvh bg-blend-multiply bg-cover bg-center"
             style="background-image: url('../static/auth-bg.png')">
-            <div class="container flex items-center">
+            <div class="container grid grid-cols-2 items-center justify-between h-full">
                 <h1 class="font-extrabold text-blue-light text-7xl italic">CruiseHub</h1>
-                <form action="/login" method="POST">
+                <form action="/login" method="POST" class="w-[550px] bg-blue-light py-12 px-14">
                     {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
                     %}
                     <ul>
@@ -29,20 +29,45 @@
                         {% endfor %}
                     </ul>
                     {% endif %} {% endwith %}
-                    <h3>Login</h3>
-                    <label for="username"> Username</label>
-                    <input type="text" name="username" required /><br />
-                    <label for="password">Password</label>
-                    <input type="password" name="password" required /><br />
-                    <label for="user_type">User Type:</label>
-                    <select name="user_type" required>
-                        <option value="user">User</option>
-                        <option value="owner">Owner</option></select
-                    ><br />
 
-                    <button type="submit" value="login">Login</button>
+                    <h3 class="font-bold text-3xl">Login</h3>
+                    <p class="text-gray-400 text-sm leading-loose">
+                        Don’t have an account?
+                        <a href="/signup" class="text-blue font-medium">Sign Up</a>
+                    </p>
 
-                    <a href="/signup">Create an account</a>
+                    <label for="username" class="block my-6">
+                        Username
+                        <input
+                            type="text"
+                            name="username"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
+                    <label for="password" class="block my-6">
+                        Password
+                        <input
+                            type="password"
+                            name="password"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
+                    <label for="user_type" class="block my-6">
+                        User Type:
+                        <select
+                            name="user_type"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required>
+                            <option value="user">User</option>
+                            <option value="owner">Owner</option>
+                        </select>
+                    </label>
+
+                    <a href="#">Forgot Password</a>
+
+                    <button type="submit" value="login" class="btn-primary block w-full">
+                        Login
+                    </button>
                 </form>
             </div>
         </section>
