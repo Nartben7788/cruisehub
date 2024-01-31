@@ -198,5 +198,5 @@ def resevation():
 #         return redirect(url_for('home'))  # Redirect to the home page or any other page
 
 #     return render_template('delete_entries.html')  # Create 
-if __name__ == "__main__":
-    app.run(debug=True)
+    if __name__ == "__main__":
+     app.run(debug=True)
