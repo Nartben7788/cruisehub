@@ -604,11 +604,43 @@ video {
 
 .btn-primary:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  background-color: rgb(40 2 116 / var(--tw-bg-opacity));
 }
 
 .static {
   position: static;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.-top-6 {
+  top: -1.5rem;
+}
+
+.right-0 {
+  right: 0px;
+}
+
+.top-0 {
+  top: 0px;
+}
+
+.top-1\/2 {
+  top: 50%;
 }
 
 .my-6 {
@@ -636,6 +668,14 @@ video {
   height: 100%;
 }
 
+.h-lvh {
+  height: 100lvh;
+}
+
+.min-h-lvh {
+  min-height: 100lvh;
+}
+
 .w-\[550px\] {
   width: 550px;
 }
@@ -654,6 +694,10 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.self-center {
+  align-self: center;
 }
 
 .rounded-md {
@@ -679,6 +723,11 @@ video {
   background-color: rgb(233 246 255 / var(--tw-bg-opacity));
 }
 
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
 .bg-transparent {
   background-color: transparent;
 }
@@ -687,8 +736,16 @@ video {
   background-size: cover;
 }
 
+.bg-fixed {
+  background-attachment: fixed;
+}
+
 .bg-center {
   background-position: center;
+}
+
+.p-4 {
+  padding: 1rem;
 }
 
 .px-14 {
@@ -709,6 +766,10 @@ video {
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .text-3xl {
@@ -763,4 +824,9 @@ video {
 
 .bg-blend-multiply {
   background-blend-mode: multiply;
+}
+
+.hover\:text-blue-dark:hover {
+  --tw-text-opacity: 1;
+  color: rgb(40 2 116 / var(--tw-text-opacity));
 }

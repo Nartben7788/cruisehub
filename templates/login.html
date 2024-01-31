@@ -20,12 +20,18 @@
             style="background-image: url('../static/auth-bg.png')">
             <div class="container grid grid-cols-2 items-center justify-between h-full">
                 <h1 class="font-extrabold text-blue-light text-7xl italic">CruiseHub</h1>
-                <form action="/login" method="POST" class="w-[550px] bg-blue-light py-12 px-14">
+                <form
+                    action="/login"
+                    method="POST"
+                    class="relative w-[550px] bg-blue-light py-12 px-14">
                     {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
                     %}
                     <ul>
                         {% for category, message in messages %}
-                        <li class="flash-message">{{ message }}</li>
+                        <li
+                            class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+                            {{ message }}
+                        </li>
                         {% endfor %}
                     </ul>
                     {% endif %} {% endwith %}
@@ -63,7 +69,11 @@
                         </select>
                     </label>
 
-                    <a href="#">Forgot Password</a>
+                    <a
+                        href="#"
+                        class="block leading-loose text-blue text-right hover:text-blue-dark"
+                        >Forgot Password?</a
+                    >
 
                     <button type="submit" value="login" class="btn-primary block w-full">
                         Login
@@ -79,7 +89,7 @@
                 flashMessages.forEach(function (message) {
                     setTimeout(function () {
                         message.style.display = "none";
-                    }, 2000);
+                    }, 4000);
                 });
             });
         </script>
