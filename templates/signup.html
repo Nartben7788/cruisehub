@@ -1,68 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signup.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='definitions.css') }}">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SignUp | cruiseHub</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='definitions.css') }}" />
+    </head>
+    <body>
+        <section
+            class="bg-blue min-h-lvh bg-blend-multiply bg-fixed bg-cover bg-center py-12"
+            style="background-image: url('../static/auth-bg.png')">
+            <div class="container grid grid-cols-2 items-center justify-between h-full">
+                <h1 class="sticky top-1/2 font-extrabold text-blue-light text-7xl italic">
+                    CruiseHub
+                </h1>
 
+                <form
+                    action="/signup"
+                    method="POST"
+                    class="relative w-[550px] bg-blue-light py-12 px-14">
+                    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+                    %}
+                    <ul>
+                        {% for category, message in messages %}
+                        <li
+                            class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+                            {{ message }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} {% endwith %}
 
-    <img src="{{ url_for('static', filename='car1.jpg') }}" alt="Car">
+                    <h3 class="font-bold text-3xl">Sign Up</h3>
+                    <p class="text-gray-400 text-sm leading-loose">
+                        Have an account already?
+                        <a href="/login" class="text-blue font-medium">Login</a>
+                    </p>
 
-    <form action="/signup" method="POST">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category,  message in messages %}
-                <li class="flash-message">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-        <h3 >Sign Up </h3>
-    <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
-    <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
-    <label for="username">Username:</label>
-        <input type="text" name="username" required><br>
-    <label for="phone_number">Phone Number:</label>
-        <input type="text" name="phone_number" required><br>
-    <label for="user_type">User Type:</label>
-        <select name="user_type" required>
-            <option value="user">User</option><br>
-            <option value="owner">Owner</option>
-        </select><br>
-    <label for="password">Password:</label>
-        <input type="password" name="password" required><br>
-    <button type="submit" value="Signup">SignUp</button>
+                    <label for="name" class="block my-6">
+                        Name
+                        <input
+                            type="text"
+                            name="name"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
 
+                    <label for="email" class="block my-6">
+                        Email:
+                        <input
+                            type="email"
+                            name="email"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
+                    <label for="username" class="block my-6">
+                        Username:
+                        <input
+                            type="text"
+                            name="username"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
+                    <label for="phone_number" class="block my-6">
+                        Phone Number:
+                        <input
+                            type="text"
+                            name="phone_number"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
+                    <label for="user_type" class="block my-6">
+                        User Type:
+                        <select
+                            name="user_type"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required>
+                            <option value="user">User</option>
+                            <br />
+                            <option value="owner">Owner</option>
+                        </select>
+                    </label>
+                    <label for="password" class="block my-6">
+                        Password:
+                        <input
+                            type="password"
+                            name="password"
+                            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                            required />
+                    </label>
 
-    <a href="/login">Have an account, Login</a>
-    </form>
+                    <button type="submit" value="Signup" class="btn-primary w-full">SignUp</button>
+                </form>
+            </div>
+        </section>
 
-
-
-
-
-    <script>
-        // Function to automatically hide flash messages after 3 seconds
-        document.addEventListener('DOMContentLoaded', function () {
-            var flashMessages = document.querySelectorAll('.flash-message');
-            flashMessages.forEach(function (message) {
-                setTimeout(function () {
-                    message.style.display = 'none';
-                }, 2000);
+        <script>
+            // Function to automatically hide flash messages after 5 seconds
+            document.addEventListener("DOMContentLoaded", function () {
+                var flashMessages = document.querySelectorAll(".flash-message");
+                flashMessages.forEach(function (message) {
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 4000);
+                });
             });
-        });
-    </script>
-</body>
-
-
+        </script>
+    </body>
 </html>
