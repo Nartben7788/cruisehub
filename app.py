@@ -167,7 +167,6 @@ def save_picture(picture, owner_id):
     uploads_folder = os.path.join('static', 'uploads', owner_username)
     if not os.path.exists(uploads_folder):
         os.makedirs(uploads_folder) 
-
     picture_filename = secure_filename(picture.filename)
     picture_path = os.path.join(uploads_folder, picture_filename)
     picture.save(picture_path)
