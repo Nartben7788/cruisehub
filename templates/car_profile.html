@@ -11,14 +11,44 @@
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Make:</strong> {{ car.make }}</p>
         <p><strong>Year:</strong> {{ car.year }}</p>
-        <p><strong>Price:</strong> ${{ car.price }} day</p>
+        <p><strong>Price:</strong> ${{ car.price }} per day</p>
         <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
-        <p><strong>Owner:</strong><a href="{{url_for('owner_profile', owner_id = car.owner_id)}}">{{ owner.name}}</p></a> 
+        <p><strong>Owner:</strong> <a href="{{ url_for('owner_profile', owner_id=car.owner_id) }}">{{ owner.name }}</a></p>
     </div>
-  
 
     <a href="{{ url_for('user_dashboard') }}">Explore Fleet</a>
+
+    <div id="planyo_content" class="planyo"></div>
+    <noscript><a href="http://www.planyo.com/about-calendar.php?calendar=68131">Make a reservation</a><br/><br/><a href="http://www.planyo.com/">Reservation system powered by Planyo</a></noscript>
+
+    <script type="text/javascript">
+        var planyo_site_id = '68131'; // Your PlanYo site ID
+        var planyo_default_mode = 'reserve';
+        var planyo_language = 'EN';
+        var planyo_include_js_library = true;
+        var planyo_files_location = 'https://www.planyo.com/Plugins/PlanyoFiles';
+        var planyo_use_https = true;
+        var ulap_script = "jsonp";
+
+        function get_param(name) {
+            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+            if (results == null) return null;
+            else return results[1];
+        }
+
+        if (get_param('mode')) planyo_embed_mode = get_param('mode');
+
+        function get_full_planyo_file_path(name) {
+            if (planyo_files_location.length == 0 || planyo_files_location.lastIndexOf('/') == planyo_files_location.length - 1) return planyo_files_location + name;
+            else return planyo_files_location + '/' + name;
+        }
+    </script>
+
+    <script type="text/javascript" src="https://www.planyo.com/Plugins/PlanyoFiles/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="https://www.planyo.com/Plugins/PlanyoFiles/booking-utils.js"></script>
+    <link rel="stylesheet" href="https://www.planyo.com/schemes/?calendar=68131&detect_mobile=auto&sel=scheme_css" type="text/css" />
 </body>
 </html>
-
-    
