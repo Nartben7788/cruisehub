@@ -22,6 +22,43 @@ def signup():
         password = request.form['password']
         user_type = request.form['user_type']  
 
+        #validate Phone Number
+        if len(phone_number)<10:
+            flash('Phone Number must be at leastr 10 Digits long.','error')
+            return redirect(url_for('signup'))
+          # Validate password conditions
+        error_messages = []
+
+        # Flag variables to track if conditions are met
+        has_uppercase = False
+        has_lowercase = False
+        has_symbol = False
+
+        if len(password) < 6:
+            error_messages.append("Password must have at least 6 characters.")
+        else:
+            for char in password:
+                if char.isupper():
+                    has_uppercase = True
+                elif char.islower():
+                    has_lowercase = True
+                elif char in "!@#$%^&*.()_+{}|<>?~-":
+                    has_symbol = True
+
+        if not has_uppercase:
+            error_messages.append("Password must contain at least one uppercase letter.")
+        if not has_lowercase:
+            error_messages.append("Password must contain at least one lowercase letter.")
+        if not has_symbol:
+            error_messages.append("Password must contain at least one symbol.")
+
+        if error_messages:
+            # If there are error messages, flash them and redirect back to signup
+            flash(". ".join(error_messages), "error")
+            return redirect(url_for('signup'))
+
+
+
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         if user_type == 'user':
@@ -86,9 +123,10 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # Remove owner_id from the session during logout
+    # Remove owner_id from the session during logout 
+    session.pop('user_id', None)
     session.pop('owner_id', None)
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 # Route for handling the car form submission
@@ -146,10 +184,20 @@ def user_dashboard():
             return render_template('user_dashboard.html', cars=cars, user=user)
     return redirect(url_for('login'))
         
-
+@app.route('/car_profile/<int:car_id>')
+def car_profile(car_id):
+    car = Car.query.get_or_404(car_id)
+    owner = Owner.query.get_or_404(car.owner_id)
+    return render_template('car_profile.html', car=car, owner=owner)
+    
 @app.route("/reservation" , methods= ['POST', 'GET'])
 def resevation():
     
+@app.route('/owner/<int:owner_id>')
+def owner_profile(owner_id):
+    owner = Owner.query.get_or_404(owner_id)
+    cars = Car.query.filter_by(owner_id=owner_id).all()
+    return render_template('owner_profile.html', owner=owner, cars=cars)
 
 
 
