@@ -186,12 +186,18 @@ def user_dashboard():
 @app.route('/car_profile/<int:car_id>')
 def car_profile(car_id):
     car = Car.query.get_or_404(car_id)
-    owner = Owner.query.get_or_404(car.owner_id)
-    return render_template('car_profile.html', car=car, owner=owner)
+    owner = Owner.query.get_or_404(car.owner_id) 
+    # Fetch user information from the session or database
+    user = None
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+    
+    return render_template('car_profile.html', car=car, owner=owner, user=user)
+
     
 @app.route("/reservation" , methods= ['POST', 'GET'])
 def resevation():
-    
+    pass
 @app.route('/owner/<int:owner_id>')
 def owner_profile(owner_id):
     owner = Owner.query.get_or_404(owner_id)
