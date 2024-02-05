@@ -215,7 +215,7 @@ def reservation(car_id):
         else:
             # If no existing reservations, set the earliest start date to the current date
             earliest_start_date = datetime.now()
-        # ea = datetime.now().strftime('%Y-%m-%d')
+        
         return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id)
     else:
         if 'user_id' not in session:    
