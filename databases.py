@@ -50,10 +50,12 @@ class Reservations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    reserved_car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
-    user = db.relationship('User', backref='reservations')
-    reserved_car = db.relationship('Car', backref='reservations')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable= False)
+    reserved_car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable = False)
+
+   
+    
 
 
 
