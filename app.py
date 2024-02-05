@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from databases import*
 
@@ -203,11 +203,24 @@ def reservation(car_id):
     if request.method == 'GET':
         if 'user_id' not in session:
             return redirect(url_for('login'))
-        current_date = datetime.now().strftime('%Y-%m-%d')
-        return render_template('reservation.html', current_date=current_date, car_id=car_id)
+        # Check if the car has existing reservations
+        existing_reservations = Reservations.query.filter_by(reserved_car_id=car_id).all()
+
+        if existing_reservations:
+            # Find the latest end date of existing reservations
+            latest_end_date = max(reservation.end_date for reservation in existing_reservations)
+
+            # Set the earliest start date to the day after the latest end date
+            earliest_start_date = latest_end_date + timedelta(days=1)
+        else:
+            # If no existing reservations, set the earliest start date to the current date
+            earliest_start_date = datetime.now()
+        # ea = datetime.now().strftime('%Y-%m-%d')
+        return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id)
     else:
-        if 'user_id' not in session:
+        if 'user_id' not in session:    
             return redirect(url_for('login'))
+        
         else:
             start_date_str = request.form['start_date']
             end_date_str = request.form['end_date']
