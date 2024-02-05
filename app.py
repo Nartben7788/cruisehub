@@ -197,12 +197,42 @@ def owner_profile(owner_id):
     cars = Car.query.filter_by(owner_id=owner_id).all()
     return render_template('owner_profile.html', owner=owner, cars=cars)
 
-@app.route("/reservation", methods=['POST', 'GET'])
-def reservation():
-    current_date = datetime.now().strftime('%Y-%m-%d')
-    return render_template('reservation.html', current_date=current_date)
+@app.route("/reservation/<int:car_id>", methods=['POST', 'GET'])
+def reservation(car_id):
+    
+    if request.method == 'GET':
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        return render_template('reservation.html', current_date=current_date, car_id=car_id)
+    else:
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        else:
+            start_date_str = request.form['start_date']
+            end_date_str = request.form['end_date']
+            user_id = session['user_id']  # Access user_id directly from session
+            car = Car.query.get(car_id)
+            reserved_car_id = car_id
+            owner_id = car.owner_id
 
+            
+            # Convert string dates to datetime objects
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
 
+            new_reservation = Reservations(
+                start_date=start_date,
+                end_date=end_date,
+                reserved_car_id=reserved_car_id,
+                user_id=user_id,
+                owner_id=owner_id  
+            )
+            db.session.add(new_reservation)
+            db.session.commit()
+
+            flash('Reservation completed successfully!', 'success')
+            return redirect(url_for('home'))
 
 
 

@@ -15,7 +15,7 @@
                 <a href="{{ url_for('car_profile', car_id=car.id)}}", target="_blank">
                     <img src="{{ car.picture }}" alt="Car Picture">
                 </a> 
-                <h4><a href="{{url_for('reservation')}}" >Reserve</a></h4>
+                <h4><a href="{{url_for('reservation', car_id=car.id)}}" >Reserve</a></h4>
             </div>
         {% endfor %}
     </div>
