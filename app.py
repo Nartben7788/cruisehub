@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
+from datetime import datetime
 
 from databases import*
 
@@ -196,9 +197,10 @@ def owner_profile(owner_id):
     cars = Car.query.filter_by(owner_id=owner_id).all()
     return render_template('owner_profile.html', owner=owner, cars=cars)
 
-@app.route("/reservation")
+@app.route("/reservation", methods=['POST', 'GET'])
 def reservation():
-    pass
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    return render_template('reservation.html', current_date=current_date)
 
 
 
