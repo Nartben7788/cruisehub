@@ -8,40 +8,54 @@
     <title>User Dashboard</title>
 </head>
 <body>
-    <h1>Welcome to Your Dashboard {{user.username}}</h1>
+    <h1>Welcome to Your Dashboard {{ user.username }}</h1>
+
+    <!-- Filter Form -->
+    <form action="{{ url_for('user_dashboard') }}" method="GET">
+        <label for="make">Make:</label>
+        <input type="text" name="make" id="make">
+        <label for="model">Model:</label>
+        <input type="text" name="model" id="model">
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price">
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Car Gallery -->
     <div class="car-gallery">
-        {% for car in cars %}
+        {% for car in filtered_cars.items %}
             <div class="car">
-                <a href="{{ url_for('car_profile', car_id=car.id)}}", target="_blank">
+                <a href="{{ url_for('car_profile', car_id=car.id) }}" target="_blank">
                     <img src="{{ car.picture }}" alt="Car Picture">
-                </a> 
-                <h4><a href="{{url_for('reservation', car_id=car.id)}}" >Reserve</a></h4>
+                </a>
+                <h4><a href="{{ url_for('reservation', car_id=car.id) }}">Reserve</a></h4>
+                <p>Make: {{ car.make }}</p>
+                <p>Model: {{ car.model }}</p>
+                <p>Price: ${{ car.price }}</p>
             </div>
         {% endfor %}
     </div>
 
-
-<!-- Pagination controls -->
-<div class="pagination">
-    {% if cars.has_prev %}
-        <a href="{{ url_for('user_dashboard', page=cars.prev_num) }}">Previous</a>
-    {% endif %}
-    {% for num in cars.iter_pages(left_edge=2, right_edge=1, left_current=1, right_current=2) %}
-        {% if num %}
-            {% if num != cars.page %}
-                <a href="{{ url_for('user_dashboard', page=num) }}">{{ num }}</a>
-            {% else %}
-                <strong>{{ num }}</strong>
-            {% endif %}
-        {% else %}
-            <span>...</span>
+    <!-- Pagination controls -->
+    <div class="pagination">
+        {% if filtered_cars.has_prev %}
+            <a href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}">Previous</a>
         {% endif %}
-    {% endfor %}
-    {% if cars.has_next %}
-        <a href="{{ url_for('user_dashboard', page=cars.next_num) }}">Next</a>
-    {% endif %}
-</div>
-
+        {% for num in filtered_cars.iter_pages(left_edge=2, right_edge=1, left_current=1, right_current=2) %}
+            {% if num %}
+                {% if num != filtered_cars.page %}
+                    <a href="{{ url_for('user_dashboard', page=num) }}">{{ num }}</a>
+                {% else %}
+                    <strong>{{ num }}</strong>
+                {% endif %}
+            {% else %}
+                <span>...</span>
+            {% endif %}
+        {% endfor %}
+        {% if filtered_cars.has_next %}
+            <a href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}">Next</a>
+        {% endif %}
+    </div>
 
     <a href="/logout">Logout</a>
 </body>

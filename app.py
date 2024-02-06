@@ -180,8 +180,27 @@ def user_dashboard():
         if user:
             page = request.args.get('page', 1, type=int)
             per_page = 6
-            cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
-            return render_template('user_dashboard.html', cars=cars, user=user)
+
+              # Retrieve filtering criteria from the request
+            make = request.args.get('make')
+            model = request.args.get('model')
+            price = request.args.get('price')
+
+            # Query cars based on filtering criteria
+            filtered_cars_query = Car.query
+
+            if make:
+                filtered_cars_query = filtered_cars_query.filter(Car.make.ilike(f'%{make}%'))
+            if model:
+                filtered_cars_query = filtered_cars_query.filter(Car.model.ilike(f'%{model}%'))
+            if price:
+                filtered_cars_query = filtered_cars_query.filter(Car.price <= float(price))
+
+            # cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
+            # return render_template('user_dashboard.html', cars=cars, user=user)
+            # Paginate the filtered query
+            filtered_cars = filtered_cars_query.paginate(page=page, per_page=per_page, error_out=False)
+            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user)
     return redirect(url_for('login'))
         
 @app.route('/car_profile/<int:car_id>')
