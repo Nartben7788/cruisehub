@@ -222,6 +222,8 @@ def reservation(car_id):
     if request.method == 'GET':
         if 'user_id' not in session:
             return redirect(url_for('login'))
+        car = Car.query.get_or_404(car_id)
+        user = User.query.get(session['user_id'])
         # Check if the car has existing reservations
         existing_reservations = Reservations.query.filter_by(reserved_car_id=car_id).all()
 
@@ -235,7 +237,7 @@ def reservation(car_id):
             # If no existing reservations, set the earliest start date to the current date
             earliest_start_date = datetime.now()
         
-        return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id)
+        return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id, car=car, user=user)
     else:
         if 'user_id' not in session:    
             return redirect(url_for('login'))
