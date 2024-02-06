@@ -271,7 +271,7 @@ def reservation(car_id):
             db.session.commit()
 
             flash('Reservation completed successfully!', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('user_dashboard'))
 
 
 
