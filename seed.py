@@ -72,8 +72,7 @@ def seed_data():
         car1 = Car(
             model='Camry',
             make='Toyota',
-            year=2022,
-            price=25000,
+            price=25,
             additional_info='Sleek and fuel-efficient',
             picture='static/uploads/benny_johnson/toyota_camry.jpg',
             owner_id=1
@@ -82,8 +81,7 @@ def seed_data():
         car2 = Car(
             model='Civic',
             make='Honda',
-            year=2023,
-            price=22000,
+            price=22,
             additional_info='Compact and reliable',
             picture='static/uploads/helena_smith/honda_civic.jpg',
             owner_id=2
@@ -92,8 +90,7 @@ def seed_data():
         car3 = Car(
             model='Civic',
             make='Honda',
-            year=2023,
-            price=22000,
+            price=22,
             additional_info='Compact and reliable',
             picture='static/uploads/benny_johnson/honda_civic.jpg',
             owner_id=1
@@ -101,8 +98,7 @@ def seed_data():
         car4 = Car(
             model='Malibu', 
             make='Chevrolet', 
-            year=2022, 
-            price=27000, 
+            price=27, 
             additional_info='Modern design, spacious', 
             picture='static/uploads/ethan_johnson/chevrolet_malibu.jpg', 
             owner_id=4
@@ -111,8 +107,7 @@ def seed_data():
         car5 = Car(
             model='Mustang', 
             make='Ford', 
-            year=2022, 
-            price=35000, 
+            price=35, 
             additional_info='Powerful and sporty', 
             picture='static/uploads/jackson_wilson/ford_mustang.jpg', 
             owner_id=3
@@ -120,13 +115,13 @@ def seed_data():
         car6 = Car(
             model='Accord', 
             make='Honda', 
-            year=2022, 
-            price=28000, 
+            price=280, 
             additional_info='Comfortable and stylish', 
             picture='static/uploads/helena_smith/honda_accord.jpg', 
             owner_id=2
             )
-        
+    
+       
         
 
         # Create sample reservations
@@ -155,7 +150,7 @@ def seed_data():
         )
 
         # Add data to the database
-        db.session.add_all([user1, user2 ,user3, owner1, owner2,owner3,owner4,car1, car2,car3,car4, car5, car6,  reservation1, reservation2, reservation3])
+        db.session.add_all([user1, user2 ,user3, owner1, owner2,owner3,owner4,car1, car2,car3,car4, car5, car6,reservation1, reservation2, reservation3])
         db.session.commit()
 
 if __name__ == "__main__":

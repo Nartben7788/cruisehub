@@ -39,7 +39,6 @@ class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     model = db.Column(db.String, nullable=False)
     make = db.Column(db.String, nullable=False)
-    year = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     additional_info = db.Column(db.String, nullable=False)
     picture = db.Column(db.String)  
