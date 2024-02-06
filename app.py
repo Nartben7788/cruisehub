@@ -180,8 +180,27 @@ def user_dashboard():
         if user:
             page = request.args.get('page', 1, type=int)
             per_page = 6
-            cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
-            return render_template('user_dashboard.html', cars=cars, user=user)
+
+              # Retrieve filtering criteria from the request
+            make = request.args.get('make')
+            model = request.args.get('model')
+            price = request.args.get('price')
+
+            # Query cars based on filtering criteria
+            filtered_cars_query = Car.query
+
+            if make:
+                filtered_cars_query = filtered_cars_query.filter(Car.make.ilike(f'%{make}%'))
+            if model:
+                filtered_cars_query = filtered_cars_query.filter(Car.model.ilike(f'%{model}%'))
+            if price:
+                filtered_cars_query = filtered_cars_query.filter(Car.price <= float(price))
+
+            # cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
+            # return render_template('user_dashboard.html', cars=cars, user=user)
+            # Paginate the filtered query
+            filtered_cars = filtered_cars_query.paginate(page=page, per_page=per_page, error_out=False)
+            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user)
     return redirect(url_for('login'))
         
 @app.route('/car_profile/<int:car_id>')
@@ -203,6 +222,8 @@ def reservation(car_id):
     if request.method == 'GET':
         if 'user_id' not in session:
             return redirect(url_for('login'))
+        car = Car.query.get_or_404(car_id)
+        user = User.query.get(session['user_id'])
         # Check if the car has existing reservations
         existing_reservations = Reservations.query.filter_by(reserved_car_id=car_id).all()
 
@@ -216,7 +237,7 @@ def reservation(car_id):
             # If no existing reservations, set the earliest start date to the current date
             earliest_start_date = datetime.now()
         
-        return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id)
+        return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id, car=car, user=user)
     else:
         if 'user_id' not in session:    
             return redirect(url_for('login'))
