@@ -202,6 +202,11 @@ def user_dashboard():
             filtered_cars = filtered_cars_query.paginate(page=page, per_page=per_page, error_out=False)
             return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user)
     return redirect(url_for('login'))
+
+@app.route('/clear_filters', methods=['GET'])
+def clear_filters():
+    # Redirect back to the user dashboard without any filtering criteria
+    return redirect(url_for('user_dashboard'))
         
 @app.route('/car_profile/<int:car_id>')
 def car_profile(car_id):

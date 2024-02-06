@@ -70,7 +70,7 @@ def seed_data():
         )
         # Create sample cars
         car1 = Car(
-            model='Toyota Camry',
+            model='Camry',
             make='Toyota',
             year=2022,
             price=25000,
@@ -80,7 +80,7 @@ def seed_data():
         )
 
         car2 = Car(
-            model='Honda Civic',
+            model='Civic',
             make='Honda',
             year=2023,
             price=22000,
@@ -90,7 +90,7 @@ def seed_data():
         )
 
         car3 = Car(
-            model='Honda Civic',
+            model='Civic',
             make='Honda',
             year=2023,
             price=22000,
@@ -99,7 +99,7 @@ def seed_data():
             owner_id=1
         )
         car4 = Car(
-            model='Chevrolet Malibu', 
+            model='Malibu', 
             make='Chevrolet', 
             year=2022, 
             price=27000, 
@@ -109,7 +109,7 @@ def seed_data():
             )
         
         car5 = Car(
-            model='Ford Mustang', 
+            model='Mustang', 
             make='Ford', 
             year=2022, 
             price=35000, 
@@ -118,7 +118,7 @@ def seed_data():
             owner_id=3
         )
         car6 = Car(
-            model='Honda Accord', 
+            model='Accord', 
             make='Honda', 
             year=2022, 
             price=28000, 
@@ -134,21 +134,25 @@ def seed_data():
             start_date=datetime(2024, 3, 1),
             end_date=datetime(2024, 3, 10),
             user_id=1,
-            reserved_car_id=1
+            reserved_car_id=1,
+            owner_id = 1
         )
 
         reservation2 = Reservations(
             start_date=datetime(2024, 4, 15),
             end_date=datetime(2024, 4, 25),
             user_id=2,
-            reserved_car_id=2
+            reserved_car_id=2,
+            owner_id = 2
         )
         
         reservation3 = Reservations(
             start_date=datetime(2024, 5, 5),
             end_date=datetime(2024, 5, 15), 
             user_id=3, 
-            reserved_car_id=6)
+            reserved_car_id=6,
+            owner_id = 2
+        )
 
         # Add data to the database
         db.session.add_all([user1, user2 ,user3, owner1, owner2,owner3,owner4,car1, car2,car3,car4, car5, car6,  reservation1, reservation2, reservation3])

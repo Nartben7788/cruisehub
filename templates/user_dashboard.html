@@ -21,6 +21,10 @@
         <button type="submit">Filter</button>
     </form>
 
+    <form action="{{ url_for('clear_filters') }}" method="GET">
+        <button type="submit">Clear Filters</button>
+    </form>
+
     <!-- Car Gallery -->
     <div class="car-gallery">
         {% for car in filtered_cars.items %}
@@ -29,8 +33,7 @@
                     <img src="{{ car.picture }}" alt="Car Picture">
                 </a>
                 <h4><a href="{{ url_for('reservation', car_id=car.id) }}">Reserve</a></h4>
-                <p>Make: {{ car.make }}</p>
-                <p>Model: {{ car.model }}</p>
+                <span>{{ car.make }}</span> <span>{{ car.model }}</span>
                 <p>Price: ${{ car.price }}</p>
             </div>
         {% endfor %}
