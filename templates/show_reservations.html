@@ -7,12 +7,14 @@
 </head>
 <body>
     <h2>Manage your cars</h2>
-    {%for reservation,car in reserved_cars%}
+    {%for reservation,car,user in reserved_cars%}
         <div>
             <ol>
                 <li>
                    <img src="/{{car.picture}}" alt="car picture"> 
                    Start date: {{reservation.start_date.strftime("%b %d, %Y")}} End date: {{reservation.end_date.strftime("%b %d, %Y")}}
+                    Booked by : {{user.name}}
+
                 </li>
             </ol>
         </div>

@@ -233,7 +233,8 @@ def show_reservation(owner_id):
         reserved_cars = []
         for reservation in reservations:
             car = Car.query.get(reservation.reserved_car_id)
-            reserved_cars.append((reservation, car))
+            user = User.query.get(reservation.user_id)
+            reserved_cars.append((reservation, car,user))
         return render_template("show_reservations.html", reservations=reservations, reserved_cars=reserved_cars) 
 @app.route("/reservation/<int:car_id>", methods=['POST', 'GET'])
 def reservation(car_id):
