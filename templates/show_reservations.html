@@ -12,7 +12,7 @@
             <ol>
                 <li>
                    <img src="/{{car.picture}}" alt="car picture"> 
-                   Start date: {{reservation.start_date}} End date: {{reservation.end_date}}
+                   Start date: {{reservation.start_date.strftime("%b %d, %Y")}} End date: {{reservation.end_date.strftime("%b %d, %Y")}}
                 </li>
             </ol>
         </div>
