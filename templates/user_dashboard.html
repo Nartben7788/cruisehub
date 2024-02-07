@@ -18,7 +18,9 @@
         <nav class="container py-5">
             <ul class="flex justify-between w-full">
                 <li>
-                    <a href="/" class="text-blue font-bold">CruiseHub</a>
+                    <a href="{{ url_for('user_dashboard') }}" class="text-blue font-bold"
+                        >CruiseHub</a
+                    >
                 </li>
                 <li>
                     <a href="{{url_for('logout')}}" class="hover:text-red-500">Log out</a>
