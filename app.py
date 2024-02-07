@@ -105,29 +105,25 @@ def login():
 
         if user_type == "user":
             user = User.query.filter_by(username=username).first()
-            if user and check_password_hash(user.password, password):
-                session['user_id'] = user.id
-                return redirect(url_for('user_dashboard'))
-
-            else:
-                flash ("Invalid Username or Password!", 'login')
-            
         elif user_type == "owner":
-            owner = Owner.query.filter_by(username=username).first()
-            if owner and check_password_hash(owner.password, password):
-                session['owner_id'] = owner.id
-                return redirect(url_for('add_car'))
-            else:
-                return render_template('login.html', error = 'Invalid username or password')
-        else:
-            flash ("You must choose your Account Type")
-    return render_template('login.html')
+            user = Owner.query.filter_by(username=username).first()
 
+        if user and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            session['user_type'] = user.user_type
+            if user.user_type == 'user':
+                return redirect(url_for('user_dashboard' ))
+            else:
+                return redirect(url_for('owner_dashboard', owner_id = user.id))
+        else:
+            flash("Invalid Username or Password!", 'login')
+
+    return render_template('login.html')
 @app.route('/logout')
 def logout():
     # Remove owner_id from the session during logout 
     session.pop('user_id', None)
-    session.pop('owner_id', None)
+    session.pop('user_type', None)
     return redirect(url_for('login'))
 
 
@@ -135,13 +131,13 @@ def logout():
 @app.route('/add_car', methods=['POST', 'GET'])
 def add_car():
     if request.method == 'GET':
-        return render_template('owner.html')
+        return render_template('add_car.html')
     else:
-        if 'owner_id' not in session:
+        if 'user_id' not in session:
         # Redirect to login if owner is not logged in
             return redirect(url_for('login'))
 
-        owner_id = session['owner_id']
+        owner_id = session['user_id']
         model = request.form['model']
         make = request.form['make']
         year = request.form['year']
@@ -216,11 +212,21 @@ def car_profile(car_id):
     return render_template('car_profile.html', car=car, owner=owner)
     
 
-@app.route('/owner/<int:owner_id>')
+@app.route('/owner_profile/<int:owner_id>')
 def owner_profile(owner_id):
     owner = Owner.query.get_or_404(owner_id)
     cars = Car.query.filter_by(owner_id=owner_id).all()
     return render_template('owner_profile.html', owner=owner, cars=cars)
+
+@app.route('/owner/<int:owner_id>')
+def owner_dashboard(owner_id):
+    if 'user_id' in session:
+        owner = Owner.query.get_or_404(owner_id)
+        cars = Car.query.filter_by(owner_id=owner_id).all()
+        return render_template('owner_dashboard.html',owner = owner, cars=cars)
+    else :
+        return render_template('login.html')
+    
 
 @app.route("/reservation/<int:car_id>", methods=['POST', 'GET'])
 def reservation(car_id):
