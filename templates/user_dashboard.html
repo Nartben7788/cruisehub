@@ -6,10 +6,6 @@
         <link
             rel="stylesheet"
             type="text/css"
-            href="{{ url_for('static', filename='user_dashboard.css') }}" />
-        <link
-            rel="stylesheet"
-            type="text/css"
             href="{{ url_for('static', filename='definitions.css') }}" />
         <link
             rel="stylesheet"
@@ -18,7 +14,8 @@
         <title>User Dashboard</title>
     </head>
     <body class="bg-blue-light">
-        <nav class="container py-5x">
+        <!-- Navigation bar for user Dashboard -->
+        <nav class="container py-5">
             <ul class="flex justify-between w-full">
                 <li>
                     <a href="/" class="text-blue font-bold">CruiseHub</a>
@@ -29,32 +26,52 @@
             </ul>
         </nav>
 
-        <h1 class="container text-center mt-6 text-6xl">
-            Welcome {{ user.username }} <br />
+        <h1 class="container text-center my-10 text-6xl font-bold leading-normal">
+            Welcome <span class="text-blue">{{ user.username }}</span> <br />
             Explore Our Fleets
         </h1>
 
         <!-- Filter Form -->
-        <form action="{{ url_for('user_dashboard') }}" method="GET">
-            <label for="make">Make:</label>
-            <input type="text" name="make" id="make" />
-            <label for="model">Model:</label>
-            <input type="text" name="model" id="model" />
-            <label for="price">Price:</label>
-            <input type="number" name="price" id="price" />
-            <button type="submit">Filter</button>
-        </form>
+        <section class="container flex gap-3 justify-center">
+            <form action="{{ url_for('user_dashboard') }}" method="GET" class="flex gap-3">
+                <!-- <label for="make">Make:</label> -->
+                <input
+                    type="text"
+                    name="make"
+                    id="make"
+                    placeholder="Make"
+                    class="p-4 inline-block w-full bg-transparent border-2 border-gray-200" />
+                <!-- <label for="model">Model:</label> -->
+                <input
+                    type="text"
+                    name="model"
+                    id="model"
+                    placeholder="Model"
+                    class="p-4 inline-block w-full bg-transparent border-2 border-gray-200" />
+                <!-- <label for="price">Price:</label> -->
+                <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    placeholder="Price"
+                    class="p-4 inline-block w-full bg-transparent border-2 border-gray-200" />
+                <button type="submit" class="btn-primary inline-block">Filter</button>
+            </form>
 
-        <form action="{{ url_for('clear_filters') }}" method="GET">
-            <button type="submit">Clear Filters</button>
-        </form>
+            <form action="{{ url_for('clear_filters') }}" method="GET">
+                <button type="submit" class="btn-secondary inline-block">Clear Filters</button>
+            </form>
+        </section>
 
         <!-- Car Gallery -->
-        <div class="car-gallery">
+        <div class="container grid grid-cols-4">
             {% for car in filtered_cars.items %}
             <div class="car">
                 <a href="{{ url_for('car_profile', car_id=car.id) }}" target="_blank">
-                    <img src="{{ car.picture }}" alt="Car Picture" />
+                    <img
+                        src="{{ car.picture }}"
+                        class="h-60 w-full object-cover"
+                        alt="Car Picture" />
                 </a>
                 <h4><a href="{{ url_for('reservation', car_id=car.id) }}">Reserve</a></h4>
                 <span>{{ car.make }}</span> <span>{{ car.model }}</span>
