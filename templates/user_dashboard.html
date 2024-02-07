@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='user_dashboard.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='definitions.css') }}">
-    <title>User Dashboard</title>
-</head>
-<body>
-    <h1>Welcome to Your Dashboard {{ user.username }}</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='user_dashboard.css') }}" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='definitions.css') }}" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
+        <title>User Dashboard</title>
+    </head>
+    <body class="bg-blue-light">
+        <nav class="container py-5x">
+            <ul class="flex justify-between w-full">
+                <li>
+                    <a href="/" class="text-blue font-bold">CruiseHub</a>
+                </li>
+                <li>
+                    <a href="{{url_for('logout')}}" class="hover:text-red-500">Log out</a>
+                </li>
+            </ul>
+        </nav>
 
-    <!-- Filter Form -->
-    <form action="{{ url_for('user_dashboard') }}" method="GET">
-        <label for="make">Make:</label>
-        <input type="text" name="make" id="make">
-        <label for="model">Model:</label>
-        <input type="text" name="model" id="model">
-        <label for="price">Price:</label>
-        <input type="number" name="price" id="price">
-        <button type="submit">Filter</button>
-    </form>
+        <h1 class="container text-center mt-6 text-6xl">
+            Welcome {{ user.username }} <br />
+            Explore Our Fleets
+        </h1>
 
-    <form action="{{ url_for('clear_filters') }}" method="GET">
-        <button type="submit">Clear Filters</button>
-    </form>
+        <!-- Filter Form -->
+        <form action="{{ url_for('user_dashboard') }}" method="GET">
+            <label for="make">Make:</label>
+            <input type="text" name="make" id="make" />
+            <label for="model">Model:</label>
+            <input type="text" name="model" id="model" />
+            <label for="price">Price:</label>
+            <input type="number" name="price" id="price" />
+            <button type="submit">Filter</button>
+        </form>
 
-    <!-- Car Gallery -->
-    <div class="car-gallery">
-        {% for car in filtered_cars.items %}
+        <form action="{{ url_for('clear_filters') }}" method="GET">
+            <button type="submit">Clear Filters</button>
+        </form>
+
+        <!-- Car Gallery -->
+        <div class="car-gallery">
+            {% for car in filtered_cars.items %}
             <div class="car">
                 <a href="{{ url_for('car_profile', car_id=car.id) }}" target="_blank">
-                    <img src="{{ car.picture }}" alt="Car Picture">
+                    <img src="{{ car.picture }}" alt="Car Picture" />
                 </a>
                 <h4><a href="{{ url_for('reservation', car_id=car.id) }}">Reserve</a></h4>
                 <span>{{ car.make }}</span> <span>{{ car.model }}</span>
                 <p>Price: ${{ car.price }}</p>
             </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
 
-    <!-- Pagination controls -->
-    <div class="pagination">
-        {% if filtered_cars.has_prev %}
+        <!-- Pagination controls -->
+        <div class="pagination">
+            {% if filtered_cars.has_prev %}
             <a href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}">Previous</a>
-        {% endif %}
-        {% for num in filtered_cars.iter_pages(left_edge=2, right_edge=1, left_current=1, right_current=2) %}
-            {% if num %}
-                {% if num != filtered_cars.page %}
-                    <a href="{{ url_for('user_dashboard', page=num) }}">{{ num }}</a>
-                {% else %}
-                    <strong>{{ num }}</strong>
-                {% endif %}
+            {% endif %} {% for num in filtered_cars.iter_pages(left_edge=2, right_edge=1,
+            left_current=1, right_current=2) %} {% if num %} {% if num != filtered_cars.page %}
+            <a href="{{ url_for('user_dashboard', page=num) }}">{{ num }}</a>
             {% else %}
-                <span>...</span>
-            {% endif %}
-        {% endfor %}
-        {% if filtered_cars.has_next %}
+            <strong>{{ num }}</strong>
+            {% endif %} {% else %}
+            <span>...</span>
+            {% endif %} {% endfor %} {% if filtered_cars.has_next %}
             <a href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}">Next</a>
-        {% endif %}
-    </div>
-
-<a href="{{url_for('logout')}}">LogOut</a>
-</body>
+            {% endif %}
+        </div>
+    </body>
 </html>
