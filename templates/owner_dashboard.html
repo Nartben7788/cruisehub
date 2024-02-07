@@ -15,6 +15,7 @@
         </div>
         {% endfor %}
     {%endif%}
+    <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
     <a href="{{url_for('add_car')}}">Add cars</a>
     <a href="{{url_for('logout')}}">LogOut</a>
 </body>
