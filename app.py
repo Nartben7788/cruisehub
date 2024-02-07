@@ -226,9 +226,15 @@ def owner_dashboard(owner_id):
         return render_template('owner_dashboard.html',owner = owner, cars=cars)
     else :
         return render_template('login.html')
-
-    
-
+@app.route('/owner/reservations/<int:owner_id>')
+def show_reservation(owner_id):
+    if 'user_id in session':
+        reservations = Reservations.query.filter_by(owner_id=owner_id).all()
+        reserved_cars = []
+        for reservation in reservations:
+            car = Car.query.get(reservation.reserved_car_id)
+            reserved_cars.append((reservation, car))
+        return render_template("show_reservations.html", reservations=reservations, reserved_cars=reserved_cars) 
 @app.route("/reservation/<int:car_id>", methods=['POST', 'GET'])
 def reservation(car_id):
     

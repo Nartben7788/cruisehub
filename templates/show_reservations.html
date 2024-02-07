@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Your reserved cars</title>
+</head>
+<body>
+    <h2>Manage your cars</h2>
+    {%for reservation,car in reserved_cars%}
+        <div>
+            <ol>
+                <li>
+                   <img src="/{{car.picture}}" alt="car picture"> 
+                   Start date: {{reservation.start_date}} End date: {{reservation.end_date}}
+                </li>
+            </ol>
+        </div>
+    {%endfor%}
+
+</body>
+</html>
