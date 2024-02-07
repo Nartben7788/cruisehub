@@ -6,6 +6,7 @@ img{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    gap:30px;
 }
 .car img{
     margin-bottom: 30px;
