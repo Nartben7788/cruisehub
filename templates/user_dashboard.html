@@ -90,18 +90,28 @@
         </div>
 
         <!-- Pagination controls -->
-        <div class="pagination">
+        <div class="pagination mt-8 flex justify-center gap-3">
             {% if filtered_cars.has_prev %}
-            <a href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}">Previous</a>
+            <a
+                href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}"
+                class="hover:text-red-500"
+                >Previous</a
+            >
             {% endif %} {% for num in filtered_cars.iter_pages(left_edge=2, right_edge=1,
             left_current=1, right_current=2) %} {% if num %} {% if num != filtered_cars.page %}
-            <a href="{{ url_for('user_dashboard', page=num) }}">{{ num }}</a>
+            <a href="{{ url_for('user_dashboard', page=num) }}" class="hover:text-red-500"
+                >{{ num }}</a
+            >
             {% else %}
             <strong>{{ num }}</strong>
             {% endif %} {% else %}
             <span>...</span>
             {% endif %} {% endfor %} {% if filtered_cars.has_next %}
-            <a href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}">Next</a>
+            <a
+                href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}"
+                class="hover:text-red-500"
+                >Next</a
+            >
             {% endif %}
         </div>
     </body>
