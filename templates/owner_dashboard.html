@@ -7,16 +7,20 @@
 </head>
 <body>
     <H2>Welcome {{owner.name}}</H2>
-    {%if cars%}
+    {%if not cars%}
+        <a href="{{url_for('add_car')}}">No cars, add cars</a>
+        <a href="{{url_for('logout')}}">LogOut</a>
+     {%else%}
         {% for car in cars%}
         <div>
             {{car.make}} {{car.model}}
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
         </div>
         {% endfor %}
-    {%endif%}
+    
     <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
     <a href="{{url_for('add_car')}}">Add cars</a>
     <a href="{{url_for('logout')}}">LogOut</a>
+    {%endif%}
 </body>
 </html>
