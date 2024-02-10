@@ -5,13 +5,21 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
-
+from flask_mail import Mail
 from databases import*
+
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'cruisehub'
+app.config['MAIL_PASSWORD'] = '[Yet to Come!]'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 
+mail = Mail(app)
 
 @app.route("/")
 def home():
@@ -240,6 +248,9 @@ def show_reservation(owner_id):
             reserved_cars.append((reservation, car,user))
         return render_template("show_reservations.html", reservations=reservations, reserved_cars=reserved_cars) 
     return redirect(url_for('login'))
+
+#An email should be sent to the owner when reservation is made
+
 @app.route("/reservation/<int:car_id>", methods=['POST', 'GET'])
 def reservation(car_id):
     
@@ -289,7 +300,12 @@ def reservation(car_id):
             db.session.add(new_reservation)
             db.session.commit()
 
-            flash('Reservation completed successfully!', 'success')
+            owner = Owner.query.get(car.owner_id)  
+            owner_email = owner.email
+            msg = Message('New Reservation', sender='cruisehub@gmail.com', recipients=[owner_email])
+            msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
+            mail.send(msg)
+            flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
             return redirect(url_for('user_dashboard'))
 
 
