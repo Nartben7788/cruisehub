@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash, session
+from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
@@ -6,7 +7,9 @@ import os
 from datetime import datetime, timedelta
 
 from databases import*
-
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 
@@ -252,8 +255,8 @@ def reservation(car_id):
             # Find the latest end date of existing reservations
             latest_end_date = max(reservation.end_date for reservation in existing_reservations)
 
-            # Set the earliest start date to the day after the latest end date
-            earliest_start_date = latest_end_date + timedelta(days=1)
+            # Set the earliest start date to 2 days after the latest end date
+            earliest_start_date = latest_end_date + timedelta(days=2)
         else:
             # If no existing reservations, set the earliest start date to the current date
             earliest_start_date = datetime.now()
