@@ -16,6 +16,8 @@
         {% for car in cars%}
         <div>
             {{car.make}} {{car.model}}
+        </div>
+        <div>
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
         </div>
         {% endfor %}
