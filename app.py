@@ -325,10 +325,10 @@ def reservation(car_id):
 #             # # Commit the changes to the database
 #             db.session.commit()
 
-#            
+           
 #         except Exception as e:
 #             # Handle exceptions if any
-#             
+#             print('hello')
 
 #         return redirect(url_for('home'))  # Redirect to the home page or any other page
 

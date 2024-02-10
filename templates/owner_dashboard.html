@@ -12,6 +12,7 @@
         <a href="{{url_for('logout')}}">LogOut</a>
      {%else%}
         {% for car in cars%}
+        <h3>These are your cars </h3>
         <div>
             {{car.make}} {{car.model}}
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
