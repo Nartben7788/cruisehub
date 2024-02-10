@@ -232,7 +232,7 @@ def owner_profile(owner_id):
 @app.route('/owner/<int:owner_id>')
 def owner_dashboard(owner_id):
     if 'user_id' in session and owner_id ==  session['user_id']:
-        owner = Owner.query.get_or_404(owner_id)
+        owner = Owner.query.get(owner_id)
         cars = Car.query.filter_by(owner_id=owner_id).all()
         return render_template('owner_dashboard.html',owner = owner, cars=cars)
     else :
