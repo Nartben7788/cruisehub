@@ -2,33 +2,23 @@
 <head><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Reservations</title>
-    <style>
-        h3 {
-            background-color: #3b0b88;
-            color: rgb(95, 21, 21);
-            padding: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    
 </head>
 <body>
     <h3>Your Reservations!</h3>
-  {% if user_reservations | length &gt; 0 %}
-  {% for reservation in user_reservations %}
-  <div class="reservation-column">
-    <h4>Reservation ID: {{ reservation.id }}</h4>
-    <p>Start Date: {{ reservation.start_date }}</p>
-    <p>End Date: {{ reservation.end_date }}</p>
-    <p>Car Name: {{ reservation.reserved_car.name }}</p>
-    <form method="POST" action="{{ url_for('cancel_reservation', reservation_id=reservation.id) }}">
-      <button type="submit">Cancel Reservation</button>
-    </form>
-  </div>
-  {% endfor %}
+  {% if reserved_cars%}
+    {% for reservations, car in reserved_cars%}
+    <div class="reservation-column">
+      <h4>Reservation ID: {{ reservations.id }}</h4>
+      <p>Start Date: {{ reservations.start_date.strftime("%b %d, %Y")}}</p>
+      <p>End Date: {{ reservations.end_date.strftime("%b %d, %Y") }}</p>
+      <p>Car Name: {{ car.make }}{{car.model}}</p>
+      <form method="POST" action="{{ url_for('cancel_reservation', reservation_id=reservations.id) }}">
+        <button type="submit">Cancel Reservation</button>
+      </form>
+    </div>
+    {% endfor %}
 {% else %}
-  <p>No reservations found.</p>
+  <p>You have no reservation yet <a href="{{url_for('user_dashboard')}}">Book one here</a></p>
 {% endif %}
 </body>

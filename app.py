@@ -291,15 +291,15 @@ def reservation(car_id):
             db.session.add(new_reservation)
             db.session.commit()
 
-            owner = Owner.query.get(car.owner_id)  
-            owner_email = owner.email
-            msg = Message('New Reservation', sender='cruisehub@gmail.com', recipients=[owner_email])
-            msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
-            mail.send(msg)
-            flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
+            # owner = Owner.query.get(car.owner_id)  
+            # owner_email = owner.email
+            # msg = Message('New Reservation', sender='cruisehub@gmail.com', recipients=[owner_email])
+            # msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
+            # mail.send(msg)
+            # flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
             return redirect(url_for('user_dashboard'))
 
-@app.route('/user_rservations', methods =["GET"])
+@app.route('/my_reservations', methods =["GET"])
 def user_reservations():
     """Returns all of the user's past and future reservations"""
     if 'user_id' not in session:
@@ -307,17 +307,21 @@ def user_reservations():
     else:   
         user_id = session['user_id']
         reservations = Reservations.query.filter_by(user_id=user_id).all()
-        return render_template('user_reservations.html', reservations=reservations)
+        reserved_cars = []
+        for reservation in reservations:
+            car = Car.query.get(reservation.reserved_car_id)
+            reserved_cars.append((reservation, car))
+        return render_template('user_reservations.html', reserved_cars = reserved_cars, reservations = reservations)
+
+
+        
     
 
 @app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
     if 'user_id' in session:
         reservation = Reservations.query.get(reservation_id)
-        if reservation.cancel_reservation():
-            flash('Reservation canceled successfully!', 'success')
-        else:
-            flash('Cannot cancel reservation. It may be already canceled or in the past.', 'error')
+        
         return redirect(url_for('user_dashboard'))
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
