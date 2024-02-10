@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookings</title>
-</head>
-<body>
-    <form action="{{ url_for('reservation', car_id=car_id) }}" method="post">
-         <!-- Non-editable fields pre-filled from the database -->
-         <label for="name">Name:</label>
-         <input type="text" id="name" name="name" value="{{ user.name }}" readonly><br>
- 
-         <label for="make">Make:</label>
-         <input type="text" id="make" name="make" value="{{ car.make }}" readonly><br>
- 
-         <label for="model">Model:</label>
-         <input type="text" id="model" name="model" value="{{ car.model }}" readonly><br>
- 
-         <label for="price">Price:</label>
-         <input type="text" id="price" name="price" value=" $ + {{ car.price }}" readonly><br>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bookings</title>
+    </head>
+    <body class="bg-blue-light">
+        <form action="{{ url_for('reservation', car_id=car_id) }}" method="post">
+            <!-- Non-editable fields pre-filled from the database -->
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" readonly /><br />
 
+            <label for="make">Make:</label>
+            <input type="text" id="make" name="make" value="{{ car.make }}" readonly /><br />
 
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date" min="{{earliest_start_date }}" required><br><br>
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model" value="{{ car.model }}" readonly /><br />
 
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" name="end_date" min="{{ earliest_start_date }}" required><br><br>
+            <label for="price">Price:</label>
+            <input
+                type="text"
+                id="price"
+                name="price"
+                value=" $ + {{ car.price }}"
+                readonly /><br />
 
-        <input type="submit" value="Complete Reservation">
-    </form>
-</body>
+            <label for="start_date">Start Date:</label>
+            <input
+                type="date"
+                id="start_date"
+                name="start_date"
+                min="{{earliest_start_date }}"
+                required /><br /><br />
+
+            <label for="end_date">End Date:</label>
+            <input
+                type="date"
+                id="end_date"
+                name="end_date"
+                min="{{ earliest_start_date }}"
+                required /><br /><br />
+
+            <input type="submit" value="Complete Reservation" />
+        </form>
+    </body>
 </html>
