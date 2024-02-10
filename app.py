@@ -319,11 +319,18 @@ def user_reservations():
 
 @app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
-    if 'user_id' in session:
-        reservation = Reservations.query.get(reservation_id)
+     if 'user_id' in session:
+        try:
+            reservation = Reservations.query.get_or_404(reservation_id)
+            db.session.delete(reservation)
+            db.session.commit()
+            flash('Reservation canceled successfully!', 'success')
+        except Exception as e:
+            # Rollback the session in case of any errors
+            db.session.rollback()
+            flash(f'Error canceling reservation: {str(e)}', 'error')
         
-        return redirect(url_for('user_dashboard'))
-
+     return redirect(url_for('user_reservations'))
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
 # def delete_all_entries():
 #     if request.method == 'GET':
