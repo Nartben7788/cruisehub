@@ -8,11 +8,12 @@
 <body>
     <H2>Welcome {{owner.name}}</H2>
     {%if not cars%}
-        <a href="{{url_for('add_car')}}">No cars, add cars</a>
+        <a href="{{url_for('add_car')}}">You have No cars yet, add cars</a>
         <a href="{{url_for('logout')}}">LogOut</a>
      {%else%}
+
+        <h3>These are your cars </h3> 
         {% for car in cars%}
-        <h3>These are your cars </h3>
         <div>
             {{car.make}} {{car.model}}
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
