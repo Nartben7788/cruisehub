@@ -16,7 +16,7 @@ def seed_data():
             },
            
             {
-                'model': 'Audi A4',
+                'model': 'A4',
                 'make': 'Audi',
                 'price': 800,
                 'additional_info': 'fast on the road',
@@ -24,7 +24,7 @@ def seed_data():
                 'owner_id': 6
             },
             {
-                'model': 'Hyundai Sonata',
+                'model': 'Sonata',
                 'make': 'Hyundai',
                 'price': 600,
                 'additional_info': 'affordable electric car',
@@ -32,7 +32,7 @@ def seed_data():
                 'owner_id': 7
             },
             {
-                'model': 'Mercedes-Benz',
+                'model': 'Benz',
                 'make': 'Mercedes',
                 'price': 400,
                 'additional_info': 'Can roll!',
@@ -40,7 +40,7 @@ def seed_data():
                 'owner_id': 8
             },
             {
-                'model': 'Subaru Outback',
+                'model': 'Outback',
                 'make': 'Subaru',
                 'price': 700,
                 'additional_info': 'sport car',
@@ -48,7 +48,7 @@ def seed_data():
                 'owner_id': 9
             },
             {
-                'model': 'Volvo XC90',
+                'model': 'XC90',
                 'make': 'Volvo',
                 'price': 300,
                 'additional_info': 'compact car',
@@ -56,7 +56,7 @@ def seed_data():
                 'owner_id': 10
             },
             {
-                'model': 'BMW 7',
+                'model': '7',
                 'make': 'BMW',
                 'price': 400,
                 'additional_info': 'comfortable car',
@@ -64,7 +64,7 @@ def seed_data():
                 'owner_id': 4
             },
             {
-                'model': 'Jeep Wrangler',
+                'model': 'Wrangler',
                 'make': 'Jeep',
                 'price': 500,
                 'additional_info': 'Strong',
@@ -72,7 +72,7 @@ def seed_data():
                 'owner_id': 5
             },
             {
-                'model': 'Kia Sorento',
+                'model': 'Sorento',
                 'make': 'Kia',
                 'price': 300,
                 'additional_info': 'compact car',
@@ -80,7 +80,7 @@ def seed_data():
                 'owner_id': 6
             },
             {
-                'model': 'Tesla Model S',
+                'model': 'Model S',
                 'make': 'Tesla',
                 'price': 600,
                 'additional_info': 'premium compact electric car',
@@ -96,7 +96,7 @@ def seed_data():
                 'owner_id': 8
             },
             {
-                'model': 'Ferrari 488',
+                'model': '488',
                 'make': 'Ferrari',
                 'price': 500,
                 'additional_info': 'in excellent condition',
