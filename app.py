@@ -5,21 +5,12 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
-from flask_mail import Mail
+
 from databases import*
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'cruisehub'
-app.config['MAIL_PASSWORD'] = '[Yet to Come!]'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-
-mail = Mail(app)
 
 @app.route("/")
 def home():
@@ -308,7 +299,26 @@ def reservation(car_id):
             flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
             return redirect(url_for('user_dashboard'))
 
+@app.route('/user_rservations', methods =["GET"])
+def user_reservations():
+    """Returns all of the user's past and future reservations"""
+    if 'user_id' not in session:
+        return redirect(url_for("login"))
+    else:   
+        user_id = session['user_id']
+        reservations = Reservations.query.filter_by(user_id=user_id).all()
+        return render_template('user_reservations.html', reservations=reservations)
+    
 
+@app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
+def cancel_reservation(reservation_id):
+    if 'user_id' in session:
+        reservation = Reservations.query.get(reservation_id)
+        if reservation.cancel_reservation():
+            flash('Reservation canceled successfully!', 'success')
+        else:
+            flash('Cannot cancel reservation. It may be already canceled or in the past.', 'error')
+        return redirect(url_for('user_dashboard'))
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
 # def delete_all_entries():
