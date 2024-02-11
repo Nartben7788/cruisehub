@@ -8,15 +8,33 @@
     <h3>Your Reservations!</h3>
   {% if reserved_cars%}
     {% for reservations, car in reserved_cars%}
+    <thead>
+      <th>S/N</th>
+      <th>Reservation ID</th>
+      <th>Start date</th>
+      <th>End Date</th>
+      <th>Car Name</th>
+      <th>Actions</th>
+      <th>Image</th>
+  </thead>
     <div class="reservation-column">
-      <div><img src="/{{car.picture}}" alt="" width="200px" height="150px"></div>
-      <h4>Reservation ID: {{ reservations.id }}</h4>
-      <p>Start Date: {{ reservations.start_date.strftime("%b %d, %Y")}}</p>
-      <p>End Date: {{ reservations.end_date.strftime("%b %d, %Y") }}</p>
-      <p>Car Name: {{ car.make }}{{car.model}}</p>
-      <form method="POST" action="{{ url_for('cancel_reservation', reservation_id=reservations.id) }}">
-        <button type="submit">Cancel Reservation</button>
-      </form>
+      
+      <!-- <div><img src="/{{car.picture}}" alt="" width="200px" height="150px"></div> -->
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>Reservation ID: {{ reservations.id }}</td>
+        <td>Start Date: {{ reservations.start_date.strftime("%b %d, %Y")}}</td>
+        <td>End Date: {{ reservations.end_date.strftime("%b %d, %Y") }}</td>
+        <td><form method="POST" action="{{ url_for('cancel_reservation', reservation_id=reservations.id) }}">
+          <button type="submit">Cancel Reservation</button>
+        </form></td>
+        <td> Car Name: {{ car.make }}{{car.model}}</td>
+      </tr>
+      
+      
+      
+     
+      
     </div>
     {% endfor %}
 {% else %}
