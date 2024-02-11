@@ -176,28 +176,29 @@ def user_dashboard():
         user = User.query.get(session['user_id'])
         if user:
             page = request.args.get('page', 1, type=int)
-            per_page = 6
+            per_page = 6  # Number of cars per page
 
-              # Retrieve filtering criteria from the request
+            # Retrieve filtering criteria from the request
             make = request.args.get('make')
             model = request.args.get('model')
             price = request.args.get('price')
 
-            # Query cars based on filtering criteria
-            filtered_cars_query = Car.query
+            # Query all cars (without pagination) to count total number of cars
+            all_cars_query = Car.query
 
             if make:
-                filtered_cars_query = filtered_cars_query.filter(Car.make.ilike(f'%{make}%'))
+                all_cars_query = all_cars_query.filter(Car.make.ilike(f'%{make}%'))
             if model:
-                filtered_cars_query = filtered_cars_query.filter(Car.model.ilike(f'%{model}%'))
+                all_cars_query = all_cars_query.filter(Car.model.ilike(f'%{model}%'))
             if price:
-                filtered_cars_query = filtered_cars_query.filter(Car.price <= float(price))
+                all_cars_query = all_cars_query.filter(Car.price <= float(price))
 
-            # cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
-            # return render_template('user_dashboard.html', cars=cars, user=user)
+            total_cars_count = all_cars_query.count()
+
             # Paginate the filtered query
-            filtered_cars = filtered_cars_query.paginate(page=page, per_page=per_page, error_out=False)
-            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user)
+            filtered_cars = all_cars_query.paginate(page=page, per_page=per_page, error_out=False)
+
+            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user, total_cars_count=total_cars_count)
     return redirect(url_for('login'))
 
 @app.route('/clear_filters', methods=['GET'])
