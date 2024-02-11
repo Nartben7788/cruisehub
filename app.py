@@ -142,7 +142,6 @@ def add_car():
         owner_id = session['user_id']
         model = request.form['model']
         make = request.form['make']
-        year = request.form['year']
         price = request.form['price']
         additional_info = request.form['additional_info']
         picture = save_picture(request.files['picture'],owner_id)
@@ -150,7 +149,6 @@ def add_car():
         new_car = Car(
             model=model, 
             make=make, 
-            year=year, 
             price=price,
             picture=picture, 
             additional_info=additional_info,
@@ -159,7 +157,7 @@ def add_car():
         db.session.add(new_car)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('owner_profile', owner_id =owner_id))
 
 def save_picture(picture, owner_id):
     owner = Owner.query.get(owner_id)
