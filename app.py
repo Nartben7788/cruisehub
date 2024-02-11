@@ -183,7 +183,7 @@ def user_dashboard():
             model = request.args.get('model')
             price = request.args.get('price')
 
-            # Query all cars (without pagination) to count total number of cars
+            # Query all cars to count total number of cars
             all_cars_query = Car.query
 
             if make:
