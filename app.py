@@ -12,12 +12,12 @@ from databases import*
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
-app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'cruise.carhub@gmail.com'
+app.config['MAIL_PASSWORD'] = 'dlfi gmyd vrfs enhm'
 mail = Mail(app)
 
 @app.route("/")
@@ -298,18 +298,14 @@ def reservation(car_id):
                 owner_id=owner_id  
             )
             db.session.add(new_reservation)
-            db.session.commit()
-
-            # owner = Owner.query.get(car.owner_id)  
-            # owner_email = owner.email
-            # msg = Message('New Reservation', sender='cruisehub@gmail.com', recipients=[owner_email])
-            # msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
-            # mail.send(msg)
-            # flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
-            msg = Message('Hello, testing' ,sender= 'sonugatoluwanii@gmail.com', recipients= [user.email])
+            
+            msg = Message('Hello, testing' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
             msg.body=f' Hey {user.name} making sure it works'
             mail.send(msg)
 
+            db.session.commit()
+
+           
             return redirect(url_for('user_dashboard'))
             
 
