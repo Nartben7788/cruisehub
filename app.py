@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_session import Session
+from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
@@ -11,6 +12,13 @@ from databases import*
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+mail = Mail(app)
 
 @app.route("/")
 def home():
@@ -274,6 +282,8 @@ def reservation(car_id):
             car = Car.query.get(car_id)
             reserved_car_id = car_id
             owner_id = car.owner_id
+            owner = Owner.query.get(owner_id)
+            user = User.query.get(user_id)
 
             
             # Convert string dates to datetime objects
@@ -296,7 +306,12 @@ def reservation(car_id):
             # msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
             # mail.send(msg)
             # flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
+            msg = Message('Hello, testing' ,sender= 'sonugatoluwanii@gmail.com', recipients= [user.email])
+            msg.body=f' Hey {user.name} making sure it works'
+            mail.send(msg)
+
             return redirect(url_for('user_dashboard'))
+            
 
 @app.route('/my_reservations', methods =["GET"])
 def user_reservations():
