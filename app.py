@@ -284,7 +284,7 @@ def reservation(car_id):
             owner_id = car.owner_id
             owner = Owner.query.get(owner_id)
             user = User.query.get(user_id)
-            reservation = Reservations.query.get(id)
+           
 
             
             # Convert string dates to datetime objects
@@ -299,17 +299,17 @@ def reservation(car_id):
                 owner_id=owner_id  
             )
             db.session.add(new_reservation)
-            
+            db.session.commit()
+            reservation = new_reservation.id
             user_msg = Message('Reservation Confirmation' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
-            user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation.id} from {start_date} to {end_date}'
+            user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation} from {start_date} to {end_date}'
             mail.send(user_msg)
 
 
             owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
-            user_msg.body=f' Dear {owner.name}. Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation 
-            ID : {reservation.id} from {start_date} to {end_date}'
+            user_msg.body=f' Dear {owner.name}. Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from {start_date} to {end_date}'
             mail.send(owner_msg)
-            db.session.commit()
+            
 
            
             return redirect(url_for('user_dashboard'))
