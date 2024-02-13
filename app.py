@@ -307,7 +307,7 @@ def reservation(car_id):
 
 
             owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
-            user_msg.body=f' Dear {owner.name}. Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from {start_date} to {end_date}'
+            owner_msg.body=f' Dear {owner.name}. Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from {start_date} to {end_date}'
             mail.send(owner_msg)
             
 
