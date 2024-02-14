@@ -300,6 +300,7 @@ def reservation(car_id):
             db.session.add(new_reservation)
             
             reservation = new_reservation.id
+            db.session.commit()
            
             user_msg = Message('Reservation Confirmation' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
             user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
@@ -309,7 +310,7 @@ def reservation(car_id):
             owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
             owner_msg.body=f' Dear {owner.name}. \n Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from \n {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
             mail.send(owner_msg)
-            db.session.commit()
+           
             
 
            
@@ -333,29 +334,27 @@ def user_reservations():
 
 @app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
-    reservation = Reservations.query.get(reservation_id)
-    if reservation:
-        car_id = reservation.reserved_car_id
-        car = Car.query.get(car_id)
-        owner = Owner.query.filter_by(id=car.owner_id).first() 
-        if owner:
-            if reservation.end_date > datetime.now():  
-                reservation.status = 'canceled'
-                db.session.delete(reservation)  
-                db.session.commit() 
-                
-                msg = Message('Reservation Cancellation', sender='cruise.carhub@gmail.com', recipients=[owner.email])
-                msg.body = f'Hello, the reservation for your car {car.make} has been canceled.'
-                mail.send(msg)
-                response = Response("Reservation canceled successfully and owner notified!", status=200, content_type='text/plain')
-                return response
+    if 'user_id' in session:
+        user = User.query.get_or_404(session['user_id'])
+        reservation = Reservations.query.get_or_404(reservation_id)
+        start_date = reservation.start_date
+        end_date = reservation.end_date
+        owner = Owner.query.get_or_404(reservation.owner_id)
+        car = Car.query.get_or_404(reservation.reserved_car_id)
+
+        db.session.delete(reservation)
+        user_msg = Message('Reservation Cancelled' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
+        user_msg.body=f' Dear {user.name}. This is confirming you cancelled your reservation with the reservation ID :{reservation_id} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+        mail.send(user_msg)
+
+        owner_msg = Message('Reservation Cancelled' ,sender= 'cruise.carhub@gmail.com', recipients=[owner.email])
+        owner_msg.body=f' Dear {owner.name}. \n The reservation for your car {car.make} {car.model} with \n Car ID : {car.id} has been cancelled'
+        mail.send(owner_msg)
             
-            else:
-                response = Response("Reservation cannot be canceled as the end date has already passed", status=400, content_type='text/plain')
-                return response
-
-        return redirect(url_for("user_reservations"))
-
+        db.session.commit()
+        return redirect(url_for('user_reservations'))
+    else:
+        return redirect(url_for('login'))
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
 # def delete_all_entries():
