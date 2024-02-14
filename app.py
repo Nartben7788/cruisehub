@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, jsonify,Response
 from flask_session import Session
 from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,7 +6,6 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
-
 from databases import*
 
 app.config["SESSION_PERMANENT"] = False
@@ -330,15 +329,31 @@ def user_reservations():
         return render_template('user_reservations.html', reserved_cars = reserved_cars, reservations = reservations)
 
 
-        
-    
-
 @app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
-    if 'user_id' in session:
-        reservation = Reservations.query.get(reservation_id)
-        
-        return redirect(url_for('user_dashboard'))
+    reservation = Reservations.query.get(reservation_id)
+    if reservation:
+        car_id = reservation.reserved_car_id
+        car = Car.query.get(car_id)
+        owner = Owner.query.filter_by(id=car.owner_id).first() 
+        if owner:
+            if reservation.end_date > datetime.now():  
+                reservation.status = 'canceled'
+                db.session.delete(reservation)  
+                db.session.commit() 
+                
+                msg = Message('Reservation Cancellation', sender='cruise.carhub@gmail.com', recipients=[owner.email])
+                msg.body = f'Hello, the reservation for your car {car.make} has been canceled.'
+                mail.send(msg)
+                response = Response("Reservation canceled successfully and owner notified!", status=200, content_type='text/plain')
+                return response
+            
+            else:
+                response = Response("Reservation cannot be canceled as the end date has already passed", status=400, content_type='text/plain')
+                return response
+
+        return redirect(url_for("user_reservations"))
+
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
 # def delete_all_entries():
