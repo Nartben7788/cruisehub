@@ -1,16 +1,23 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, jsonify,Response
 from flask_session import Session
+from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
-
 from databases import*
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'cruise.carhub@gmail.com'
+app.config['MAIL_PASSWORD'] = 'dlfi gmyd vrfs enhm'
+mail = Mail(app)
 
 @app.route("/")
 def home():
@@ -274,6 +281,9 @@ def reservation(car_id):
             car = Car.query.get(car_id)
             reserved_car_id = car_id
             owner_id = car.owner_id
+            owner = Owner.query.get(owner_id)
+            user = User.query.get(user_id)
+           
 
             
             # Convert string dates to datetime objects
@@ -289,14 +299,20 @@ def reservation(car_id):
             )
             db.session.add(new_reservation)
             db.session.commit()
+            reservation = new_reservation.id
+            user_msg = Message('Reservation Confirmation' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
+            user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation} \n from {start_date} to {end_date}'
+            mail.send(user_msg)
 
-            # owner = Owner.query.get(car.owner_id)  
-            # owner_email = owner.email
-            # msg = Message('New Reservation', sender='cruisehub@gmail.com', recipients=[owner_email])
-            # msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
-            # mail.send(msg)
-            # flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
+
+            owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            owner_msg.body=f' Dear {owner.name}. \n Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from \n {start_date} to {end_date}'
+            mail.send(owner_msg)
+            
+
+           
             return redirect(url_for('user_dashboard'))
+            
 
 @app.route('/my_reservations', methods =["GET"])
 def user_reservations():
@@ -313,15 +329,31 @@ def user_reservations():
         return render_template('user_reservations.html', reserved_cars = reserved_cars, reservations = reservations)
 
 
-        
-    
-
 @app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
-    if 'user_id' in session:
-        reservation = Reservations.query.get(reservation_id)
-        
-        return redirect(url_for('user_dashboard'))
+    reservation = Reservations.query.get(reservation_id)
+    if reservation:
+        car_id = reservation.reserved_car_id
+        car = Car.query.get(car_id)
+        owner = Owner.query.filter_by(id=car.owner_id).first() 
+        if owner:
+            if reservation.end_date > datetime.now():  
+                reservation.status = 'canceled'
+                db.session.delete(reservation)  
+                db.session.commit() 
+                
+                msg = Message('Reservation Cancellation', sender='cruise.carhub@gmail.com', recipients=[owner.email])
+                msg.body = f'Hello, the reservation for your car {car.make} has been canceled.'
+                mail.send(msg)
+                response = Response("Reservation canceled successfully and owner notified!", status=200, content_type='text/plain')
+                return response
+            
+            else:
+                response = Response("Reservation cannot be canceled as the end date has already passed", status=400, content_type='text/plain')
+                return response
+
+        return redirect(url_for("user_reservations"))
+
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
 # def delete_all_entries():
