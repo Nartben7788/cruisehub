@@ -344,7 +344,7 @@ def cancel_reservation(reservation_id):
 
         db.session.delete(reservation)
         user_msg = Message('Reservation Cancelled' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
-        user_msg.body=f' Dear {user.name}. This is confirming you cancelled your reservation with the reservation ID : {reservation_id} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+        user_msg.body=f' Dear {user.name}. This is confirming you cancelled your reservation with the reservation ID :{reservation_id} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
         mail.send(user_msg)
 
         owner_msg = Message('Reservation Cancelled' ,sender= 'cruise.carhub@gmail.com', recipients=[owner.email])

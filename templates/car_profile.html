@@ -30,6 +30,7 @@
         <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
         <p><strong>Owner:</strong><a href="{{url_for('owner_profile', owner_id = car.owner_id)}}">{{ owner.name}}</p></a> 
     </div>
+      <a href='{{url_for("user_dashboard")}}'>Back to User dashboard</a>
 </body>
 
 </html>
