@@ -32,7 +32,7 @@
             Welcome <span class="text-blue">{{ user.username }}</span> <br />
             Explore Our Fleets
         </h1>
-        <h2><a href="{{ url_for('user_reservations') }}">My Reservations</a></h2>
+        
         <!-- Filter Form -->
         <section class="container flex gap-3 justify-center">
             <form action="{{ url_for('user_dashboard') }}" method="GET" class="flex gap-3">
