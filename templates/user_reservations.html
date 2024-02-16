@@ -9,6 +9,7 @@
   {% if reserved_cars%}
     {% for reservations, car in reserved_cars%}
     <div class="reservation-column">
+      <div><img src="/{{car.picture}}" alt="" width="200px" height="150px"></div>
       <h4>Reservation ID: {{ reservations.id }}</h4>
       <p>Start Date: {{ reservations.start_date.strftime("%b %d, %Y")}}</p>
       <p>End Date: {{ reservations.end_date.strftime("%b %d, %Y") }}</p>

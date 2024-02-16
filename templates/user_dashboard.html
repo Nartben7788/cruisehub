@@ -69,7 +69,7 @@
         <div class="container grid grid-cols-3 gap-x-4 gap-y-8 my-5">
             {% for car in filtered_cars.items %}
             <div class="rounded-md overflow-hidden border">
-                <a href="{{ url_for('car_profile', car_id=car.id) }}" target="_blank">
+                <a href="{{ url_for('car_profile', car_id=car.id) }}">
                     <img
                         src="{{ car.picture }}"
                         class="h-60 w-full object-cover"
@@ -92,29 +92,29 @@
         </div>
 
         <!-- Pagination controls -->
-        <div class="pagination mt-8 flex justify-center gap-3">
-            {% if filtered_cars.has_prev %}
-            <a
-                href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}"
-                class="hover:text-red-500"
-                >Previous</a
-            >
-            {% endif %} {% for num in filtered_cars.iter_pages(left_edge=2, right_edge=1,
-            left_current=1, right_current=2) %} {% if num %} {% if num != filtered_cars.page %}
-            <a href="{{ url_for('user_dashboard', page=num) }}" class="hover:text-red-500"
-                >{{ num }}</a
-            >
-            {% else %}
-            <strong>{{ num }}</strong>
-            {% endif %} {% else %}
-            <span>...</span>
-            {% endif %} {% endfor %} {% if filtered_cars.has_next %}
-            <a
-                href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}"
-                class="hover:text-red-500"
-                >Next</a
-            >
-            {% endif %}
-        </div>
+<!-- Pagination controls -->
+<div class="pagination mt-8 flex justify-center gap-3">
+    {% if filtered_cars.has_prev %}
+    <a href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}" class="hover:text-red-500">Previous</a>
+    {% endif %} 
+    {% for num in filtered_cars.iter_pages() %}
+    {% if num %}
+    {% if num != filtered_cars.page %}
+    <a href="{{ url_for('user_dashboard', page=num) }}" class="hover:text-red-500">{{ num }}</a>
+    {% else %}
+    <strong>{{ num }}</strong>
+    {% endif %}
+    {% else %}
+    <span>...</span>
+    {% endif %}
+    {% endfor %}
+    {% if filtered_cars.has_next %}
+    <a href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}" class="hover:text-red-500">Next</a>
+    {% endif %}
+</div>
+
+<!-- Display total number of cars -->
+<p>Total Cars: {{ total_cars_count }}</p>
+
     </body>
 </html>

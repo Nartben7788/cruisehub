@@ -1,16 +1,23 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, jsonify,Response
 from flask_session import Session
+from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
-
 from databases import*
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'cruise.carhub@gmail.com'
+app.config['MAIL_PASSWORD'] = 'dlfi gmyd vrfs enhm'
+mail = Mail(app)
 
 @app.route("/")
 def home():
@@ -142,7 +149,6 @@ def add_car():
         owner_id = session['user_id']
         model = request.form['model']
         make = request.form['make']
-        year = request.form['year']
         price = request.form['price']
         additional_info = request.form['additional_info']
         picture = save_picture(request.files['picture'],owner_id)
@@ -150,7 +156,6 @@ def add_car():
         new_car = Car(
             model=model, 
             make=make, 
-            year=year, 
             price=price,
             picture=picture, 
             additional_info=additional_info,
@@ -159,7 +164,7 @@ def add_car():
         db.session.add(new_car)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('owner_profile', owner_id =owner_id))
 
 def save_picture(picture, owner_id):
     owner = Owner.query.get(owner_id)
@@ -178,28 +183,29 @@ def user_dashboard():
         user = User.query.get(session['user_id'])
         if user:
             page = request.args.get('page', 1, type=int)
-            per_page = 6
+            per_page = 6  # Number of cars per page
 
-              # Retrieve filtering criteria from the request
+            # Retrieve filtering criteria from the request
             make = request.args.get('make')
             model = request.args.get('model')
             price = request.args.get('price')
 
-            # Query cars based on filtering criteria
-            filtered_cars_query = Car.query
+            # Query all cars to count total number of cars
+            all_cars_query = Car.query
 
             if make:
-                filtered_cars_query = filtered_cars_query.filter(Car.make.ilike(f'%{make}%'))
+                all_cars_query = all_cars_query.filter(Car.make.ilike(f'%{make}%'))
             if model:
-                filtered_cars_query = filtered_cars_query.filter(Car.model.ilike(f'%{model}%'))
+                all_cars_query = all_cars_query.filter(Car.model.ilike(f'%{model}%'))
             if price:
-                filtered_cars_query = filtered_cars_query.filter(Car.price <= float(price))
+                all_cars_query = all_cars_query.filter(Car.price <= float(price))
 
-            # cars = Car.query.paginate(page=page, per_page=per_page, error_out=False)
-            # return render_template('user_dashboard.html', cars=cars, user=user)
+            total_cars_count = all_cars_query.count()
+
             # Paginate the filtered query
-            filtered_cars = filtered_cars_query.paginate(page=page, per_page=per_page, error_out=False)
-            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user)
+            filtered_cars = all_cars_query.paginate(page=page, per_page=per_page, error_out=False)
+
+            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user, total_cars_count=total_cars_count)
     return redirect(url_for('login'))
 
 @app.route('/clear_filters', methods=['GET'])
@@ -275,6 +281,9 @@ def reservation(car_id):
             car = Car.query.get(car_id)
             reserved_car_id = car_id
             owner_id = car.owner_id
+            owner = Owner.query.get(owner_id)
+            user = User.query.get(user_id)
+           
 
             
             # Convert string dates to datetime objects
@@ -289,15 +298,24 @@ def reservation(car_id):
                 owner_id=owner_id  
             )
             db.session.add(new_reservation)
+            
+            reservation = new_reservation.id
             db.session.commit()
+           
+            user_msg = Message('Reservation Confirmation' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
+            user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+            mail.send(user_msg)
 
-            # owner = Owner.query.get(car.owner_id)  
-            # owner_email = owner.email
-            # msg = Message('New Reservation', sender='cruisehub@gmail.com', recipients=[owner_email])
-            # msg.body = f'Hello, a new reservation has been made for your car {car.name}.'
-            # mail.send(msg)
-            # flash('Reservation completed successfully! An email has been sent to the owner.', 'success')
+
+            owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            owner_msg.body=f' Dear {owner.name}. \n Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from \n {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+            mail.send(owner_msg)
+           
+            
+
+           
             return redirect(url_for('user_dashboard'))
+            
 
 @app.route('/my_reservations', methods =["GET"])
 def user_reservations():
@@ -314,15 +332,29 @@ def user_reservations():
         return render_template('user_reservations.html', reserved_cars = reserved_cars, reservations = reservations)
 
 
-        
-    
-
 @app.route('/reservation/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
     if 'user_id' in session:
-        reservation = Reservations.query.get(reservation_id)
-        
-        return redirect(url_for('user_dashboard'))
+        user = User.query.get_or_404(session['user_id'])
+        reservation = Reservations.query.get_or_404(reservation_id)
+        start_date = reservation.start_date
+        end_date = reservation.end_date
+        owner = Owner.query.get_or_404(reservation.owner_id)
+        car = Car.query.get_or_404(reservation.reserved_car_id)
+
+        db.session.delete(reservation)
+        user_msg = Message('Reservation Cancelled' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
+        user_msg.body=f' Dear {user.name}. This is confirming you cancelled your reservation with the reservation ID :{reservation_id} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+        mail.send(user_msg)
+
+        owner_msg = Message('Reservation Cancelled' ,sender= 'cruise.carhub@gmail.com', recipients=[owner.email])
+        owner_msg.body=f' Dear {owner.name}. \n The reservation for your car {car.make} {car.model} with \n Car ID : {car.id} has been cancelled'
+        mail.send(owner_msg)
+            
+        db.session.commit()
+        return redirect(url_for('user_reservations'))
+    else:
+        return redirect(url_for('login'))
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
 # def delete_all_entries():
