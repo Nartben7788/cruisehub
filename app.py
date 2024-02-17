@@ -104,7 +104,6 @@ def signup():
 
     return render_template('signup.html')
 
-
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -134,7 +133,6 @@ def logout():
     session.pop('user_id', None)
     session.pop('user_type', None)
     return redirect(url_for('login'))
-
 
 # Route for handling the car form submission
 @app.route('/add_car', methods=['POST', 'GET'])
@@ -234,6 +232,24 @@ def owner_dashboard(owner_id):
         return render_template('owner_dashboard.html',owner = owner, cars=cars)
     else :
         return redirect(url_for('login'))
+    
+@app.route('/owner/<int:owner_id>/cancel/<int:car_id>',methods=["POST"])
+def cancel_car(owner_id,car_id):
+    """Handle a request to cancel a car listing"""
+    if 'user_id' in session and owner_id ==session['user_id']:
+        car = Car.query.get_or_404(car_id)
+        reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
+        if not reservations:
+            db.session.delete(car)
+            db.session.commit()
+            flash("Car has been successfully removed from marketplace", 'cancel_car')
+            return redirect(url_for('owner_dashboard',owner_id=owner_id))
+        else:
+            flash("This car is currently reserved., You cannnot remove it", 'cancel_car_error')
+            return redirect(url_for('owner_dashboard', owner_id= owner_id))
+    else:
+        return redirect(url_for(login))
+
 @app.route('/owner/reservations/<int:owner_id>')
 def show_reservation(owner_id):
     if 'user_id' in session and owner_id ==  session['user_id']:
