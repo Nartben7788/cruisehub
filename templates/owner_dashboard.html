@@ -30,7 +30,7 @@
             {{car.make}} {{car.model}}
         </div>
         <div>
-        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
+        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px", height="100px"></a> 
         </div>
         <form method="POST" action="{{ url_for('cancel_car', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Remove car</button>

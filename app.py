@@ -162,7 +162,7 @@ def add_car():
         db.session.add(new_car)
         db.session.commit()
 
-        return redirect(url_for('owner_profile', owner_id =owner_id))
+        return redirect(url_for('owner_dashboard', owner_id =owner_id))
 
 def save_picture(picture, owner_id):
     owner = Owner.query.get(owner_id)
@@ -245,12 +245,12 @@ def cancel_car(owner_id,car_id):
     """Handle a request to cancel a car listing"""
     if 'user_id' in session and owner_id ==session['user_id']:
         car = Car.query.get_or_404(car_id)
-        owner = Car.query.get_or_404(car.owner_id)
+        owner = Owner.query.get_or_404(car.owner_id)
         reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
         if not reservations:
             db.session.delete(car)
             msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
-            msg.body=f' Dear {Owner.name}. This is confirming that you removed your car from the car marketplace.'
+            msg.body=f' Dear {owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
             db.session.commit()
             flash("Car has been successfully removed from marketplace", 'cancel_car')
