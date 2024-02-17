@@ -7,20 +7,6 @@
 </head>
 <body>
     <h2>Manage your cars</h2>
-<<<<<<< HEAD
-    {%for reservation,car,user in reserved_cars%}
-        <div>
-            <ol>
-                <li>
-                   <img src="/{{car.picture}}" alt="car picture">
-                   Start date: {{reservation.start_date.strftime("%b %d, %Y")}} End date: {{reservation.end_date.strftime("%b %d, %Y")}}
-                    Booked by : {{user.name}}
-
-                </li>
-            </ol>
-        </div>
-    {%endfor%}
-=======
     {%if reserved_cars%}
         {%for reservation,car,user in reserved_cars%}
             <div>
@@ -29,7 +15,6 @@
                     <img src="/{{car.picture}}" alt="car picture"> 
                     Start date: {{reservation.start_date.strftime("%b %d, %Y")}} End date: {{reservation.end_date.strftime("%b %d, %Y")}}
                         Booked by : {{user.name}}
->>>>>>> b177298bf596ef58c8bb43d11288b9bfc28b3bdf
 
                     </li>
                 </ol>
