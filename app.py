@@ -179,31 +179,35 @@ def save_picture(picture, owner_id):
 def user_dashboard():
     if 'user_id' in session:
         user = User.query.get(session['user_id'])
-        if user:
-            page = request.args.get('page', 1, type=int)
-            per_page = 6  # Number of cars per page
+        if session['user_type'] == user.user_type:
+            if user:
 
-            # Retrieve filtering criteria from the request
-            make = request.args.get('make')
-            model = request.args.get('model')
-            price = request.args.get('price')
+                page = request.args.get('page', 1, type=int)
+                per_page = 6  # Number of cars per page
 
-            # Query all cars to count total number of cars
-            all_cars_query = Car.query
+                # Retrieve filtering criteria from the request
+                make = request.args.get('make')
+                model = request.args.get('model')
+                price = request.args.get('price')
 
-            if make:
-                all_cars_query = all_cars_query.filter(Car.make.ilike(f'%{make}%'))
-            if model:
-                all_cars_query = all_cars_query.filter(Car.model.ilike(f'%{model}%'))
-            if price:
-                all_cars_query = all_cars_query.filter(Car.price <= float(price))
+                # Query all cars to count total number of cars
+                all_cars_query = Car.query
 
-            total_cars_count = all_cars_query.count()
+                if make:
+                    all_cars_query = all_cars_query.filter(Car.make.ilike(f'%{make}%'))
+                if model:
+                    all_cars_query = all_cars_query.filter(Car.model.ilike(f'%{model}%'))
+                if price:
+                    all_cars_query = all_cars_query.filter(Car.price <= float(price))
 
-            # Paginate the filtered query
-            filtered_cars = all_cars_query.paginate(page=page, per_page=per_page, error_out=False)
+                total_cars_count = all_cars_query.count()
 
-            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user, total_cars_count=total_cars_count)
+                # Paginate the filtered query
+                filtered_cars = all_cars_query.paginate(page=page, per_page=per_page, error_out=False)
+
+                return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user, total_cars_count=total_cars_count)
+        else:
+            return redirect(url_for('login'))
     return redirect(url_for('login'))
 
 @app.route('/clear_filters', methods=['GET'])
