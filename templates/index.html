@@ -1,57 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title%} CruiseHUB {% endblock %}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300&display=swap" rel="stylesheet">
-    <link href="{{url_for('static', filename='index.css')}}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" />
-
-
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
     </head>
 
-    <body>
-        <main>
-            <div class="nav">
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="#">About</a>
-                        </li>
-                        <li>
-                            <a href="#">Contact</a>
-                        </li>
-                        <li>
-                            <a href="/login">Login</a>
-                        </li>
-                        <li>
-                            <a href="/signup">SignUp</a>
-                        </li>
-                    </ul>
-                </nav>
+    <body class="bg-blue-light">
+        <!-- Navbar -->
+        <nav>
+            <div class="container flex item justify-between">
+                <div>
+                    <a href="#" class="block py-5 px-4 text-blue font-bold">CruiseHUB</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="#about" class="py-5 px-2 text-gray-600 hover:text-gray-950"
+                        >About Us</a
+                    >
+                    <a href="#cars" class="py-5 px-2 text-gray-600 hover:text-gray-950">Cars</a>
+                    <a href="#features" class="py-5 px-2 text-gray-600 hover:text-gray-950"
+                        >Features</a
+                    >
+                    <a href="#help" class="py-5 px-2 text-gray-600 hover:text-gray-950">Help</a>
+
+                    <!--Buttons-->
+                    <a href="" class="btn-secondary py-2">Login</a>
+                    <a href="" class="btn-primary py-2">Sign Up</a>
+                </div>
+
+                <!-- mobile menu toggler -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-toggle">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <h1>{% block content%} Let`s Roll! {% endblock %}</h1>
-        </main>
 
-        <footer>
-            <div class="footer_social">
-                <ul>
-                    <li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin"></a></li>
-                    <li><a href="https://github.com/fffffffff" target="_blank"><i class="fa fa-github"></i></a></li>
+            <!-- mobile menu -->
+            <div class="container md:hidden space-y-2">
+                <a
+                    href="#about"
+                    class="block py-3 px-2 hover:bg-slate-200 text-gray-600 hover:text-gray-950"
+                    >About Us</a
+                >
+                <a
+                    href="#cars"
+                    class="block py-3 px-2 hover:bg-slate-200 text-gray-600 hover:text-gray-950"
+                    >Cars</a
+                >
+                <a
+                    href="#features"
+                    class="block py-3 px-2 hover:bg-slate-200 text-gray-600 hover:text-gray-950"
+                    >Features</a
+                >
+                <a
+                    href="#help"
+                    class="block py-3 px-2 hover:bg-slate-200 text-gray-600 hover:text-gray-950"
+                    >Help</a
+                >
 
-                </ul>
+                <!--Buttons-->
+                <a href="" class="block btn-secondary py-3 text-center">Login</a>
+                <a href="" class="block btn-primary py-3 text-center">Sign Up</a>
             </div>
-
-            <div class="footer_policy">
-                <ul>
-                    <li><a href="/privacy-policy">Privacy Policy</a></li>
-                    <li><a href="/terms-of-service">Terms of Service</a></li>
-                </ul>
-            </div>
-
-        </footer>
+        </nav>
     </body>
 </html>
