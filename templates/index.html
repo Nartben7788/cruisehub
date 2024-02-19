@@ -1,57 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title%} CruiseHUB {% endblock %}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300&display=swap" rel="stylesheet">
-    <link href="{{url_for('static', filename='index.css')}}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" />
-
-
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
     </head>
 
-    <body>
-        <main>
-            <div class="nav">
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="#">About</a>
-                        </li>
-                        <li>
-                            <a href="#">Contact</a>
-                        </li>
-                        <li>
-                            <a href="/login">Login</a>
-                        </li>
-                        <li>
-                            <a href="/signup">SignUp</a>
-                        </li>
-                    </ul>
-                </nav>
+    <body class="bg-blue-light">
+        <!-- Navbar -->
+        <nav>
+            <div class="container flex item justify-between">
+                <div>
+                    <a href="#" class="block py-5 px-4 text-blue font-bold">CruiseHUB</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="#about" class="py-5 px-2 text-gray-600 hover:text-gray-950"
+                        >About Us</a
+                    >
+                    <a href="#cars" class="py-5 px-2 text-gray-600 hover:text-gray-950">Cars</a>
+                    <a href="#features" class="py-5 px-2 text-gray-600 hover:text-gray-950"
+                        >Features</a
+                    >
+                    <a href="#help" class="py-5 px-2 text-gray-600 hover:text-gray-950">Help</a>
+
+                    <!--Buttons-->
+                    <a href="" class="btn-secondary py-2">Login</a>
+                    <a href="" class="btn-primary py-2">Sign Up</a>
+                </div>
+
+                <!-- mobile menu toggler -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-toggler">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <h1>{% block content%} Let`s Roll! {% endblock %}</h1>
-        </main>
 
-        <footer>
-            <div class="footer_social">
-                <ul>
-                    <li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin"></a></li>
-                    <li><a href="https://github.com/fffffffff" target="_blank"><i class="fa fa-github"></i></a></li>
+            <!-- mobile menu -->
+            <div class="mobile-menu container hidden md:hidden space-y-2">
+                <a
+                    href="#about"
+                    class="block py-3 px-2 hover:bg-blue-200 text-gray-600 hover:text-gray-950"
+                    >About Us</a
+                >
+                <a
+                    href="#cars"
+                    class="block py-3 px-2 hover:bg-blue-200 text-gray-600 hover:text-gray-950"
+                    >Cars</a
+                >
+                <a
+                    href="#features"
+                    class="block py-3 px-2 hover:bg-blue-200 text-gray-600 hover:text-gray-950"
+                    >Features</a
+                >
+                <a
+                    href="#help"
+                    class="block py-3 px-2 hover:bg-blue-200 text-gray-600 hover:text-gray-950"
+                    >Help</a
+                >
 
-                </ul>
+                <!--Buttons-->
+                <a href="" class="block btn-secondary py-3 text-center">Login</a>
+                <a href="" class="block btn-primary py-3 text-center">Sign Up</a>
+            </div>
+        </nav>
+
+        <header class="container h-96 flex items-center justify-center">
+            <h1 class="text-blue font-black text-5xl md:text-7xl text-center">
+                EXPLORE OUR FLEET OF RENTAL CARS TODAY
+            </h1>
+        </header>
+
+        <section id="about" class="bg-blue">
+            <!--Car info-->
+            <div class="relative overflow-hidden">
+                <img
+                    src="{{ url_for('static', filename='home-img.png') }}"
+                    alt="Image description"
+                    class="block inset-0 object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-blue"></div>
             </div>
 
-            <div class="footer_policy">
-                <ul>
-                    <li><a href="/privacy-policy">Privacy Policy</a></li>
-                    <li><a href="/terms-of-service">Terms of Service</a></li>
-                </ul>
+            <!-- About us -->
+            <div class="container grid grid-cols-2 justify-center space-x-4 text-blue-light">
+                <div>
+                    <h1 class="text-4xl font-bold">
+                        Explore the Essence <br />
+                        of Your Car Rentals
+                    </h1>
+                    <p class="my-4">
+                        We provide our customers with the most incredible driving emotions. That’s
+                        why we have only world-class cars in our fleet.
+                    </p>
+                    <p class="my-3">
+                        Discover the perfect solution for all your business transportation needs,
+                        indulge in a luxurious wedding getaway experience, or embark on an
+                        unforgettable thrill - experience excellence with out unmatched service.
+                    </p>
+                    <a href="" class="btn-tertiary w-fit">Rent Now</a>
+                </div>
+                <div><img src="{{ url_for('static', filename='map.png') }}" alt="" /></div>
             </div>
+        </section>
 
+        <section id="features" class="container py-10">
+            <h1 class="text-4xl font-bold text-blue">
+                Rent Car in three <br />
+                simple steps
+            </h1>
+
+            <div class="mt-6 grid grid-cols-3 space-x-5">
+                <div class="border border-blue p-6">
+                    <div class="bg-blue rounded-full w-16 h-16 flex items-center justify-center">
+                        <svg
+                            width="30"
+                            height="26"
+                            viewBox="0 0 30 26"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M25.9499 1.93906C25.6334 1.00544 24.7473 0.34082 23.7029 0.34082H6.29627C5.25188 0.34082 4.38155 1.00544 4.04924 1.93906L0.757812 11.4177V24.0771C0.757812 24.9474 1.4699 25.6595 2.34023 25.6595H3.92265C4.79298 25.6595 5.50507 24.9474 5.50507 24.0771V22.4947H24.4941V24.0771C24.4941 24.9474 25.2062 25.6595 26.0765 25.6595H27.6589C28.5292 25.6595 29.2413 24.9474 29.2413 24.0771V11.4177L25.9499 1.93906ZM6.29627 17.7474C4.98287 17.7474 3.92265 16.6872 3.92265 15.3738C3.92265 14.0604 4.98287 13.0002 6.29627 13.0002C7.60968 13.0002 8.6699 14.0604 8.6699 15.3738C8.6699 16.6872 7.60968 17.7474 6.29627 17.7474ZM23.7029 17.7474C22.3895 17.7474 21.3292 16.6872 21.3292 15.3738C21.3292 14.0604 22.3895 13.0002 23.7029 13.0002C25.0163 13.0002 26.0765 14.0604 26.0765 15.3738C26.0765 16.6872 25.0163 17.7474 23.7029 17.7474ZM3.92265 9.83533L6.29627 2.71445H23.7029L26.0765 9.83533H3.92265Z"
+                                fill="#E9F6FF" />
+                        </svg>
+                    </div>
+
+                    <h3 class="py-2 text-xl font-bold">Choose your Details</h3>
+                    <p>Begin by choosing the location where you want to pick up your rental car</p>
+                </div>
+                <div class="border border-blue p-6">
+                    <div class="bg-blue rounded-full w-16 h-16 flex items-center justify-center">
+                        <svg
+                            width="30"
+                            height="32"
+                            viewBox="0 0 30 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M26.2987 17.4873C26.362 17.0125 26.3937 16.522 26.3937 15.9998C26.3937 15.4934 26.362 14.9871 26.2829 14.5123L29.4952 12.0121C29.78 11.7906 29.8592 11.3633 29.6851 11.0468L26.6468 5.79321C26.457 5.44508 26.0613 5.33431 25.7132 5.44508L21.9312 6.9642C21.14 6.36288 20.3013 5.85651 19.3677 5.47673L18.798 1.45738C18.7348 1.0776 18.4183 0.808594 18.0385 0.808594H11.962C11.5822 0.808594 11.2816 1.0776 11.2183 1.45738L10.6486 5.47673C9.71497 5.85651 8.86047 6.3787 8.08508 6.9642L4.30311 5.44508C3.95497 5.31848 3.55937 5.44508 3.36948 5.79321L0.347062 11.0468C0.157172 11.3791 0.220468 11.7906 0.536952 12.0121L3.74926 14.5123C3.67014 14.9871 3.60684 15.5093 3.60684 15.9998C3.60684 16.4904 3.63849 17.0125 3.71761 17.4873L0.505304 19.9875C0.220468 20.209 0.141348 20.6363 0.315414 20.9528L3.35366 26.2064C3.54355 26.5545 3.93915 26.6653 4.28728 26.5545L8.06926 25.0354C8.86047 25.6367 9.69915 26.1431 10.6328 26.5229L11.2024 30.5422C11.2816 30.922 11.5822 31.191 11.962 31.191H18.0385C18.4183 31.191 18.7348 30.922 18.7822 30.5422L19.3519 26.5229C20.2855 26.1431 21.14 25.6367 21.9154 25.0354L25.6974 26.5545C26.0455 26.6811 26.4411 26.5545 26.631 26.2064L29.6693 20.9528C29.8592 20.6046 29.78 20.209 29.4794 19.9875L26.2987 17.4873ZM15.0002 21.6965C11.8671 21.6965 9.30354 19.133 9.30354 15.9998C9.30354 12.8666 11.8671 10.3031 15.0002 10.3031C18.1334 10.3031 20.697 12.8666 20.697 15.9998C20.697 19.133 18.1334 21.6965 15.0002 21.6965Z"
+                                fill="#E9F6FF" />
+                        </svg>
+                    </div>
+                    <h3 class="py-2 text-xl font-bold">Review and Customize</h3>
+                    <p>
+                        You will see a list of available cars based on your selections and vendors
+                    </p>
+                </div>
+                <div class="border border-blue p-6">
+                    <div class="bg-blue rounded-full w-16 h-16 flex items-center justify-center">
+                        <svg
+                            width="38"
+                            height="38"
+                            viewBox="0 0 38 38"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M37.6381 20.2581L35.4193 16.7583L36.7354 12.8305C36.8222 12.5707 36.8166 12.2889 36.7194 12.0328C36.6223 11.7767 36.4396 11.5621 36.2023 11.4253L32.6119 9.35549L31.9517 5.26555C31.9072 4.99513 31.771 4.74829 31.5659 4.56658C31.3607 4.38486 31.0993 4.27938 30.8255 4.26789L26.6844 4.10576L24.1998 0.789983C24.0356 0.570559 23.8005 0.414823 23.5344 0.349304C23.2683 0.283784 22.9878 0.312532 22.7405 0.430652L18.9997 2.20978L15.2574 0.429192C15.0098 0.312345 14.7294 0.284429 14.4636 0.350149C14.1978 0.415868 13.9628 0.571204 13.7982 0.789983L11.3135 4.10576L7.17246 4.26789C6.89888 4.27883 6.63749 4.38397 6.43252 4.56551C6.22756 4.74705 6.09163 4.99383 6.04773 5.26409L5.38749 9.35403L1.79711 11.4238C1.55956 11.5604 1.37656 11.7749 1.27912 12.031C1.18168 12.2872 1.17581 12.5691 1.2625 12.829L2.57858 16.7568L0.361248 20.2581C0.21498 20.4899 0.15326 20.765 0.186531 21.0371C0.219803 21.3091 0.346022 21.5613 0.543835 21.7509L3.53387 24.6183L3.19791 28.7462C3.17557 29.0193 3.24827 29.2918 3.40371 29.5175C3.55915 29.7432 3.7878 29.9083 4.05096 29.9849L8.03135 31.1315L9.65126 34.9454C9.75761 35.1981 9.94847 35.4061 10.1912 35.5337C10.4339 35.6614 10.7134 35.7007 10.9819 35.645L15.0427 34.8125L18.2474 37.4373C18.4651 37.6141 18.7324 37.7061 18.9997 37.7061C19.267 37.7061 19.5328 37.6141 19.752 37.4373L22.9567 34.8125L27.0174 35.645C27.5681 35.7619 28.1276 35.4654 28.3481 34.9454L29.968 31.1315L33.9484 29.9849C34.2117 29.9086 34.4405 29.7435 34.596 29.5178C34.7515 29.292 34.8241 29.0194 34.8015 28.7462L34.4655 24.6183L37.4556 21.7509C37.6534 21.5613 37.7796 21.3091 37.8129 21.0371C37.8461 20.765 37.7844 20.4899 37.6381 20.2581ZM27.5842 14.5453L19.2714 26.9992C18.9573 27.4637 18.4709 27.7748 17.9874 27.7748C17.5054 27.7748 16.9664 27.5046 16.6231 27.1599L10.5204 20.9592C10.3203 20.7541 10.2084 20.4789 10.2084 20.1924C10.2084 19.9058 10.3203 19.6307 10.5204 19.4255L12.0263 17.8918C12.125 17.7925 12.2424 17.7138 12.3716 17.6601C12.5008 17.6063 12.6394 17.5786 12.7793 17.5786C12.9193 17.5786 13.0579 17.6063 13.1871 17.6601C13.3163 17.7138 13.4336 17.7925 13.5323 17.8918L17.5039 21.9262L24.0537 12.1133C24.1313 11.9963 24.2315 11.8959 24.3483 11.818C24.4652 11.7401 24.5964 11.6862 24.7342 11.6596C24.8721 11.6329 25.0139 11.634 25.1514 11.6628C25.2888 11.6915 25.4192 11.7473 25.5348 11.827L27.3008 13.0408C27.7872 13.3768 27.9128 14.0531 27.5842 14.5453Z"
+                                fill="#E9F6FF" />
+                        </svg>
+                    </div>
+                    <h3 class="py-2 text-xl font-bold">Confirm and Reserve</h3>
+                    <p>
+                        Carefully review all the details of your booking, including the total cost,
+                        pick.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="cars" class="bg-blue py-10">
+            <div class="container">
+                <h1 class="text-4xl font-bold text-blue-light">
+                    Our Exclusive <br />
+                    Cars
+                </h1>
+            </div>
+        </section>
+
+        <section id="help" class="py-10">
+            <div class="container">
+                <h1 class="text-4xl font-bold text-blue">
+                    Frequently Asked <br />
+                    Questions
+                </h1>
+
+                <div class="accordion-container mt-5">
+                    <div class="faq border border-blue-200 p-4 mb-2">
+                        <div class="flex justify-between items-center py-2 cursor-pointer">
+                            <h2 class="font-semibold">How can I make a reservation?</h2>
+                            <div class="icon">
+                                <!--Plus sign-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 open">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+
+                                <!--Collapse Icon-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 hidden close">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 12h14" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="solution hidden">
+                            Lorem ipsum dolor sit amet consectetur. Turpis sed dui sed ut et enim
+                            pulvinar mollis. Ullamcorper purus lectus ultricies id platea elementum.
+                        </p>
+                    </div>
+
+                    <div class="faq border border-blue-200 p-4 mb-2">
+                        <div class="flex justify-between items-center py-2 cursor-pointer">
+                            <h2 class="font-semibold">Can I modify or cancel my reservation?</h2>
+                            <div class="icon">
+                                <!--Plus sign-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 open">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+
+                                <!--Collapse Icon-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 hidden close">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 12h14" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="solution hidden">
+                            Lorem ipsum dolor sit amet consectetur. Turpis sed dui sed ut et enim
+                            pulvinar mollis. Ullamcorper purus lectus ultricies id platea elementum.
+                        </p>
+                    </div>
+
+                    <div class="faq border border-blue-200 p-4 mb-2">
+                        <div class="flex justify-between items-center py-2 cursor-pointer">
+                            <h2 class="font-semibold">What do I need to rent a car?</h2>
+                            <div class="icon">
+                                <!--Plus sign-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 open">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+
+                                <!--Collapse Icon-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 hidden close">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 12h14" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="solution hidden">
+                            Lorem ipsum dolor sit amet consectetur. Turpis sed dui sed ut et enim
+                            pulvinar mollis. Ullamcorper purus lectus ultricies id platea elementum.
+                        </p>
+                    </div>
+
+                    <div class="faq border border-blue-200 p-4 mb-2">
+                        <div class="flex justify-between items-center py-2 cursor-pointer">
+                            <h2 class="font-semibold">Do you offer insurance coverage?</h2>
+                            <div class="icon">
+                                <!--Plus sign-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 open">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+
+                                <!--Collapse Icon-->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 hidden close">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 12h14" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="solution hidden">
+                            Lorem ipsum dolor sit amet consectetur. Turpis sed dui sed ut et enim
+                            pulvinar mollis. Ullamcorper purus lectus ultricies id platea elementum.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-blue py-10">
+            <div class="container flex justify-between items-center">
+                <div>
+                    <a href="#" class="text-blue-light font-bold">CruiseHUB</a>
+                </div>
+
+                <div class="flex space-x-4">
+                    <a href="" class="text-blue-light">Privacy Policy</a
+                    ><a href="" class="text-blue-light">Term of Use</a
+                    ><a href="" class="text-blue-light">About Us</a
+                    ><a href="" class="text-blue-light">Explore</a
+                    ><a href="" class="text-blue-light">Contact Us</a>
+                </div>
+            </div>
         </footer>
+
+        <script>
+            // grab everything we need
+            const btn = document.querySelector("button.mobile-menu-toggler");
+            const menu = document.querySelector(".mobile-menu");
+
+            // add event listeners
+            btn.addEventListener("click", () => {
+                menu.classList.toggle("hidden");
+            });
+
+            // Target all faqs
+            const allFaqs = document.querySelectorAll(".faq");
+            const solutions = document.querySelectorAll(".solution");
+
+            function hideAllSolution() {
+                solutions.forEach((e) => {
+                    e.classList.add("hidden");
+                    const openbtn = e.parentElement.querySelector("svg.open");
+                    const closebtn = e.parentElement.querySelector("svg.close");
+                    openbtn.classList.remove("hidden");
+                    closebtn.classList.add("hidden");
+                });
+            }
+
+            // Loop through the faqs
+            // Add click events to each one
+            allFaqs.forEach((faq) => {
+                faq.addEventListener("click", () => triggerFaq(faq));
+            });
+
+            function triggerFaq(element) {
+                const solution = element.querySelector(".solution");
+                const openbtn = element.querySelector("svg.open");
+                const closebtn = element.querySelector("svg.close");
+
+                if (solution.classList.contains("hidden")) {
+                    hideAllSolution();
+                    solution.classList.remove("hidden");
+                    openbtn.classList.add("hidden");
+                    closebtn.classList.remove("hidden");
+                } else {
+                    if (!closebtn.classList.contains("hidden")) {
+                        solution.classList.add("hidden");
+                        openbtn.classList.remove("hidden");
+                        closebtn.classList.add("hidden");
+                    }
+                }
+            }
+        </script>
     </body>
 </html>
