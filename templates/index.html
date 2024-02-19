@@ -10,7 +10,7 @@
             href="{{ url_for('static', filename='output.css') }}" />
     </head>
 
-    <body class="bg-blue-light">
+    <body class="bg-blue-light scroll-smooth">
         <!-- Navbar -->
         <nav>
             <div class="container flex item justify-between">
@@ -98,7 +98,7 @@
             </div>
 
             <!-- About us -->
-            <div class="container grid grid-cols-2 justify-center space-x-4 text-blue-light">
+            <div class="container grid md:grid-cols-2 justify-center space-x-4 text-blue-light">
                 <div>
                     <h1 class="text-4xl font-bold">
                         Explore the Essence <br />
@@ -125,7 +125,7 @@
                 simple steps
             </h1>
 
-            <div class="mt-6 grid grid-cols-3 space-x-5">
+            <div class="mt-6 grid md:grid-cols-3 space-y-5 md:space-x-5 md:space-y-0">
                 <div class="border border-blue p-6">
                     <div class="bg-blue rounded-full w-16 h-16 flex items-center justify-center">
                         <svg
@@ -359,13 +359,13 @@
             </div>
         </section>
 
-        <footer class="bg-blue py-10">
-            <div class="container flex justify-between items-center">
+        <footer class="bg-blue py-6 sm:py-10">
+            <div class="container flex flex-col sm:flex-row justify-between items-center">
                 <div>
-                    <a href="#" class="text-blue-light font-bold">CruiseHUB</a>
+                    <a href="#" class="block text-blue-light font-bold mb-4 sm:mb-0">CruiseHUB</a>
                 </div>
 
-                <div class="flex space-x-4">
+                <div class="flex flex-col sm:flex-row text-center sm:text-left sm:space-x-4">
                     <a href="" class="text-blue-light">Privacy Policy</a
                     ><a href="" class="text-blue-light">Term of Use</a
                     ><a href="" class="text-blue-light">About Us</a
