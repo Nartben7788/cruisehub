@@ -4,44 +4,60 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bookings</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
     </head>
-    <body class="bg-blue-light">
-        <form action="{{ url_for('reservation', car_id=car_id) }}" method="post">
+    <body class="bg-blue h-lvh flex justify-center items-center">
+        <form action="{{ url_for('reservation', car_id=car_id) }}" method="post" class="bg-white p-4">
             <!-- Non-editable fields pre-filled from the database -->
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{ user.name }}" readonly /><br />
+            <label for="name" class="block my-6">
+                Name:
+                <input type="text" id="name" name="name" value="{{ user.name }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" readonly /><br />
+            </label>
 
-            <label for="make">Make:</label>
-            <input type="text" id="make" name="make" value="{{ car.make }}" readonly /><br />
+            <label for="make" class="block my-6">
+                Make:
+                <input type="text" id="make" name="make" value="{{ car.make }}"  class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" readonly /><br />
+            </label>
 
-            <label for="model">Model:</label>
-            <input type="text" id="model" name="model" value="{{ car.model }}" readonly /><br />
+            <label for="model" class="block my-6">
+                Model:
+                <input type="text" id="model" name="model" value="{{ car.model }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" readonly /><br />
+            </label>
 
-            <label for="price">Price:</label>
-            <input
-                type="text"
-                id="price"
-                name="price"
-                value=" $  {{ car.price }}"
-                readonly /><br />
+            <label for="price" class="block my-6">
+                Price:
+                <input
+                    type="text"
+                    id="price"
+                    name="price"
+                    value=" $  {{ car.price }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    readonly /><br />
+            </label>
 
-            <label for="start_date">Start Date:</label>
-            <input
-                type="date"
-                id="start_date"
-                name="start_date"
-                min="{{earliest_start_date }}"
-                required /><br /><br />
+            <label for="start_date"  class="block my-6">
+                Start Date:
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    min="{{earliest_start_date }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    required /><br /><br />
+            </label>
 
-            <label for="end_date">End Date:</label>
-            <input
-                type="date"
-                id="end_date"
-                name="end_date"
-                min="{{ earliest_start_date }}"
-                required /><br /><br />
+            <label for="end_date" class=" block my-6">
+                End Date:
+                <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                    min="{{ earliest_start_date }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    required /><br /><br />
+            </label>
 
-            <input type="submit" value="Complete Reservation" />
+            <input type="submit" value="Complete Reservation" class="btn-primary block w-full" />
         </form>
 
     </body>

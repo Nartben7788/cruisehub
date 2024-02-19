@@ -6,6 +6,18 @@
     <title>Your Cars</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li
+                class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     <H2>Welcome {{owner.name}}</H2>
     {%if not cars%}
         <a href="{{url_for('add_car')}}">You have No cars yet, add cars</a>
@@ -18,13 +30,30 @@
             {{car.make}} {{car.model}}
         </div>
         <div>
-        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
+        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px", height="100px"></a> 
         </div>
+        <form method="POST" action="{{ url_for('cancel_car', owner_id = owner.id, car_id = car.id) }}">
+            <button type="submit">Remove car</button>
+          </form>
+        
         {% endfor %}
     
     <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
     <a href="{{url_for('add_car')}}">Add cars</a>
     <a href="{{url_for('logout')}}">LogOut</a>
     {%endif%}
+
+
+    <script>
+        // Function to automatically hide flash messages after 3 seconds
+        document.addEventListener("DOMContentLoaded", function () {
+            var flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (message) {
+                setTimeout(function () {
+                    message.style.display = "none";
+                }, 4000);
+            });
+        });
+    </script>
 </body>
 </html>
