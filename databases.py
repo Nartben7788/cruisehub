@@ -25,7 +25,7 @@ class User(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     user_type = db.Column(db.String, nullable=False, default='user')
-    reset_token = db.Column(db.String, nullable=True)
+   
     
 #Define the Owner model
 class Owner(db.Model):
@@ -36,7 +36,7 @@ class Owner(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     user_type = db.Column(db.String, nullable=False, default='owner') 
-    reset_token = db.Column(db.String, nullable=True)
+   
 
 class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
