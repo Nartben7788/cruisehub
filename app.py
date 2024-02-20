@@ -124,8 +124,14 @@ def login():
                 return redirect(url_for('user_dashboard' ))
             else:
                 return redirect(url_for('owner_dashboard', owner_id = user.id))
-        else:
-            flash("Invalid Username or Password!", 'login')
+    else:
+        if 'user_id' in session:
+            user = User.query.get(session['user_id'])
+            if user and 'user_type' in session and session['user_type'] == user.user_type:
+                if user.user_type == 'user':
+                    return redirect(url_for('user_dashboard'))
+                elif user.user_type == 'owner':
+                    return redirect(url_for('owner_dashboard', owner_id=user.id))
 
     return render_template('login.html')
 @app.route('/logout')
