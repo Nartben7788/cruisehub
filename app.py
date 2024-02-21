@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, session, Response
+from flask import render_template, request, redirect, url_for, flash, session
 from flask_session import Session
 from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
 import secrets
+from time import time
 from databases import*
 
 app.config["SESSION_PERMANENT"] = False
@@ -124,8 +125,14 @@ def login():
                 return redirect(url_for('user_dashboard' ))
             else:
                 return redirect(url_for('owner_dashboard', owner_id = user.id))
-        else:
-            flash("Invalid Username or Password!", 'login')
+    else:
+        if 'user_id' in session:
+            user = User.query.get(session['user_id'])
+            if user and 'user_type' in session and session['user_type'] == user.user_type:
+                if user.user_type == 'user':
+                    return redirect(url_for('user_dashboard'))
+                elif user.user_type == 'owner':
+                    return redirect(url_for('owner_dashboard', owner_id=user.id))
 
     return render_template('login.html')
 @app.route('/logout')
@@ -180,37 +187,36 @@ def save_picture(picture, owner_id):
 def user_dashboard():
     if 'user_id' in session:
         user = User.query.get(session['user_id'])
-        if user:
-            if 'user_type' in session and session['user_type'] == user.user_type:
-                if user:
+       
+        if user and 'user_type' in session and session['user_type'] == user.user_type:
+          
+            page = request.args.get('page', 1, type=int)
+            per_page = 6  # Number of cars per page
 
-                    page = request.args.get('page', 1, type=int)
-                    per_page = 6  # Number of cars per page
+            # Retrieve filtering criteria from the request
+            make = request.args.get('make')
+            model = request.args.get('model')
+            price = request.args.get('price')
 
-                    # Retrieve filtering criteria from the request
-                    make = request.args.get('make')
-                    model = request.args.get('model')
-                    price = request.args.get('price')
+            # Query all cars to count total number of cars
+            all_cars_query = Car.query
 
-                    # Query all cars to count total number of cars
-                    all_cars_query = Car.query
+            if make:
+                all_cars_query = all_cars_query.filter(Car.make.ilike(f'%{make}%'))
+            if model:
+                all_cars_query = all_cars_query.filter(Car.model.ilike(f'%{model}%'))
+            if price:
+                all_cars_query = all_cars_query.filter(Car.price <= float(price))
 
-                    if make:
-                        all_cars_query = all_cars_query.filter(Car.make.ilike(f'%{make}%'))
-                    if model:
-                        all_cars_query = all_cars_query.filter(Car.model.ilike(f'%{model}%'))
-                    if price:
-                        all_cars_query = all_cars_query.filter(Car.price <= float(price))
+            total_cars_count = all_cars_query.count()
 
-                    total_cars_count = all_cars_query.count()
+            # Paginate the filtered query
+            filtered_cars = all_cars_query.paginate(page=page, per_page=per_page, error_out=False)
 
-                    # Paginate the filtered query
-                    filtered_cars = all_cars_query.paginate(page=page, per_page=per_page, error_out=False)
-
-                    return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user, total_cars_count=total_cars_count)
-            else:
-                return redirect(url_for('login'))
+            return render_template('user_dashboard.html', filtered_cars=filtered_cars, user=user, total_cars_count=total_cars_count)
+    else:
         return redirect(url_for('login'))
+    return redirect(url_for('login'))
 
 @app.route('/clear_filters', methods=['GET'])
 def clear_filters():
@@ -386,114 +392,6 @@ def cancel_reservation(reservation_id):
         return redirect(url_for('login'))
     
 
-def send_reset_email(recipient, token, user_type):
-    msg = Message('Password Reset Request',
-                  sender='cruise.carhub@gmail.com',
-                  recipients=[recipient])
-    
-    if user_type == 'user':
-        msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_password', token=token, _external=True)}
-
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
-    elif user_type == 'owner':
-        msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_password', token=token, _external=True)}
-
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
-
-    mail.send(msg)
-
-
-@app.route('/forgot_password', methods=['GET', 'POST'])
-def forgot_password():
-    if request.method == 'POST':
-        email = request.form['email']
-
-        user = User.query.filter_by(email=email).first()
-
-        if user:
-            # Generate and store password reset token
-            token = secrets.token_hex(16)
-            user.password_reset_token = token
-            db.session.commit()
-
-    
-            send_reset_email(user.email, token, 'user')
-            flash('Password reset instructions sent to your email.')
-            return redirect(url_for('login'))  
-        
-
-        owner = Owner.query.filter_by(email=email).first()
-
-        if owner:
-            # Generate and store password reset token
-            token = secrets.token_hex(16)
-            owner.password_reset_token = token
-            db.session.commit()
-
-            send_reset_email(owner.email, token, 'owner')
-            flash('Password reset instructions sent to your email.')
-            return redirect(url_for('login'))  
-        
-        flash('Email address not found.')
-    return render_template('forgot_password.html')
-
-
-
-
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    # Check if token exists in User model
-    user = User.query.filter_by(password_reset_token=token).first()
-
-    if user:
-        if request.method == 'POST':
-            new_password = request.form['new_password']
-            confirm_password = request.form['confirm_password']
-
-            
-            if new_password != confirm_password:
-                flash('Passwords do not match.')
-                return render_template('reset_password.html', token=token)
-
-            # Update user's password and delete password reset token
-            user.password = new_password
-            user.password_reset_token = None
-            db.session.commit()
-
-            flash('Password reset successful. You can now log in with your new password.')
-            return redirect(url_for('login'))  
-        
-        return render_template('reset_password.html', token=token)
-    
-    
-    owner = Owner.query.filter_by(password_reset_token=token).first()
-
-    if owner:
-        if request.method == 'POST':
-            new_password = request.form['new_password']
-            confirm_password = request.form['confirm_password']
-
-            
-            if new_password != confirm_password:
-                flash('Passwords do not match.')
-                return render_template('reset_password.html', token=token)
-
-            # Update owner's password and delete password reset token
-            owner.password = new_password
-            owner.password_reset_token = None
-            db.session.commit()
-
-            flash('Password reset successful. You can now log in with your new password.')
-            return redirect(url_for('login'))  
-        
-        return render_template('reset_password.html', token=token)
-    
-    flash('Invalid or expired token.')
-    return redirect(url_for('login'))  
 
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
