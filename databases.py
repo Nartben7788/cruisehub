@@ -3,7 +3,6 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from datetime import datetime
-from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cruisehub.db'
@@ -25,7 +24,8 @@ class User(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     user_type = db.Column(db.String, nullable=False, default='user')
-   
+    reset_token = db.Column(db.String ,nullable = True, default = None)
+    reset_token_timestamp = db.Column(db.DateTime, nullable = True, default=None)
     
 #Define the Owner model
 class Owner(db.Model):
@@ -36,8 +36,8 @@ class Owner(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     user_type = db.Column(db.String, nullable=False, default='owner') 
-   
-
+    reset_token = db.Column(db.String, nullable=True, default=None)
+    reset_token_timestamp = db.Column(db.DateTime, nullable=True, default=None)
 class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     model = db.Column(db.String, nullable=False)

@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, session, Response
+from flask import render_template, request, redirect, url_for, flash, session
 from flask_session import Session
 from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
 import secrets
+from time import time
 from databases import*
 
 app.config["SESSION_PERMANENT"] = False
@@ -398,20 +399,22 @@ def send_reset_email(recipient, token, user_type):
     
     if user_type == 'user':
         msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_password', token=token, _external=True)}
+{url_for('token', token=token, _external=True)}
 
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
     elif user_type == 'owner':
         msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_password', token=token, _external=True)}
+{url_for('token', token=token, _external=True)}
 
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
 
     mail.send(msg)
 
-
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password1():
+    return render_template('forgot_password.html')
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -421,38 +424,67 @@ def forgot_password():
 
         if user:
             # Generate and store password reset token
-            token = secrets.token_hex(16)
-            user.password_reset_token = token
+            random_number = secrets.randbelow(1000000)
+            token = '{:06d}'.format(random_number)
+            user.reset_token = token
             db.session.commit()
 
     
             send_reset_email(user.email, token, 'user')
             flash('Password reset instructions sent to your email.')
-            return redirect(url_for('login'))  
+            #return redirect(url_for('reset_password'))  
         
 
         owner = Owner.query.filter_by(email=email).first()
 
         if owner:
             # Generate and store password reset token
-            token = secrets.token_hex(16)
-            owner.password_reset_token = token
+            random_number = secrets.randbelow(1000000)
+            token = '{:06d}'.format(random_number)
+            owner.reset_token = token
             db.session.commit()
 
             send_reset_email(owner.email, token, 'owner')
             flash('Password reset instructions sent to your email.')
-            return redirect(url_for('login'))  
+            #return redirect(url_for('reset_password'))  
         
         flash('Email address not found.')
     return render_template('forgot_password.html')
 
 
+@app.route('/submit_token', methods=['GET', 'POST'])
+def submit_token():
+
+    if request.method == 'POST':
+        token = request.form['token']
+
+    user = User.query.filter_by(reset_token=token).first()
+
+    if user:
+        if token == user.reset_token and time.time() <= user.reset_token_timestamp + 600:
+            return render_template('reset_password.html', token=token)
+        else:
+            flash("Invalid token or token has expired.")
+
+            return render_template('submit_token.html', token=token)
+        
+    owner = Owner.query.filter_by(reset_token= token).first()
+
+    if owner:
+        if token == owner.reset_token and time.time() <= owner.reset_token_timestamp + 600:
+            return render_template('reset_password.html', token=token)
+        else:
+            flash('Invalid token or token has expired.')
+    return render_template('submit_token.html', token=token)
 
 
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password1():
+    return render_template('reset_password.html')
+@app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password(token):
     # Check if token exists in User model
-    user = User.query.filter_by(password_reset_token=token).first()
+    user = User.query.filter_by(reset_token=token).first()
 
     if user:
         if request.method == 'POST':
@@ -466,7 +498,7 @@ def reset_password(token):
 
             # Update user's password and delete password reset token
             user.password = new_password
-            user.password_reset_token = None
+            user.reset_token = None
             db.session.commit()
 
             flash('Password reset successful. You can now log in with your new password.')
@@ -475,7 +507,7 @@ def reset_password(token):
         return render_template('reset_password.html', token=token)
     
     
-    owner = Owner.query.filter_by(password_reset_token=token).first()
+    owner = Owner.query.filter_by(reset_token=token).first()
 
     if owner:
         if request.method == 'POST':
@@ -489,7 +521,7 @@ def reset_password(token):
 
             # Update owner's password and delete password reset token
             owner.password = new_password
-            owner.password_reset_token = None
+            owner.reset_token = None
             db.session.commit()
 
             flash('Password reset successful. You can now log in with your new password.')
@@ -497,7 +529,6 @@ def reset_password(token):
         
         return render_template('reset_password.html', token=token)
     
-    flash('Invalid or expired token.')
     return redirect(url_for('login'))  
 
 
