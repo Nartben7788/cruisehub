@@ -89,8 +89,15 @@
                     <div class="flex justify-between items-center mt-3">
                         <p class="text-2xl font-bold">${{ car.price }}</p>
 <<<<<<< HEAD
+<<<<<<< HEAD
                     </div>
                    
+=======
+                    </div>
+                    <div>
+                        {{car.status}}
+                    </div>
+>>>>>>> 7251d6a ( Update database seed with car status and add status display to user dashboard.)
 
                          <!-- Disable the reserve button if the car status is 'maintenance' -->
                     {% if car.status != 'maintenance' %}
@@ -114,10 +121,13 @@
 =======
                     <button class="btn btn-primary" disabled>Reserve</button>
                     {% endif %}
+<<<<<<< HEAD
 >>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
                     </div>
                     <button class="btn btn-primary" disabled style="background-color: grey;"> OUT </button>
                     {% endif %}
+=======
+>>>>>>> 7251d6a ( Update database seed with car status and add status display to user dashboard.)
                     
                 </div>
             </div>
