@@ -80,6 +80,10 @@
 
                     <div class="flex justify-between items-center mt-3">
                         <p class="text-2xl font-bold">${{ car.price }}</p>
+                    </div>
+                    <div>
+                        {{car.status}}
+                    </div>
 
                          <!-- Disable the reserve button if the car status is 'maintenance' -->
                     {% if car.status != 'maintenance' %}
@@ -91,7 +95,7 @@
                     {% else %}
                     <button class="btn btn-primary" disabled>Reserve</button>
                     {% endif %}
-                    </div>
+                    
                 </div>
             </div>
             {% endfor %}

@@ -75,7 +75,8 @@ def seed_data():
             price=25,
             additional_info='Sleek and fuel-efficient',
             picture='static/uploads/benny_johnson/toyota_camry.jpg',
-            owner_id=1
+            owner_id=1,
+            status = 'available'
         )
 
         car2 = Car(
@@ -84,7 +85,8 @@ def seed_data():
             price=22,
             additional_info='Compact and reliable',
             picture='static/uploads/helena_smith/honda_civic.jpg',
-            owner_id=2
+            owner_id=2,
+            status = 'available'
         )
 
         car3 = Car(
@@ -93,7 +95,8 @@ def seed_data():
             price=22,
             additional_info='Compact and reliable',
             picture='static/uploads/benny_johnson/honda_civic.jpg',
-            owner_id=1
+            owner_id=1,
+            status = 'available'
         )
         car4 = Car(
             model='Malibu', 
@@ -101,7 +104,8 @@ def seed_data():
             price=27, 
             additional_info='Modern design, spacious', 
             picture='static/uploads/ethan_johnson/chevrolet_malibu.jpg', 
-            owner_id=4
+            owner_id=4,
+            status = 'available'
             )
         
         car5 = Car(
@@ -110,7 +114,8 @@ def seed_data():
             price=35, 
             additional_info='Powerful and sporty', 
             picture='static/uploads/jackson_wilson/ford_mustang.jpg', 
-            owner_id=3
+            owner_id=3,
+            status = 'available'
         )
         car6 = Car(
             model='Accord', 
@@ -118,7 +123,8 @@ def seed_data():
             price=280, 
             additional_info='Comfortable and stylish', 
             picture='static/uploads/helena_smith/honda_accord.jpg', 
-            owner_id=2
+            owner_id=2,
+            status = 'available'
             )
     
        
