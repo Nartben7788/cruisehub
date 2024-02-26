@@ -100,6 +100,7 @@
                         <p class="text-2xl font-bold">${{ car.price }}</p>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     </div>
                    
 =======
@@ -112,6 +113,12 @@
 =======
                    
 >>>>>>> c04e1d3 ( Changed the status display to green or red based on car status.)
+=======
+                    </div>
+                    <div>
+                        {{car.status}}
+                    </div>
+>>>>>>> 7251d6a ( Update database seed with car status and add status display to user dashboard.)
 
                          <!-- Disable the reserve button if the car status is 'maintenance' -->
                     {% if car.status != 'maintenance' %}
@@ -134,6 +141,7 @@
                     {% else %}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <div id="red-status", style="color: red;">
                         Out for {{car.status}}
 =======
@@ -154,6 +162,10 @@
                     <button class="btn btn-primary" disabled style="background-color: grey;"> OUT </button>
                     {% endif %}
 =======
+>>>>>>> 7251d6a ( Update database seed with car status and add status display to user dashboard.)
+=======
+                    <button class="btn btn-primary" disabled>Reserve</button>
+                    {% endif %}
 >>>>>>> 7251d6a ( Update database seed with car status and add status display to user dashboard.)
                     
                 </div>
