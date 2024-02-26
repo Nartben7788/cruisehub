@@ -43,8 +43,9 @@ class Car(db.Model):
     make = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     additional_info = db.Column(db.String, nullable=False)
-    picture = db.Column(db.String)  
+    picture = db.Column(db.String) 
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
+    status = db.Column(db.String, default='available')
 
 
 class Reservations(db.Model):
