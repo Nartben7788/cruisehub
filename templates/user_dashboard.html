@@ -88,6 +88,7 @@
 
                     <div class="flex justify-between items-center mt-3">
                         <p class="text-2xl font-bold">${{ car.price }}</p>
+<<<<<<< HEAD
                     </div>
                    
 
@@ -96,14 +97,24 @@
                         <div id="green-status", style="color: green;">
                             {{car.status}}
                         </div>
+=======
+
+                         <!-- Disable the reserve button if the car status is 'maintenance' -->
+                    {% if car.status != 'maintenance' %}
+>>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
                         <a
                             href="{{ url_for('reservation', car_id=car.id) }}"
                             class="btn-primary p-2"
                             >Reserve</a
                         >
                     {% else %}
+<<<<<<< HEAD
                     <div id="red-status", style="color: red;">
                         Out for {{car.status}}
+=======
+                    <button class="btn btn-primary" disabled>Reserve</button>
+                    {% endif %}
+>>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
                     </div>
                     <button class="btn btn-primary" disabled style="background-color: grey;"> OUT </button>
                     {% endif %}

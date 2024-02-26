@@ -170,8 +170,12 @@ def add_car():
             picture=picture,
             additional_info=additional_info,
             owner_id=owner_id,
+<<<<<<< HEAD
             status='available'
         )
+=======
+            status='available' )
+>>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
 
         db.session.add(new_car)
         db.session.commit()
@@ -260,6 +264,7 @@ def update_status(owner_id,car_id):
     if 'user_id' in session and owner_id ==session['user_id']:
         car = Car.query.get_or_404(car_id)
         owner = Owner.query.get_or_404(car.owner_id)
+<<<<<<< HEAD
         # reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
 
         if car.status == 'available':
@@ -271,6 +276,19 @@ def update_status(owner_id,car_id):
             # mail.send(msg)
             
             flash("Car has been successfully removed from marketplace for maintenance", 'cancel_car')
+=======
+        reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
+
+        if not reservations:
+            car.status = 'maintenance'  # Set status to 'maintenance' when canceling a car
+            db.session.commit()
+
+            msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            msg.body=f' Dear {owner.name}. This is confirming that you removed your car from the car marketplace.'
+            mail.send(msg)
+            
+            flash("Car has been successfully removed from marketplace", 'cancel_car')
+>>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
         elif car.status == 'maintenance':
             car.status = 'available'
