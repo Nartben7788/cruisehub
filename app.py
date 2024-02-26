@@ -170,17 +170,7 @@ def add_car():
             picture=picture,
             additional_info=additional_info,
             owner_id=owner_id,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            status='available'
-        )
-=======
             status='available' )
->>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
-=======
-            status='available'
-        )
->>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 
         db.session.add(new_car)
         db.session.commit()
@@ -296,10 +286,7 @@ def update_status(owner_id,car_id):
             msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
             msg.body=f' Dear {owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
-=======
->>>>>>> 8f01475 ( Update car status and reservation emails)
-            
-<<<<<<< HEAD
+            db.session.commit()
             flash("Car has been successfully removed from marketplace", 'cancel_car')
 >>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
 =======
