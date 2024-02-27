@@ -468,6 +468,7 @@ def remove_car(owner_id, car_id):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         owner = Owner.query.get_or_404(car.owner_id)
         
 =======
@@ -481,6 +482,9 @@ def remove_car(owner_id, car_id):
         owner = Owner.query.get_or_404(car.owner_id)
         
 >>>>>>> 1035613 (editied some problems in app.py)
+=======
+        owner = Car.query.get_or_404(car.owner_id)
+>>>>>>> 8d28903 ( Added functionality to remove a car from the marketplace.)
         reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
         if not reservations:
             db.session.delete(car)
@@ -488,6 +492,7 @@ def remove_car(owner_id, car_id):
             msg.body=f' Dear {Owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
             db.session.commit()
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -901,6 +906,11 @@ def reset_password():
 >>>>>>> 8d28903 ( Added functionality to remove a car from the marketplace.)
 =======
 >>>>>>> 1035613 (editied some problems in app.py)
+=======
+            flash("Car has been successfully removed from marketplace", 'cancel_car')
+            return redirect(url_for('owner_dashboard',owner_id=owner_id))
+    return redirect(url_for('login'))
+>>>>>>> 8d28903 ( Added functionality to remove a car from the marketplace.)
 
 
 
