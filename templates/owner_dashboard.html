@@ -41,7 +41,14 @@
         <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Return car for reservation</button>
           </form>
+
+          <form method="POST" action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
+            <button type="submit">Remove car from market place</button>
+          </form>
+
           {% endif %}
+
+    
         
         {% endfor %}
     
