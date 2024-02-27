@@ -32,9 +32,16 @@
         <div>
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px", height="100px"></a> 
         </div>
-        <form method="POST" action="{{ url_for('cancel_car', owner_id = owner.id, car_id = car.id) }}">
-            <button type="submit">Remove car</button>
+        
+        {%if car.status == 'available'%}
+        <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+            <button type="submit">Take out for maintenance</button>
           </form>
+        {% else %}
+        <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+            <button type="submit">Return car for reservation</button>
+          </form>
+          {% endif %}
         
         {% endfor %}
     
