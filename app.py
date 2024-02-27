@@ -23,6 +23,52 @@ mail = Mail(app)
 
 @app.route("/" , methods =["POST", "GET"])
 def home():
+    if request.method == ["POST"]:
+
+        user = User.query.filter_by(reset_token=token).first()
+
+        if user:
+            if request.method == 'POST':
+                new_password = request.form['new_password']
+                confirm_password = request.form['confirm_password']
+
+                
+                if new_password != confirm_password:
+                    flash('Passwords do not match.')
+                    return render_template('reset_password.html', token=token)
+
+                # Update user's password and delete password reset token
+                user.password = new_password
+                user.reset_token = None
+                db.session.commit()
+
+                flash('Password reset successful. You can now log in with your new password.')
+                return redirect(url_for('login'))  
+            
+            return render_template('reset_password.html', token=token)
+        
+        
+        owner = Owner.query.filter_by(reset_token=token).first()
+
+        if owner:
+            if request.method == 'POST':
+                new_password = request.form['new_password']
+                confirm_password = request.form['confirm_password']
+
+                
+                if new_password != confirm_password:
+                    flash('Passwords do not match.')
+                    return render_template('reset_password.html', token=token)
+
+                # Update owner's password and delete password reset token
+                owner.password = new_password
+                owner.reset_token = None
+                db.session.commit()
+
+                flash('Password reset successful. You can now log in with your new password.')
+                return redirect(url_for('login'))  
+            
+            return render_template('reset_password.html', token=token)
     return render_template("index.html")
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -456,7 +502,7 @@ def remove_car(owner_id, car_id):
     mail.send(msg)
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
-def forgot_password1():
+def forgot_password():
     return render_template('forgot_password.html')
 # @app.route('/forgot_password', methods=['GET', 'POST'])
 # def forgot_password():
@@ -511,10 +557,10 @@ def forgot_password1():
 def submit_token():
 
     if request.method == 'POST':
-        email = request.form['token']
+        email = request.form['email']
 
         user = User.query.filter_by(email=email).first()
-    # user = User.query.filter_by(reset_token=token).first()
+
         if not user:
             return redirect(url_for("forgot_password"))
         elif user:
@@ -527,96 +573,58 @@ def submit_token():
 
             user_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [user.email])
             user_message.body = f'''To reset your password, visit the following link:
-                                    {url_for('submit_token', _external =True)}
+                {url_for('submit_token', _external =True)} and enter this token [{user.reset_token}]
                 If you did not make this request then simply ignore this email and no changes will be made.
                 '''
             mail.send(user_message)
-    #     if token == user.reset_token and time.time() <= user.reset_token_timestamp + 600:
-    #         user.reset_token_timestamp=None
-    #         return render_template('reset_password.html')
-    #     else:
-    #         flash("Invalid token or token has expired.")
 
-    #         return render_template('submit_token.html')
+            return redirect(url_for("submit_token"))
+        
+
         
         owner = Owner.query.filter_by(email=email).first()
-    if not owner:
-        return redirect(url_for("forgot_password.html"))
+        if not owner:
+            return redirect(url_for("forgot_password"))
 
-    if owner:
-        random_number = secrets.randbelow(1000000)
-        token = '{:06d}'.format(random_number)
-        owner.reset_token = token
-        owner.reset_token_timestamp = datetime.utcnow()
-        db.session.commit()
+        if owner:
+            random_number = secrets.randbelow(1000000)
+            token = '{:06d}'.format(random_number)
+            owner.reset_token = token
+            owner.reset_token_timestamp = datetime.utcnow()
+            db.session.commit()
 
-        owner_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [owner.email])
-        owner_message.body = f'''To reset your password, visit the following link:
-                            {url_for('submit_token', _external=True)}
-                If you did not make this request then simply ignore this email and no changes will be made.
-                '''
-        mail.send(owner_message)
-        # if token == owner.reset_token and time.time() <= owner.reset_token_timestamp + 600:
-        #     owner.reset_token_timestamp =None
+            owner_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [owner.email])
+            owner_message.body = f'''To reset your password, visit the following link: 
+                                {url_for('submit_token', _external=True)}  and enter this token [{owner.reset_token}]
+                    If you did not make this request then simply ignore this email and no changes will be made.
 
-        #     return render_template('reset_password.html', token=token)
-        # else:
-        #     flash('Invalid token or token has expired.')
+                    '''
+            mail.send(owner_message)
+            return redirect(url_for("submit_token"))
+        
     return render_template('submit_token.html')
 
 
-@app.route('/reset_password', methods=['GET', 'POST'])
+@app.route('/reset_password', methods=['GET'])
 def reset_password1():
     return render_template('reset_password.html')
-@app.route('/reset_password', methods=['GET', 'POST'])
-def reset_password(token):
-    # Check if token exists in User model
-    user = User.query.filter_by(reset_token=token).first()
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    if request.method == ["POST"]:
+        token = request.form["token"]
+        token=int(token)
 
-    if user:
-        if request.method == 'POST':
-            new_password = request.form['new_password']
-            confirm_password = request.form['confirm_password']
-
-            
-            if new_password != confirm_password:
-                flash('Passwords do not match.')
-                return render_template('reset_password.html', token=token)
-
-            # Update user's password and delete password reset token
-            user.password = new_password
-            user.reset_token = None
-            db.session.commit()
-
-            flash('Password reset successful. You can now log in with your new password.')
-            return redirect(url_for('login'))  
+        user_reset_token = User.query.filter_by(reset_token = token).first()
+        if user_reset_token: #and time.time() <= user_reset_token.reset_token_timestamp + 600:
+                return redirect(url_for('reset_password'))
         
-        return render_template('reset_password.html', token=token)
-    
-    
-    owner = Owner.query.filter_by(reset_token=token).first()
+        owner_reset_token = Owner.query.filter_by(reset_token = token)
+        if owner_reset_token: #and time.time() <= owner_reset_token.reset_token_timestamp + 600:
+                return redirect(url_for('reset_password'))
 
-    if owner:
-        if request.method == 'POST':
-            new_password = request.form['new_password']
-            confirm_password = request.form['confirm_password']
-
-            
-            if new_password != confirm_password:
-                flash('Passwords do not match.')
-                return render_template('reset_password.html', token=token)
-
-            # Update owner's password and delete password reset token
-            owner.password = new_password
-            owner.reset_token = None
-            db.session.commit()
-
-            flash('Password reset successful. You can now log in with your new password.')
-            return redirect(url_for('login'))  
         
-        return render_template('reset_password.html', token=token)
-    
-    return redirect(url_for('login'))  
+        flash('Invalid token or token has expired.')
+    return redirect(url_for("forgot_password"))  
 
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
