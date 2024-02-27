@@ -34,8 +34,21 @@
         </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+        
+        {%if car.status == 'available'%}
+        <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+            <button type="submit">Take out for maintenance</button>
+          </form>
+        {% else %}
+        <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+            <button type="submit">Return car for reservation</button>
+          </form>
+          {% endif %}
+>>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
         
 >>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
 =======
