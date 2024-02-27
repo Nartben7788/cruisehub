@@ -32,7 +32,11 @@
         <div>
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px" , height="100px"></a>
         </div>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
         {%if car.status == 'available'%}
         <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Take out for maintenance</button>
@@ -41,6 +45,7 @@
         <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Return car for reservation</button>
           </form>
+<<<<<<< HEAD
 
           <form method="POST" action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Remove car from market place</button>
@@ -50,6 +55,10 @@
 
 
 
+=======
+          {% endif %}
+        
+>>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
         {% endfor %}
 
     <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>

@@ -265,6 +265,7 @@ def update_status(owner_id,car_id):
         car = Car.query.get_or_404(car_id)
         owner = Owner.query.get_or_404(car.owner_id)
 <<<<<<< HEAD
+<<<<<<< HEAD
         # reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
 
         if car.status == 'available':
@@ -278,8 +279,11 @@ def update_status(owner_id,car_id):
             flash("Car has been successfully removed from marketplace for maintenance", 'cancel_car')
 =======
         reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
+=======
+        # reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
+>>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
 
-        if not reservations:
+        if car.status == 'available':
             car.status = 'maintenance'  # Set status to 'maintenance' when canceling a car
             db.session.commit()
 
@@ -287,16 +291,26 @@ def update_status(owner_id,car_id):
             msg.body=f' Dear {owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
             
+<<<<<<< HEAD
             flash("Car has been successfully removed from marketplace", 'cancel_car')
 >>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
+=======
+            flash("Car has been successfully removed from marketplace for maintenance", 'cancel_car')
+>>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
         elif car.status == 'maintenance':
             car.status = 'available'
             db.session.commit()
 
+<<<<<<< HEAD
             # msg = Message('Car Restored for Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
             # msg.body=f' Dear {owner.name}. This is confirming that you have succesfully returned  your car for reservation.'
             # mail.send(msg)
+=======
+            msg = Message('Car Restored for Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            msg.body=f' Dear {owner.name}. This is confirming that you have succesfully returned  your car for reservation.'
+            mail.send(msg)
+>>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
             
             flash("Car is now available for reservation", 'cancel_car')
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
