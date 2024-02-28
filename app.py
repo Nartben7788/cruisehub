@@ -451,7 +451,7 @@ def submit_token():
 
         if not user:
             flash("Invalid email!")
-            return redirect(url_for("forgot_password"))
+            return render_template("submit_token.html")
             
         elif user:
             random_number = secrets.randbelow(1000000)
@@ -463,18 +463,19 @@ def submit_token():
 
             user_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [user.email])
             user_message.body = f'''To reset your password, visit the following link:
-                {url_for('reset_password', _external =True)} and enter this token [{user.reset_token}]
+                {url_for('submit_token', _external =True)} and enter this token [{user.reset_token}]
                 If you did not make this request then simply ignore this email and no changes will be made.
                 '''
             mail.send(user_message)
             flash("An email has been sent to you with a reset token")
+            return render_template("submit_token.html")
         
 
         
         owner = Owner.query.filter_by(email=email).first()
         if not owner:
             flash("invalid email!")
-            return redirect(url_for("forgot_password"))
+            return render_template("submit_token.html")
 
         elif owner:
             random_number = secrets.randbelow(1000000)
@@ -485,12 +486,14 @@ def submit_token():
 
             owner_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [owner.email])
             owner_message.body = f'''To reset your password, visit the following link: 
-                                {url_for('reset_password', _external=True)}  and enter this token [{owner.reset_token}]
+                                {url_for('submit_token', _external=True)}  and enter this token [{owner.reset_token}]
                     If you did not make this request then simply ignore this email and no changes will be made.
 
                     '''
             mail.send(owner_message)
-           
+            flash("An email has been sent to you with a reset token")
+        
+            return render_template("submit_token.html")
 
     return render_template('submit_token.html')
 
