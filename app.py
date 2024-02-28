@@ -423,7 +423,7 @@ def remove_car(owner_id, car_id):
             msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
             msg.body=f' Dear {Owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
-             flash("Car c removed from marketplace", 'cancel_car')
+            flash("Car cannot be removed from marketplace because it has been reserved", 'cancel_car')
 
     return redirect(url_for('login'))
 
