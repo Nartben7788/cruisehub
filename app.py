@@ -909,6 +909,12 @@ def reset_password():
 =======
             flash("Car has been successfully removed from marketplace", 'cancel_car')
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
+        else:
+            msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            msg.body=f' Dear {Owner.name}. This is confirming that you removed your car from the car marketplace.'
+            mail.send(msg)
+             flash("Car c removed from marketplace", 'cancel_car')
+
     return redirect(url_for('login'))
 >>>>>>> 8d28903 ( Added functionality to remove a car from the marketplace.)
 
