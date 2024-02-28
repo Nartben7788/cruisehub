@@ -261,9 +261,9 @@ def update_status(owner_id,car_id):
             car.status = 'maintenance'  # Set status to 'maintenance' when canceling a car
             db.session.commit()
 
-            msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
-            msg.body=f' Dear {owner.name}. This is confirming that you removed your car from the car marketplace.'
-            mail.send(msg)
+            # msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            # msg.body=f' Dear {owner.name}. This is confirming that you removed your car from the car marketplace.'
+            # mail.send(msg)
             
             flash("Car has been successfully removed from marketplace for maintenance", 'cancel_car')
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
@@ -271,9 +271,9 @@ def update_status(owner_id,car_id):
             car.status = 'available'
             db.session.commit()
 
-            msg = Message('Car Restored for Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
-            msg.body=f' Dear {owner.name}. This is confirming that you have succesfully returned  your car for reservation.'
-            mail.send(msg)
+            # msg = Message('Car Restored for Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+            # msg.body=f' Dear {owner.name}. This is confirming that you have succesfully returned  your car for reservation.'
+            # mail.send(msg)
             
             flash("Car is now available for reservation", 'cancel_car')
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
@@ -409,7 +409,8 @@ def remove_car(owner_id, car_id):
     """Handle a request to cancel a car listing"""
     if 'user_id' in session and owner_id ==session['user_id']:
         car = Car.query.get_or_404(car_id)
-        owner = Car.query.get_or_404(car.owner_id)
+        owner = Owner.query.get_or_404(car.owner_id)
+        
         reservations = Reservations.query.filter_by(reserved_car_id=car.id).all()
         if not reservations:
             db.session.delete(car)
@@ -417,13 +418,13 @@ def remove_car(owner_id, car_id):
             msg.body=f' Dear {Owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
             db.session.commit()
-            flash("Car has been successfully removed from marketplace", 'cancel_car')
+            flash("Car has been successfully removed from marketplace", 'remove_car')
             return redirect(url_for('owner_dashboard',owner_id=owner_id))
         else:
             msg = Message('Car Removed' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
             msg.body=f' Dear {Owner.name}. This is confirming that you removed your car from the car marketplace.'
             mail.send(msg)
-            flash("Car cannot be removed from marketplace because it has been reserved", 'cancel_car')
+            flash("Car cannot be removed from marketplace because it has been reserved", 'remove_car')
 
     return redirect(url_for('login'))
 
