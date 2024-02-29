@@ -30,7 +30,26 @@
         <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
         <p><strong>Owner:</strong><a href="{{url_for('owner_profile', owner_id = car.owner_id)}}">{{ owner.name}}</p></a> 
     </div>
-    <a  href="{{ url_for('reservation', car_id=car.id) }}" class="btn-primary p-2">Reserve</a>
+
+
+    <div>
+        {% if car.status != 'maintenance' %}
+        <div id="green-status", style="color: green;">
+            {{car.status}}
+        </div>
+        <a
+            href="{{ url_for('reservation', car_id=car.id) }}"
+            class="btn-primary p-2"
+            >Reserve</a
+        >
+    {% else %}
+    <div id="red-status", style="color: red;">
+        Out for {{car.status}}
+    </div>
+    <button class="btn btn-primary" disabled style="background-color: grey;">OUT</button>
+    {% endif %}
+    </div>
+    
     <br>
     <br>
       <a href='{{url_for("user_dashboard")}}'>Back to User dashboard</a>
