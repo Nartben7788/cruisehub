@@ -10,6 +10,8 @@
             href="{{ url_for('static', filename='output.css') }}" />
     </head>
     <body class="bg-blue h-lvh flex justify-center items-center">
+        {% include 'navigations.html' %}
+
         <form action="{{ url_for('reservation', car_id=car_id) }}" method="post" class="bg-white p-4">
             <!-- Non-editable fields pre-filled from the database -->
             <label for="name" class="block my-6">

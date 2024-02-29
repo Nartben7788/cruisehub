@@ -10,6 +10,8 @@
             href="{{ url_for('static', filename='output.css') }}" />
 </head>
 <body class="bg-blue-light">
+    {% include 'navigations.html' %}
+
     <!-- Navigation bar for user Dashboard -->
     <nav class="container py-5">
         <ul class="flex justify-between w-full">
@@ -52,7 +54,9 @@
     
     <br>
     <br>
-      <a href='{{url_for("user_dashboard")}}'>Back to User dashboard</a>
+      <a href='{{url_for("user_dashboard")}}'
+      class="btn-primary p-2"
+      >Back to User dashboard</a>
 </body>
 
 </html>

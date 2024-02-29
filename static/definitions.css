@@ -1,0 +1,22 @@
+/* definitions.css */
+/* Navigation bar styles */
+nav {
+    background-color: #1a202c;
+    padding: 1rem;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #f56565;
+}
