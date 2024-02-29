@@ -4,6 +4,8 @@
     <title>User Reservations</title>
 </head>
 <body class="bg-blue">
+  {% include 'navigations.html' %}
+
     <h3>Your Reservations!</h3>
   {% if reserved_cars%}
     {% for reservations, car in reserved_cars%}

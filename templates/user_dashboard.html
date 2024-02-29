@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='1justlogo.png')}}" >
         <link
             rel="stylesheet"
             type="text/css"
@@ -11,9 +12,12 @@
             rel="stylesheet"
             type="text/css"
             href="{{ url_for('static', filename='output.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='definitions.css') }}" />
         <title>User Dashboard</title>
     </head>
     <body class="bg-blue-light">
+        {% include 'navigations.html' %}
+
         <!-- Navigation bar for user Dashboard -->
         <nav class="container py-5">
             <ul class="flex justify-between w-full">
@@ -33,7 +37,9 @@
             Explore Our Fleets
         </h1>
 
-        <h3><a href="{{url_for('user_reservations')}}">My Reservations</a></h3>
+        <h3><a href="{{url_for('user_reservations')}}"
+            class="btn-primary p-2"
+            >My Reservations</a></h3>
         
         <!-- Filter Form -->
         <section class="container flex gap-3 justify-center">
