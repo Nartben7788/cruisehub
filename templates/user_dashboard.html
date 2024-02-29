@@ -98,21 +98,28 @@
                    
 =======
                     </div>
+<<<<<<< HEAD
                     <div>
                         {{car.status}}
                     </div>
 >>>>>>> 7251d6a ( Update database seed with car status and add status display to user dashboard.)
+=======
+                   
+>>>>>>> c04e1d3 ( Changed the status display to green or red based on car status.)
 
                          <!-- Disable the reserve button if the car status is 'maintenance' -->
                     {% if car.status != 'maintenance' %}
                         <div id="green-status", style="color: green;">
                             {{car.status}}
                         </div>
+<<<<<<< HEAD
 =======
 
                          <!-- Disable the reserve button if the car status is 'maintenance' -->
                     {% if car.status != 'maintenance' %}
 >>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
+=======
+>>>>>>> c04e1d3 ( Changed the status display to green or red based on car status.)
                         <a
                             href="{{ url_for('reservation', car_id=car.id) }}"
                             class="btn-primary p-2"
@@ -120,9 +127,15 @@
                         >
                     {% else %}
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <div id="red-status", style="color: red;">
                         Out for {{car.status}}
 =======
+=======
+                    <div id="red-status", style="color: red;">
+                        {{car.status}}
+                    </div>
+>>>>>>> c04e1d3 ( Changed the status display to green or red based on car status.)
                     <button class="btn btn-primary" disabled>Reserve</button>
                     {% endif %}
 <<<<<<< HEAD
