@@ -33,6 +33,7 @@ class TestFlaskRoutes(unittest.TestCase):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     def tearDown(self):
 <<<<<<< HEAD
         with app.app_context():
@@ -51,11 +52,16 @@ class TestFlaskRoutes(unittest.TestCase):
         self.app_context.pop()
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> 28a58fb (Fixed a bug in the tests)
     # def tearDown(self):
     #     # Remove the application context and drop all tables after running the tests
     #     db.session.remove()
     #     db.drop_all()
     #     self.app_context.pop()
+<<<<<<< HEAD
+>>>>>>> 28a58fb (Fixed a bug in the tests)
+=======
 >>>>>>> 28a58fb (Fixed a bug in the tests)
 
     # Write your test cases here
