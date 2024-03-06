@@ -498,118 +498,132 @@ def submit_token():
     return render_template('submit_token.html')
 
 
-# @app.route('/reset_password', methods=['GET', 'POST'])
-# def reset_password1():
-#     return render_template('reset_password.html')
-@app.route('/reset_password', methods=['POST','GET'])
+
+@app.route('/reset_password', methods=['POST'])
 def reset_password():
 
     if request.method == 'POST':
         token = request.form["token"]
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
+        user_type = request.form['user_type']
+        email = request.form["email"]
 
-        user = User.query.filter_by(reset_token=token).first()
-        owner = Owner.query.filter_by(reset_token=token).first()
+        if user_type == "user":
+            user = User.query.filter_by(reset_token=token, email=email).first()
+            
+            if user and user.email:
+                if token == user.reset_token:
+                    if user.reset_token and (user.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
+                        
+                        error_messages = []
 
-        if user is not None:
-            if user.reset_token and (user.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
-                
-                error_messages = []
+                        has_uppercase = False
+                        has_lowercase = False
+                        has_symbol = False
 
-                has_uppercase = False
-                has_lowercase = False
-                has_symbol = False
+                        if len(new_password) < 6:
+                            error_messages.append("Password must have at least 6 characters." )
 
-                if len(new_password) < 6:
-                    error_messages.append("Password must have at least 6 characters." ,"danger")
+                        else:
+                            for char in new_password:
+                                if char.isupper():
+                                    has_uppercase = True
+                                elif char.islower():
+                                    has_lowercase = True
+                                elif char in "!@#$%^&*.()_+{}|<>?~-":
+                                    has_symbol = True
+                        
+                        if not has_uppercase:
+                            error_messages.append("Password must contain at least one uppercase letter." )
+                        if not has_lowercase:
+                            error_messages.append("Password must contain at least one lowercase letter.")
+                        if not has_symbol:
+                            error_messages.append("Password must contain at least one symbol.")
 
+                        if error_messages:
+                            flash(".".join(error_messages), "danger")
+                            return redirect(url_for("submit_token"))
+
+
+                        if new_password == confirm_password:
+                            
+                            user.password = generate_password_hash(new_password)
+                            user.reset_token = None
+                            db.session.commit()
+
+                            flash('Password reset successful. You can now log in with your new password.')
+                            return redirect(url_for('login'))
+                        
+                        else:
+                            flash('Passwords do not match!')
+                            return redirect(url_for('submit_token'))  
+                    else:
+                        flash("Invalid or expired token!" )
+                        return redirect(url_for('forgot_password')) 
                 else:
-                    for char in new_password:
-                        if char.isupper():
-                            has_uppercase = True
-                        elif char.islower():
-                            has_lowercase = True
-                        elif char in "!@#$%^&*.()_+{}|<>?~-":
-                            has_symbol = True
-                
-                if not has_uppercase:
-                    error_messages.append("Password must contain at least one uppercase letter.", "danger" )
-                if not has_lowercase:
-                    error_messages.append("Password must contain at least one lowercase letter.","danger")
-                if not has_symbol:
-                    error_messages.append("Password must contain at least one symbol.", "danger")
-
-                if error_messages:
-                    flash(".".join(error_messages), "danger")
-
-
-                if new_password == confirm_password:
-                    
-                    user.password = generate_password_hash(new_password)
-                    user.reset_token = None
-                    db.session.commit()
-
-                    flash('Password reset successful. You can now log in with your new password.', "success")
-                    return redirect(url_for('login'))
-                
-                else:
-                    flash('Passwords do not match!', "danger")
-                    return redirect(url_for('submit_token', token=token))  
+                        flash("Invalid or expired token!" )
+                        return redirect(url_for('forgot_password')) 
             else:
-                flash("Invalid or expired token!" , "danger")
-                return redirect(url_for('forgot_password'))  
+                return redirect(url_for("signup"))
+        
+        elif user_type == "owner":
+            owner = Owner.query.filter_by(reset_token=token, email= email).first()
 
-        elif owner is not None:
-            if owner.reset_token and (owner.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
+            if owner and owner.email:
+                if token == owner.reset_token:
+                    if owner.reset_token and (owner.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
 
-                error_messages = []
+                        error_messages = []
 
-                has_uppercase = False
-                has_lowercase = False
-                has_symbol = False
+                        has_uppercase = False
+                        has_lowercase = False
+                        has_symbol = False
 
-                if len(new_password) < 6:
-                    error_messages.append("Password must have at least 6 characters.",)
+                        if len(new_password) < 6:
+                            error_messages.append("Password must have at least 6 characters.",)
 
+                        else:
+                            for char in new_password:
+                                if char.isupper():
+                                    has_uppercase = True
+                                elif char.islower():
+                                    has_lowercase = True
+                                elif char in "!@#$%^&*.()_+{}|<>?~-":
+                                    has_symbol = True
+                        
+                        if not has_uppercase:
+                            error_messages.append("Password must contain at least one uppercase letter.")
+                        if not has_lowercase:
+                            error_messages.append("Password must contain at least one lowercase letter.")
+                        if not has_symbol:
+                            error_messages.append("Password must contain at least one symbol.")
+
+                        if error_messages:
+                            flash(".".join(error_messages), "token")
+                            return redirect(url_for("submit_token"))
+
+                        if new_password == confirm_password:
+
+                            owner.password = generate_password_hash(new_password)
+                            owner.reset_token = None
+                            db.session.commit()
+
+                            flash('Password reset successful. You can now log in with your new password.')
+                            return redirect(url_for('login'))
+                        
+                        else:
+                            flash('Passwords do not match!')
+                            return redirect(url_for('submit_token'))  
+                        
+                    else:
+                        flash("Invalid or expired token!")
+                        return redirect(url_for('forgot_password'))
                 else:
-                    for char in new_password:
-                        if char.isupper():
-                            has_uppercase = True
-                        elif char.islower():
-                            has_lowercase = True
-                        elif char in "!@#$%^&*.()_+{}|<>?~-":
-                            has_symbol = True
-                
-                if not has_uppercase:
-                    error_messages.append("Password must contain at least one uppercase letter.")
-                if not has_lowercase:
-                    error_messages.append("Password must contain at least one lowercase letter.")
-                if not has_symbol:
-                    error_messages.append("Password must contain at least one symbol.")
-
-                if error_messages:
-                    flash(".".join(error_messages), "error")
-
-                if new_password == confirm_password:
-
-                    owner.password = generate_password_hash(new_password)
-                    owner.reset_token = None
-                    db.session.commit()
-
-                    flash('Password reset successful. You can now log in with your new password.')
-                    return redirect(url_for('login'))
-                
-                else:
-                    flash('Passwords do not match!')
-                    return redirect(url_for('submit_token', token=token))  
-                
+                    flash("Invalid or expired token!")
+                    return redirect(url_for('forgot_password')) 
             else:
-                flash("Invalid or expired token!")
-                return redirect(url_for('forgot_password'))  
-
-    return render_template('reset_password.html')
-
+                return redirect(url_for('signup'))
 
 
 
