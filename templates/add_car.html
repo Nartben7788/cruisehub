@@ -28,5 +28,6 @@
         <button type="submit">Add Car</button>
     </form>
     <a href="{{url_for('logout')}}">LogOut</a>
+    <a href="{{url_for('owner_dashboard', owner_id = user.id)}}">Back to dashboard</a>
 </body>
 </html>

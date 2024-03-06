@@ -12,7 +12,9 @@
             <div>
                 <ol>
                     <li>
-                    <img src="/{{car.picture}}" alt="car picture"> 
+                    <img src="/{{car.picture}}" alt="car picture">
+                    <br>
+
                     Start date: {{reservation.start_date.strftime("%b %d, %Y")}} End date: {{reservation.end_date.strftime("%b %d, %Y")}}
                         Booked by : {{user.name}}
 
@@ -20,6 +22,7 @@
                 </ol>
             </div>
         {%endfor%}
+        <a href="{{url_for('owner_dashboard', owner_id = user.id)}}">Back to Owner dashboard</a>
     {%else%}
         <h3>You don't have any bookings yet!</h3>
     {%endif%}
