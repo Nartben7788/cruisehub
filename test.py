@@ -2,6 +2,7 @@ import unittest
 from flask import Flask
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from app import app, db, User, Owner, Car
 =======
 from app import app, db, User, Owner
@@ -9,6 +10,9 @@ from app import app, db, User, Owner
 =======
 from app import app, db, User, Owner, Car
 >>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
+=======
+from app import app, db, User, Owner
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 
 import unittest
 from app import app, db
@@ -28,6 +32,7 @@ class TestFlaskRoutes(unittest.TestCase):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     def tearDown(self):
 <<<<<<< HEAD
         with app.app_context():
@@ -37,10 +42,14 @@ class TestFlaskRoutes(unittest.TestCase):
 
    
 =======
+=======
+    def tearDown(self):
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
         # Remove the application context and drop all tables after running the tests
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+<<<<<<< HEAD
 =======
     # def tearDown(self):
     #     # Remove the application context and drop all tables after running the tests
@@ -60,6 +69,10 @@ class TestFlaskRoutes(unittest.TestCase):
 
    
 >>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
+=======
+
+    # Write your test cases here
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 
     def test_home_route(self):
         """Test the home route"""
@@ -71,15 +84,19 @@ class TestFlaskRoutes(unittest.TestCase):
         response = self.app.post('/signup', data={
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             'name': 'Test User2',
             'phone_number': '1234567890',
             'email': 'test@example.com',
             'username': 'testuser2',
 =======
+=======
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
             'name': 'Test User',
             'phone_number': '1234567890',
             'email': 'test@example.com',
             'username': 'testuser',
+<<<<<<< HEAD
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 =======
             'name': 'Test User2',
@@ -87,6 +104,8 @@ class TestFlaskRoutes(unittest.TestCase):
             'email': 'test@example.com',
             'username': 'testuser2',
 >>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
+=======
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
             'password': 'testpassword',
             'user_type': 'user'
         })
@@ -95,6 +114,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_login_route(self):
         """Test the login route"""
         # Create a test user
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         user = User(name='Test Userlog', phone_number='1234567890', email='test@examplelog.com',
@@ -107,6 +127,10 @@ class TestFlaskRoutes(unittest.TestCase):
         user = User(name='Test Userlog', phone_number='1234567890', email='test@examplelog.com',
                     username='testuserlog', password='testpassword', user_type='user')
 >>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
+=======
+        user = User(name='Test User', phone_number='1234567890', email='test@example.com',
+                    username='testuser', password='testpassword', user_type='user')
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
         db.session.add(user)
         db.session.commit()
 
@@ -136,6 +160,7 @@ class TestFlaskRoutes(unittest.TestCase):
             response = client.get('/logout', follow_redirects=True)
             self.assertEqual(response.status_code, 200)  # Should return to the login page
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -249,5 +274,7 @@ class TestFlaskRoutes(unittest.TestCase):
     #         self.assertIn(b'Test User', response.data)
 
 >>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
+=======
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 if __name__ == '__main__':
     unittest.main()
