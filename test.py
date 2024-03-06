@@ -38,6 +38,7 @@ class TestFlaskRoutes(unittest.TestCase):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     def tearDown(self):
 <<<<<<< HEAD
         with app.app_context():
@@ -83,6 +84,15 @@ class TestFlaskRoutes(unittest.TestCase):
 
     # Write your test cases here
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
+=======
+    def tearDown(self):
+        with app.app_context():
+            # Delete only the entries created during the test
+            db.session.rollback()
+
+
+   
+>>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
 
     def test_home_route(self):
         """Test the home route"""
@@ -92,6 +102,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_signup_route(self):
         """Test the signup route"""
         response = self.app.post('/signup', data={
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -116,6 +127,12 @@ class TestFlaskRoutes(unittest.TestCase):
 >>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
 =======
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
+=======
+            'name': 'Test User2',
+            'phone_number': '1234567890',
+            'email': 'test@example.com',
+            'username': 'testuser2',
+>>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
             'password': 'testpassword',
             'user_type': 'user'
         })
@@ -124,6 +141,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_login_route(self):
         """Test the login route"""
         # Create a test user
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -141,6 +159,10 @@ class TestFlaskRoutes(unittest.TestCase):
         user = User(name='Test User', phone_number='1234567890', email='test@example.com',
                     username='testuser', password='testpassword', user_type='user')
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
+=======
+        user = User(name='Test Userlog', phone_number='1234567890', email='test@examplelog.com',
+                    username='testuserlog', password='testpassword', user_type='user')
+>>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
         db.session.add(user)
         db.session.commit()
 
@@ -202,6 +224,7 @@ class TestFlaskRoutes(unittest.TestCase):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             self.assertEqual(response.status_code, 302)
 =======
             self.assertEqual(response.status_code, 200)
@@ -212,6 +235,9 @@ class TestFlaskRoutes(unittest.TestCase):
 =======
             self.assertEqual(response.status_code, 200)
 >>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
+=======
+            self.assertEqual(response.status_code, 302)
+>>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
             self.assertIn(b'Test Model', response.data)  # Check for model name in response
 
             # Check if the car is added to the database
@@ -222,6 +248,7 @@ class TestFlaskRoutes(unittest.TestCase):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     # def test_add_car_not_authenticated(self):
     #     """Test adding a car when the owner is not authenticated"""
 
@@ -297,13 +324,38 @@ class TestFlaskRoutes(unittest.TestCase):
 =======
     def test_add_car_not_authenticated(self):
         """Test adding a car when the owner is not authenticated"""
+=======
+    # def test_add_car_not_authenticated(self):
+    #     """Test adding a car when the owner is not authenticated"""
+>>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
 
-        # Make a GET request to add a car without logging in
-        response = self.app.get('/add_car', follow_redirects=True)
+    #     # Make a GET request to add a car without logging in
+    #     response = self.app.get('/add_car', follow_redirects=True)
 
-        # Check if the user is redirected to the login page
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Login', response.data)
+    #     # Check if the user is redirected to the login page
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertIn(b'Login', response.data)
+
+    # def test_user_dashboard(self):
+    #     """Test user dashboard route"""
+
+    #     # Create a test user
+    #     test_user = User(name='Test User', phone_number='1234567890', email='testuserdashboard@example.com', username='testuserdashboard', password='testpassword')
+    #     db.session.add(test_user)
+    #     db.session.commit()
+
+    #     with self.app as client:
+    #         with client.session_transaction() as sess:
+    #             # Set up session for the test user
+    #             sess['user_id'] = test_user.id
+    #             sess['user_type'] = 'user'
+
+    #         # Access the user dashboard route
+    #         response = client.get('/user_dashboard')
+    #         self.assertEqual(response.status_code, 200)
+
+    #         # Check if the user's name is present in the response data
+    #         self.assertIn(b'Test User', response.data)
 
 >>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 if __name__ == '__main__':
