@@ -171,11 +171,16 @@ def add_car():
             additional_info=additional_info,
             owner_id=owner_id,
 <<<<<<< HEAD
+<<<<<<< HEAD
             status='available'
         )
 =======
             status='available' )
 >>>>>>> 13af2c5 ( Update car status to 'maintenance' when canceling a car. Disable the reserve button if the car status is 'maintenance'.)
+=======
+            status='available'
+        )
+>>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 
         db.session.add(new_car)
         db.session.commit()
