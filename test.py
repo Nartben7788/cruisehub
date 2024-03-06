@@ -3,6 +3,7 @@ from flask import Flask
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from app import app, db, User, Owner, Car
 =======
 from app import app, db, User, Owner
@@ -13,6 +14,9 @@ from app import app, db, User, Owner, Car
 =======
 from app import app, db, User, Owner
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
+=======
+from app import app, db, User, Owner, Car
+>>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 
 import unittest
 from app import app, db
@@ -169,6 +173,9 @@ class TestFlaskRoutes(unittest.TestCase):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 =======
 >>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
     def test_add_car_authenticated(self):
@@ -194,6 +201,7 @@ class TestFlaskRoutes(unittest.TestCase):
             # Check if the car is added successfully
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             self.assertEqual(response.status_code, 302)
 =======
             self.assertEqual(response.status_code, 200)
@@ -201,6 +209,9 @@ class TestFlaskRoutes(unittest.TestCase):
 =======
             self.assertEqual(response.status_code, 302)
 >>>>>>> c0c9b6f (Added links to the add car and show reservation pages for easy navigation)
+=======
+            self.assertEqual(response.status_code, 200)
+>>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
             self.assertIn(b'Test Model', response.data)  # Check for model name in response
 
             # Check if the car is added to the database
@@ -208,6 +219,7 @@ class TestFlaskRoutes(unittest.TestCase):
             self.assertIsNotNone(car)
             self.assertEqual(car.make, 'Test Make')
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     # def test_add_car_not_authenticated(self):
@@ -282,5 +294,17 @@ class TestFlaskRoutes(unittest.TestCase):
 >>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 =======
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
+=======
+    def test_add_car_not_authenticated(self):
+        """Test adding a car when the owner is not authenticated"""
+
+        # Make a GET request to add a car without logging in
+        response = self.app.get('/add_car', follow_redirects=True)
+
+        # Check if the user is redirected to the login page
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login', response.data)
+
+>>>>>>> dbc3d62 (fixed a bug in acessing the add-car page without being logged iin)
 if __name__ == '__main__':
     unittest.main()

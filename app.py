@@ -170,7 +170,8 @@ def add_car():
             picture=picture,
             additional_info=additional_info,
             owner_id=owner_id,
-            status='available' )
+            status='available'
+        )
 
         db.session.add(new_car)
         db.session.commit()
