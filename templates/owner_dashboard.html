@@ -33,10 +33,14 @@
         <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px" , height="100px"></a>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
         
 >>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
+=======
+
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
         {%if car.status == 'available'%}
         <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Take out for maintenance</button>
@@ -64,9 +68,14 @@
 >>>>>>> 8d28903 ( Added functionality to remove a car from the marketplace.)
           {% endif %}
 
+<<<<<<< HEAD
     
         
 >>>>>>> 85975e5 ( Update car status functionality so that the owner can also change the status to available from maintenance)
+=======
+
+
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
         {% endfor %}
 
     <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>

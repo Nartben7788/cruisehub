@@ -1,6 +1,10 @@
 import unittest
 from flask import Flask
+<<<<<<< HEAD
 from app import app, db, User, Owner, Car
+=======
+from app import app, db, User, Owner
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 
 import unittest
 from app import app, db
@@ -19,12 +23,21 @@ class TestFlaskRoutes(unittest.TestCase):
         db.create_all()
 
     def tearDown(self):
+<<<<<<< HEAD
         with app.app_context():
             # Delete only the entries created during the test
             db.session.rollback()
 
 
    
+=======
+        # Remove the application context and drop all tables after running the tests
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
+
+    # Write your test cases here
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 
     def test_home_route(self):
         """Test the home route"""
@@ -34,10 +47,17 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_signup_route(self):
         """Test the signup route"""
         response = self.app.post('/signup', data={
+<<<<<<< HEAD
             'name': 'Test User2',
             'phone_number': '1234567890',
             'email': 'test@example.com',
             'username': 'testuser2',
+=======
+            'name': 'Test User',
+            'phone_number': '1234567890',
+            'email': 'test@example.com',
+            'username': 'testuser',
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
             'password': 'testpassword',
             'user_type': 'user'
         })
@@ -46,8 +66,13 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_login_route(self):
         """Test the login route"""
         # Create a test user
+<<<<<<< HEAD
         user = User(name='Test Userlog', phone_number='1234567890', email='test@examplelog.com',
                     username='testuserlog', password='testpassword', user_type='user')
+=======
+        user = User(name='Test User', phone_number='1234567890', email='test@example.com',
+                    username='testuser', password='testpassword', user_type='user')
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
         db.session.add(user)
         db.session.commit()
 
@@ -77,6 +102,7 @@ class TestFlaskRoutes(unittest.TestCase):
             response = client.get('/logout', follow_redirects=True)
             self.assertEqual(response.status_code, 200)  # Should return to the login page
 
+<<<<<<< HEAD
     def test_add_car_authenticated(self):
         """Test adding a car when the owner is authenticated"""
 
@@ -137,5 +163,7 @@ class TestFlaskRoutes(unittest.TestCase):
     #         # Check if the user's name is present in the response data
     #         self.assertIn(b'Test User', response.data)
 
+=======
+>>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
 if __name__ == '__main__':
     unittest.main()
