@@ -15,3 +15,4 @@ The following 3 steps will be needed as we update the database schema:
 flask db init
 flask db migrate -m "initial migration"
 flask db upgrade
+
