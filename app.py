@@ -468,7 +468,7 @@ def submit_token():
                 '''
             mail.send(user_message)
             flash("An email has been sent to you with a reset token")
-            return render_template("submit_token.html")
+            return render_template("submit_token.html", email = email)
         
 
         
@@ -513,7 +513,7 @@ def reset_password():
             user = User.query.filter_by(reset_token=token, email=email).first()
             
             if user and user.email:
-                if token == user.reset_token:
+                if token == str(user.reset_token):
                     if user.reset_token and (user.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
                         
                         error_messages = []
@@ -543,7 +543,7 @@ def reset_password():
 
                         if error_messages:
                             flash(".".join(error_messages), "danger")
-                            return redirect(url_for("submit_token"))
+                            return render_template("submit_token.html",messages=error_messages, email=email)
 
 
                         if new_password == confirm_password:
@@ -571,7 +571,7 @@ def reset_password():
             owner = Owner.query.filter_by(reset_token=token, email= email).first()
 
             if owner and owner.email:
-                if token == owner.reset_token:
+                if token == str(owner.reset_token):
                     if owner.reset_token and (owner.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
 
                         error_messages = []
@@ -601,7 +601,7 @@ def reset_password():
 
                         if error_messages:
                             flash(".".join(error_messages), "token")
-                            return redirect(url_for("submit_token"))
+                            return render_template("submit_token.html", messages=error_messages, email=email)
 
                         if new_password == confirm_password:
 

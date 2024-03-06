@@ -24,6 +24,7 @@
     <br>
     <input type="text" name="email" value="{{ email }}">
     <br>
+<<<<<<< HEAD
     <input type="number" name="token" id="token" value="token" required>
     <label for="new_password" name>New Password:</label>
     <input type="password" name="new_password" value="new_password" required>
@@ -74,6 +75,8 @@
     <form action="/reset_password" method="POST">
     <label for="token">Token:</label>
     <input type="hidden" name="email" value="{{ email }}">
+=======
+>>>>>>> c7da1d1 (completed PasswordReset implementation)
     <input type="number" name="token" id="token" value="token" required>
     <label for="new_password" name>New Password:</label>
     <input type="password" name="new_password" value="new_password" required>
@@ -97,14 +100,14 @@
 =======
     <script>
         // Function to automatically hide flash messages after 3 seconds
-        document.addEventListener("DOMContentLoaded", function () {
+        /*document.addEventListener("DOMContentLoaded", function () {
             var flashMessages = document.querySelectorAll(".flash-message");
             flashMessages.forEach(function (message) {
                 setTimeout(function () {
                     message.style.display = "none";
                 }, 4000);
             });
-        });
+        });*/
     </script>
 >>>>>>> 8ce4255 (worked on redirect issues)
 </body>
