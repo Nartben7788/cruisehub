@@ -125,6 +125,8 @@ def login():
                 return redirect(url_for('user_dashboard' ))
             else:
                 return redirect(url_for('owner_dashboard', owner_id = user.id))
+        else:
+            flash('Incorrect username or password', 'login')
     else:
         if 'user_id' in session:
             user = User.query.get(session['user_id'])
