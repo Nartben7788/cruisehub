@@ -18,11 +18,11 @@ class TestFlaskRoutes(unittest.TestCase):
         # Create all tables in the database
         db.create_all()
 
-    def tearDown(self):
-        # Remove the application context and drop all tables after running the tests
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
+    # def tearDown(self):
+    #     # Remove the application context and drop all tables after running the tests
+    #     db.session.remove()
+    #     db.drop_all()
+    #     self.app_context.pop()
 
     # Write your test cases here
 
