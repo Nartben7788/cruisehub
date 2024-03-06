@@ -6,7 +6,7 @@
     <title>Your Cars</title>
 </head>
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %} 
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <ul>
             {% for category, message in messages %}
@@ -18,21 +18,21 @@
         </ul>
         {% endif %}
         {% endwith %}
-    <H2>Welcome {{owner.name}}</H2>
+    <h2>Welcome {{owner.name}}</h2>
     {%if not cars%}
         <a href="{{url_for('add_car')}}">You have No cars yet, add cars</a>
         <a href="{{url_for('logout')}}">LogOut</a>
      {%else%}
 
-        <h3>These are your cars </h3> 
+        <h3>These are your cars </h3>
         {% for car in cars%}
         <div>
             {{car.make}} {{car.model}}
         </div>
         <div>
-        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px", height="100px"></a> 
+        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px" , height="100px"></a>
         </div>
-        
+
         {%if car.status == 'available'%}
         <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Take out for maintenance</button>
@@ -48,10 +48,10 @@
 
           {% endif %}
 
-    
-        
+
+
         {% endfor %}
-    
+
     <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
     <a href="{{url_for('add_car')}}">Add cars</a>
     <a href="{{url_for('logout')}}">LogOut</a>
