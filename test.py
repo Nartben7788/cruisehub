@@ -22,6 +22,7 @@ class TestFlaskRoutes(unittest.TestCase):
         # Create all tables in the database
         db.create_all()
 
+<<<<<<< HEAD
     def tearDown(self):
 <<<<<<< HEAD
         with app.app_context():
@@ -35,6 +36,13 @@ class TestFlaskRoutes(unittest.TestCase):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+=======
+    # def tearDown(self):
+    #     # Remove the application context and drop all tables after running the tests
+    #     db.session.remove()
+    #     db.drop_all()
+    #     self.app_context.pop()
+>>>>>>> 28a58fb (Fixed a bug in the tests)
 
     # Write your test cases here
 >>>>>>> 1fe79a3 (fixed a bug in the flash messages in login)
