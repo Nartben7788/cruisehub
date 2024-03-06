@@ -1,6 +1,6 @@
 import unittest
 from flask import Flask
-from app import app, db, User, Owner
+from app import app, db, User, Owner, Car
 
 import unittest
 from app import app, db
@@ -76,6 +76,45 @@ class TestFlaskRoutes(unittest.TestCase):
 
             response = client.get('/logout', follow_redirects=True)
             self.assertEqual(response.status_code, 200)  # Should return to the login page
+
+    def test_add_car_authenticated(self):
+        """Test adding a car when the owner is authenticated"""
+
+        # Create a test owner
+        test_owner_id = 1  # Assuming owner ID 1 for testing purposes
+
+        # Log in the test owner
+        with self.app as c:
+            with c.session_transaction() as sess:
+                sess['user_id'] = test_owner_id
+
+            # Make a POST request to add a car
+            response = c.post('/add_car', data={
+                'model': 'Test Model',
+                'make': 'Test Make',
+                'price': '10000',
+                'additional_info': 'Test additional info',
+                'picture': 'car1.jpg' # You may need to adjust this
+            }, follow_redirects=True)
+
+            # Check if the car is added successfully
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Test Model', response.data)  # Check for model name in response
+
+            # Check if the car is added to the database
+            car = Car.query.filter_by(model='Test Model').first()
+            self.assertIsNotNone(car)
+            self.assertEqual(car.make, 'Test Make')
+
+    def test_add_car_not_authenticated(self):
+        """Test adding a car when the owner is not authenticated"""
+
+        # Make a GET request to add a car without logging in
+        response = self.app.get('/add_car', follow_redirects=True)
+
+        # Check if the user is redirected to the login page
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login', response.data)
 
 if __name__ == '__main__':
     unittest.main()

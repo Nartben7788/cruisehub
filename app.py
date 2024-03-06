@@ -141,39 +141,42 @@ def login():
 def logout():
     # Remove owner_id from the session during logout 
     session.pop('user_id', None)
-    session.pop('user_type', None)
+    session.pop('user_type', None)      
     return redirect(url_for('login'))
 
 # Route for handling the car form submission
 @app.route('/add_car', methods=['POST', 'GET'])
 def add_car():
-    if request.method == 'GET':
-        return render_template('add_car.html')
-    else:
-        if 'user_id' not in session:
+    if 'user_id' not in session:
         # Redirect to login if owner is not logged in
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
 
-        owner_id = session['user_id']
+    owner_id = session['user_id']
+    user = Owner.query.get(owner_id)
+
+    if request.method == 'GET':
+        return render_template('add_car.html', user=user)
+    else:
         model = request.form['model']
         make = request.form['make']
         price = request.form['price']
         additional_info = request.form['additional_info']
-        picture = save_picture(request.files['picture'],owner_id)
+        picture = save_picture(request.files['picture'], owner_id)
 
         new_car = Car(
-            model=model, 
-            make=make, 
+            model=model,
+            make=make,
             price=price,
-            picture=picture, 
+            picture=picture,
             additional_info=additional_info,
             owner_id=owner_id,
-            status='available' )
+            status='available'
+        )
 
         db.session.add(new_car)
         db.session.commit()
 
-        return redirect(url_for('owner_dashboard', owner_id =owner_id))
+        return redirect(url_for('owner_dashboard', owner_id=owner_id))
 
 def save_picture(picture, owner_id):
     owner = Owner.query.get(owner_id)
