@@ -19,7 +19,9 @@
     <h1>Create a New Password</h1>
     <form action="/reset_password" method="POST">
     <label for="token">Token:</label>
-    <input type="hidden" name="email" value="{{ email }}">
+    <br>
+    <input type="text" name="email" value="{{ email }}">
+    <br>
     <input type="number" name="token" id="token" value="token" required>
     <label for="new_password" name>New Password:</label>
     <input type="password" name="new_password" value="new_password" required>
@@ -40,14 +42,14 @@
     </form>
     <script>
         // Function to automatically hide flash messages after 3 seconds
-        document.addEventListener("DOMContentLoaded", function () {
+        /*document.addEventListener("DOMContentLoaded", function () {
             var flashMessages = document.querySelectorAll(".flash-message");
             flashMessages.forEach(function (message) {
                 setTimeout(function () {
                     message.style.display = "none";
                 }, 4000);
             });
-        });
+        });*/
     </script>
 </body>
 </html>
