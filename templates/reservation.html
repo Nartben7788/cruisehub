@@ -9,24 +9,45 @@
             type="text/css"
             href="{{ url_for('static', filename='output.css') }}" />
     </head>
-    <body class="bg-blue h-lvh flex justify-center items-center">
+    <body class="bg-blue-light">
         {% include 'navigations.html' %}
 
-        <form action="{{ url_for('reservation', car_id=car_id) }}" method="post" class="bg-white p-4">
+        <form
+            action="{{ url_for('reservation', car_id=car_id) }}"
+            method="post"
+            class="mt-5 mx-auto w-1/2">
             <!-- Non-editable fields pre-filled from the database -->
             <label for="name" class="block my-6">
                 Name:
-                <input type="text" id="name" name="name" value="{{ user.name }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" readonly /><br />
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ user.name }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    readonly /><br />
             </label>
 
             <label for="make" class="block my-6">
                 Make:
-                <input type="text" id="make" name="make" value="{{ car.make }}"  class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" readonly /><br />
+                <input
+                    type="text"
+                    id="make"
+                    name="make"
+                    value="{{ car.make }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    readonly /><br />
             </label>
 
             <label for="model" class="block my-6">
                 Model:
-                <input type="text" id="model" name="model" value="{{ car.model }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" readonly /><br />
+                <input
+                    type="text"
+                    id="model"
+                    name="model"
+                    value="{{ car.model }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    readonly /><br />
             </label>
 
             <label for="price" class="block my-6">
@@ -35,32 +56,35 @@
                     type="text"
                     id="price"
                     name="price"
-                    value=" $  {{ car.price }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    value=" $  {{ car.price }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
                     readonly /><br />
             </label>
 
-            <label for="start_date"  class="block my-6">
+            <label for="start_date" class="block my-6">
                 Start Date:
                 <input
                     type="date"
                     id="start_date"
                     name="start_date"
-                    min="{{earliest_start_date }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    min="{{earliest_start_date }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
                     required /><br /><br />
             </label>
 
-            <label for="end_date" class=" block my-6">
+            <label for="end_date" class="block my-6">
                 End Date:
                 <input
                     type="date"
                     id="end_date"
                     name="end_date"
-                    min="{{ earliest_start_date }}" class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    min="{{ earliest_start_date }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
                     required /><br /><br />
             </label>
 
             <input type="submit" value="Complete Reservation" class="btn-primary block w-full" />
         </form>
-        <a href="{{url_for('user_dashboard')}}">Back to Dashboard</a>
+        <a href="{{url_for('user_dashboard')}}" class="block my-8 text-center hover:text-blue">Back to Dashboard</a>
     </body>
 </html>
