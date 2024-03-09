@@ -1,73 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cars</title>
-</head>
-<body>
-    {% with messages = get_flashed_messages(with_categories=true) %} 
-    {% if messages %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Cars</title>
+    </head>
+    <body>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
         <ul>
             {% for category, message in messages %}
-            <li
-                class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+            <li class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
                 {{ message }}
             </li>
             {% endfor %}
         </ul>
-        {% endif %}
-        {% endwith %}
-    <H2>Welcome {{owner.name}}</H2>
-    {%if not cars%}
+        {% endif %} {% endwith %}
+        <h2 class="container text-center my-10 text-6xl font-bold leading-normal">
+            Welcome {{owner.name}}
+        </h2>
+        {%if not cars%}
         <a href="{{url_for('add_car')}}">You have No cars yet, add cars</a>
         <a href="{{url_for('logout')}}">LogOut</a>
-     {%else%}
+        {%else%}
 
-        <h3>These are your cars </h3> 
+        <h3>These are your cars</h3>
         {% for car in cars%}
+        <div>{{car.make}} {{car.model}}</div>
         <div>
-            {{car.make}} {{car.model}}
+            <a href="{{url_for('car_profile', car_id = car.id)}}"
+                ><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px" , height="100px"
+            /></a>
         </div>
-        <div>
-        <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px", height="100px"></a> 
-        </div>
-        
+
         {%if car.status == 'available'%}
-        <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+        <form
+            method="POST"
+            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Take out for maintenance</button>
-          </form>
+        </form>
         {% else %}
-        <form method="POST" action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+        <form
+            method="POST"
+            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Return car for reservation</button>
-          </form>
+        </form>
 
-          <form method="POST" action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
+        <form
+            method="POST"
+            action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
             <button type="submit">Remove car from market place</button>
-          </form>
+        </form>
 
-          {% endif %}
+        {% endif %} {% endfor %}
 
-    
-        
-        {% endfor %}
-    
-    <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
-    <a href="{{url_for('add_car')}}">Add cars</a>
-    <a href="{{url_for('logout')}}">LogOut</a>
-    {%endif%}
+        <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
+        <a href="{{url_for('add_car')}}">Add cars</a>
+        <a href="{{url_for('logout')}}">LogOut</a>
+        {%endif%}
 
-
-    <script>
-        // Function to automatically hide flash messages after 3 seconds
-        document.addEventListener("DOMContentLoaded", function () {
-            var flashMessages = document.querySelectorAll(".flash-message");
-            flashMessages.forEach(function (message) {
-                setTimeout(function () {
-                    message.style.display = "none";
-                }, 4000);
+        <script>
+            // Function to automatically hide flash messages after 3 seconds
+            document.addEventListener("DOMContentLoaded", function () {
+                var flashMessages = document.querySelectorAll(".flash-message");
+                flashMessages.forEach(function (message) {
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 4000);
+                });
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
