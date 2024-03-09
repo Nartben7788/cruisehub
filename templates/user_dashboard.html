@@ -3,44 +3,32 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='1justlogo.png')}}" >
         <link
-            rel="stylesheet"
-            type="text/css"
-            href="{{ url_for('static', filename='definitions.css') }}" />
+            rel="shortcut icon"
+            type="image/png"
+            href="{{ url_for('static', filename='1justlogo.png')}}" />
+        
         <link
             rel="stylesheet"
             type="text/css"
             href="{{ url_for('static', filename='output.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='definitions.css') }}" />
+        <!--
+            <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='definitions.css') }}" />
+        -->
         <title>User Dashboard</title>
     </head>
     <body class="bg-blue-light">
         {% include 'navigations.html' %}
-
-        <!-- Navigation bar for user Dashboard -->
-        <nav class="container py-5">
-            <ul class="flex justify-between w-full">
-                <li>
-                    <a href="{{ url_for('user_dashboard') }}" class="text-blue font-bold"
-                        >CruiseHub</a
-                    >
-                </li>
-                <li>
-                    <a href="{{url_for('logout')}}" class="hover:text-red-500">Log out</a>
-                </li>
-            </ul>
-        </nav>
 
         <h1 class="container text-center my-10 text-6xl font-bold leading-normal">
             Welcome <span class="text-blue">{{ user.username }}</span> <br />
             Explore Our Fleets
         </h1>
 
-        <h3><a href="{{url_for('user_reservations')}}"
-            class="btn-primary p-2"
-            >My Reservations</a></h3>
-        
+
         <!-- Filter Form -->
         <section class="container flex gap-3 justify-center">
             <form action="{{ url_for('user_dashboard') }}" method="GET" class="flex gap-3">
@@ -89,74 +77,69 @@
                     <div class="flex justify-between items-center mt-3">
                         <p class="text-2xl font-bold">${{ car.price }}</p>
                     </div>
-                   
 
-                         <!-- Disable the reserve button if the car status is 'maintenance' -->
+                    <!-- Disable the reserve button if the car status is 'maintenance' -->
                     {% if car.status != 'maintenance' %}
-                        <div id="green-status", style="color: green;">
-                            {{car.status}}
-                        </div>
-                        <a
-                            href="{{ url_for('reservation', car_id=car.id) }}"
-                            class="btn-primary p-2"
-                            >Reserve</a
-                        >
+                    <div id="green-status" , style="color: green">{{car.status}}</div>
+                    <a href="{{ url_for('reservation', car_id=car.id) }}" class="btn-primary p-2"
+                        >Reserve</a
+                    >
                     {% else %}
-                    <div id="red-status", style="color: red;">
-                        Out for {{car.status}}
-                    </div>
-                    <button class="btn btn-primary" disabled style="background-color: grey;"> OUT </button>
+                    <div id="red-status" , style="color: red">Out for {{car.status}}</div>
+                    <button class="btn btn-primary" disabled style="background-color: grey">
+                        OUT
+                    </button>
                     {% endif %}
-                    
                 </div>
             </div>
             {% endfor %}
         </div>
 
         <!-- Pagination controls -->
-<!-- Pagination controls -->
-<div class="pagination mt-8 flex justify-center gap-3">
-    {% if filtered_cars.has_prev %}
-    <a href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}" class="hover:text-red-500">Previous</a>
-    {% endif %} 
-    {% for num in filtered_cars.iter_pages() %}
-    {% if num %}
-    {% if num != filtered_cars.page %}
-    <a href="{{ url_for('user_dashboard', page=num) }}" class="hover:text-red-500">{{ num }}</a>
-    {% else %}
-    <strong>{{ num }}</strong>
-    {% endif %}
-    {% else %}
-    <span>...</span>
-    {% endif %}
-    {% endfor %}
-    {% if filtered_cars.has_next %}
-    <a href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}" class="hover:text-red-500">Next</a>
-    {% endif %}
-</div>
+        <!-- Pagination controls -->
+        <div class="pagination mt-8 flex justify-center gap-3">
+            {% if filtered_cars.has_prev %}
+            <a
+                href="{{ url_for('user_dashboard', page=filtered_cars.prev_num) }}"
+                class="hover:text-red-500"
+                >Previous</a
+            >
+            {% endif %} {% for num in filtered_cars.iter_pages() %} {% if num %} {% if num !=
+            filtered_cars.page %}
+            <a href="{{ url_for('user_dashboard', page=num) }}" class="hover:text-red-500"
+                >{{ num }}</a
+            >
+            {% else %}
+            <strong>{{ num }}</strong>
+            {% endif %} {% else %}
+            <span>...</span>
+            {% endif %} {% endfor %} {% if filtered_cars.has_next %}
+            <a
+                href="{{ url_for('user_dashboard', page=filtered_cars.next_num) }}"
+                class="hover:text-red-500"
+                >Next</a
+            >
+            {% endif %}
+        </div>
 
-<!-- Display total number of cars -->
-<p>Total Cars: {{ total_cars_count }}</p>
+        <!-- Display total number of cars -->
+        <p>Total Cars: {{ total_cars_count }}</p>
 
+        <script>
+            // Get all car images
+            const carImages = document.querySelectorAll(".car-image");
 
+            // Add mouseover event listener to each image
+            carImages.forEach((image) => {
+                image.addEventListener("mouseover", () => {
+                    image.style.transform = "scale(1.3)"; // Scale the image to 110% of its original size
+                });
 
-
-
-<script>
-    // Get all car images
-    const carImages = document.querySelectorAll('.car-image');
-
-    // Add mouseover event listener to each image
-    carImages.forEach(image => {
-        image.addEventListener('mouseover', () => {
-            image.style.transform = 'scale(1.3)'; // Scale the image to 110% of its original size
-        });
-
-        // Add mouseout event listener to each image
-        image.addEventListener('mouseout', () => {
-            image.style.transform = 'scale(1)'; // Restore the image to its original size
-        });
-    });
-</script>
+                // Add mouseout event listener to each image
+                image.addEventListener("mouseout", () => {
+                    image.style.transform = "scale(1)"; // Restore the image to its original size
+                });
+            });
+        </script>
     </body>
 </html>

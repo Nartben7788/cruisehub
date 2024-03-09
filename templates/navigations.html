@@ -1,19 +1,23 @@
 <!-- navigation.html -->
-<nav class="container py-5">
+<nav class="container py-5 sticky top-0 bg-blue-light">
     <ul class="flex justify-between w-full">
         <li>
             <a href="{{ url_for('home') }}" class="text-blue font-bold">CruiseHub</a>
         </li>
-        <li>
-            <a href="{{ url_for('user_reservations') }}" class="hover:text-red-500">My Reservations</a>
-        </li>
-        <li>
-            <a href="{{ url_for('logout') }}" class="hover:text-red-500">Log out</a>
-        </li>
-        {% if user %}
+        <div class="flex gap-4">
+            <li>
+                <a href="{{ url_for('user_reservations') }}" class="hover:text-red-500"
+                    >My Reservations</a
+                >
+            </li>
+            <li>
+                <a href="{{ url_for('logout') }}" class="hover:text-red-500">Log out</a>
+            </li>
+        </div>
+        <!-- {% if user %}
         <li>
             <span class="text-blue">Welcome, {{ user.username }}</span>
         </li>
         {% endif %}
-    </ul>
+    --></ul>
 </nav>
