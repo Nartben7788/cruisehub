@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<head><meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Reservations</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='output.css') }}" />
 </head>
-<body class="bg-blue">
-  {% include 'navigations.html' %}
+<body class="bg-blue-light">
+    {% include 'navigations.html' %}
 
-    <h3>Your Reservations!</h3>
-  {% if reserved_cars%}
-    {% for reservations, car in reserved_cars%}
-    <div class="reservation-column">
-      <div><img src="/{{car.picture}}" alt="" width="200px" height="150px"></div>
-      <h4>Reservation ID: {{ reservations.id }}</h4>
-      <p>Start Date: {{ reservations.start_date.strftime("%b %d, %Y")}}</p>
-      <p>End Date: {{ reservations.end_date.strftime("%b %d, %Y") }}</p>
-      <p>Car Name: {{ car.make }}{{car.model}}</p>
-      <form method="POST" action="{{ url_for('cancel_reservation', reservation_id=reservations.id) }}">
-        <button type="submit">Cancel Reservation</button>
-      </form>
+    <h3 class="container text-center my-10 text-6xl font-bold leading-normal">
+        Your Reservations!
+    </h3>
+    <div class="container grid grid-cols-3 gap-x-4 gap-y-8 my-5">
+        {% if reserved_cars%} {% for reservations, car in reserved_cars%}
+        <div class="reservation-column">
+            <div><img src="/{{car.picture}}" alt="" width="200px" height="150px" /></div>
+            <h4>Reservation ID: {{ reservations.id }}</h4>
+            <p>Start Date: {{ reservations.start_date.strftime("%b %d, %Y")}}</p>
+            <p>End Date: {{ reservations.end_date.strftime("%b %d, %Y") }}</p>
+            <p>Car Name: {{ car.make }}{{car.model}}</p>
+            <form
+                method="POST"
+                action="{{ url_for('cancel_reservation', reservation_id=reservations.id) }}">
+                <button type="submit" class="btn-primary p-2">Cancel Reservation</button>
+            </form>
+        </div>
+        {% endfor %} {% else %}
+        <p>You have no reservation yet <a href="{{url_for('user_dashboard')}}">Book one here</a></p>
+        {% endif %}
     </div>
-    {% endfor %}
-{% else %}
-  <p>You have no reservation yet <a href="{{url_for('user_dashboard')}}">Book one here</a></p>
-{% endif %}
 </body>
