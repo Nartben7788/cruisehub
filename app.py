@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash, session
+from sqlalchemy import and_
 from flask_session import Session
 from flask_mail import Mail, Message 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -25,9 +26,11 @@ mail = Mail(app)
 def home():
     return render_template("index.html")
 
+# Define routes for user registration
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        # Get user information from the form
         name = request.form['name']
         phone_number = request.form['phone_number']
         email = request.form['email']
@@ -39,7 +42,7 @@ def signup():
         if len(phone_number)<10:
             flash('Phone Number must be at leastr 10 Digits long.','error')
             return redirect(url_for('signup'))
-          # Validate password conditions
+        # Validate password conditions
         error_messages = []
 
         # Flag variables to track if conditions are met
@@ -109,33 +112,43 @@ def signup():
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
+        # Retrieve username, password, and user_type from the form
         username = request.form['username']
         password = request.form['password']
         user_type = request.form['user_type']
 
+        # Check if the user is a regular user or an owner
         if user_type == "user":
             user = User.query.filter_by(username=username).first()
         elif user_type == "owner":
             user = Owner.query.filter_by(username=username).first()
 
+
+        # Validate user credentials
         if user and check_password_hash(user.password, password):
+            # Store user information in the session
             session['user_id'] = user.id
             session['user_type'] = user.user_type
+
+             # Redirect users to their respective dashboards based on user_type
             if user.user_type == 'user':
                 return redirect(url_for('user_dashboard' ))
             else:
                 return redirect(url_for('owner_dashboard', owner_id = user.id))
         else:
+            # Flash message for incorrect username or password
             flash('Incorrect username or password', 'login')
     else:
+        # If the request method is not POST, check if the user is already logged in
         if 'user_id' in session:
             user = User.query.get(session['user_id'])
+            # Redirect logged-in users to their dashboards
             if user and 'user_type' in session and session['user_type'] == user.user_type:
                 if user.user_type == 'user':
                     return redirect(url_for('user_dashboard'))
                 elif user.user_type == 'owner':
                     return redirect(url_for('owner_dashboard', owner_id=user.id))
-
+    # Render the login template if no redirection occurs
     return render_template('login.html')
 @app.route('/logout')
 def logout():
@@ -147,22 +160,27 @@ def logout():
 # Route for handling the car form submission
 @app.route('/add_car', methods=['POST', 'GET'])
 def add_car():
+    # Check if the owner is logged in
     if 'user_id' not in session:
         # Redirect to login if owner is not logged in
         return redirect(url_for('login'))
-
+    # Retrieve the owner's ID from the session
     owner_id = session['user_id']
+    # Get the owner object from the database
     user = Owner.query.get(owner_id)
 
     if request.method == 'GET':
         return render_template('add_car.html', user=user)
     else:
+        # Retrieve form data
         model = request.form['model']
         make = request.form['make']
         price = request.form['price']
         additional_info = request.form['additional_info']
+         # Save the uploaded picture and get its path
         picture = save_picture(request.files['picture'], owner_id)
-
+        
+        # Create a new Car object with the form data
         new_car = Car(
             model=model,
             make=make,
@@ -173,19 +191,28 @@ def add_car():
             status='available'
         )
 
+         # Add the new car to the database
         db.session.add(new_car)
         db.session.commit()
 
+         # Redirect the owner to their dashboard after adding the car
         return redirect(url_for('owner_dashboard', owner_id=owner_id))
 
+# Function to save the uploaded picture
 def save_picture(picture, owner_id):
+    # Get the owner object from the database
     owner = Owner.query.get(owner_id)
+     # Get the owner's username
     owner_username = owner.username
+    # Define the uploads folder path
     uploads_folder = os.path.join('static', 'uploads', owner_username)
+    # Create the uploads folder if it doesn't exist
     if not os.path.exists(uploads_folder):
         os.makedirs(uploads_folder) 
     picture_filename = secure_filename(picture.filename)
+    # Define the full path of the saved picture
     picture_path = os.path.join(uploads_folder, picture_filename)
+    # Save the picture to the specified path
     picture.save(picture_path)
     return picture_path
 
@@ -303,72 +330,92 @@ def show_reservation(owner_id):
 #An email should be sent to the owner when reservation is made
 
 @app.route("/reservation/<int:car_id>", methods=['POST', 'GET'])
-def reservation(car_id):
-    
+def reservation(car_id): 
     if request.method == 'GET':
         if 'user_id' not in session:
             return redirect(url_for('login'))
+
         car = Car.query.get_or_404(car_id)
         user = User.query.get(session['user_id'])
-        # Check if the car has existing reservations
+
+        # Retrieve existing reservations for the car
         existing_reservations = Reservations.query.filter_by(reserved_car_id=car_id).all()
 
         if existing_reservations:
-            # Find the latest end date of existing reservations
-            latest_end_date = max(reservation.end_date for reservation in existing_reservations)
-
-            # Set the earliest start date to 2 days after the latest end date
-            earliest_start_date = latest_end_date + timedelta(days=2)
+            # Find the earliest start date among existing reservations
+            # earliest_start_date = min(reservation.start_date for reservation in existing_reservations)
+            earliest_start_date = datetime.now()
         else:
             # If no existing reservations, set the earliest start date to the current date
             earliest_start_date = datetime.now()
-        
+
         return render_template('reservation.html', earliest_start_date=earliest_start_date.strftime('%Y-%m-%d'), car_id=car_id, car=car, user=user)
     else:
         if 'user_id' not in session:    
             return redirect(url_for('login'))
         
         else:
+            existing_reservations = Reservations.query.filter_by(reserved_car_id=car_id).all()
+
+                # Extract data from the form
             start_date_str = request.form['start_date']
             end_date_str = request.form['end_date']
-            user_id = session['user_id']  # Access user_id directly from session
+            user_id = session['user_id']
             car = Car.query.get(car_id)
-            reserved_car_id = car_id
             owner_id = car.owner_id
             owner = Owner.query.get(owner_id)
             user = User.query.get(user_id)
-           
 
-            
             # Convert string dates to datetime objects
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
 
-            new_reservation = Reservations(
-                start_date=start_date,
-                end_date=end_date,
-                reserved_car_id=reserved_car_id,
-                user_id=user_id,
-                owner_id=owner_id  
-            )
-            db.session.add(new_reservation)
+            # Check if the end date is before the start date
+            if end_date < start_date:
+                flash('End date cannot be before the start date.', 'date')
+                return redirect(url_for('reservation', car_id=car_id))
+
+            # Check if the car is available for the requested period
+            is_available = True
+
+            for reservation in existing_reservations:
+                # Check if the requested period overlaps with any existing reservation period
+                if (start_date < reservation.end_date) and (end_date > reservation.start_date):
+                    is_available = False
+                    break
+
+            if is_available:
+                # Create and add the new reservation
+                new_reservation = Reservations(
+                    start_date=start_date,
+                    end_date=end_date,
+                    reserved_car_id=car_id,
+                    user_id=user_id,
+                    owner_id=owner_id
+                )
+                db.session.add(new_reservation)
+                db.session.commit()
+
+# Send an email notification to the car
+                reservation = new_reservation.id
+                user_msg = Message('Reservation Confirmation' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
+                user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+                mail.send(user_msg)
+
+
+                owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
+                owner_msg.body=f' Dear {owner.name}. \n Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from \n {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
+                mail.send(owner_msg)
+    
+                flash('Reservation successful!', 'dates')
+                return redirect(url_for('user_reservations'))
+            else:
+                flash('The car is not available for the selected dates. Please choose different dates.', 'error')
+                return redirect(url_for('reservation', car_id=car_id))
+           
             
-            reservation = new_reservation.id
-            db.session.commit()
-           
-            user_msg = Message('Reservation Confirmation' ,sender= 'cruise.carhub@gmail.com', recipients= [user.email])
-            user_msg.body=f' Dear {user.name}. This is confirming your reservation with the reservation ID : {reservation} \n from {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
-            mail.send(user_msg)
 
-
-            owner_msg = Message('New Reservation' ,sender= 'cruise.carhub@gmail.com', recipients= [owner.email])
-            owner_msg.body=f' Dear {owner.name}. \n Your car {car.make} {car.model} ID : {car.id} has been reserved by {user.name} with the reservation ID : {reservation} from \n {start_date.strftime("%b %d, %Y")} to {end_date.strftime("%b %d, %Y")}'
-            mail.send(owner_msg)
-           
-            
-
-           
-            return redirect(url_for('user_dashboard'))
+     
             
 
 @app.route('/my_reservations', methods =["GET"])
