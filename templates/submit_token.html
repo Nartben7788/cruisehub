@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Token</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages%}
+        <ul>
+            {% for category, message in messages %}
+            <li
+                class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+    <h1>Create a New Password</h1>
+    <form action="/reset_password" method="POST">
+    <label for="token">Token:</label>
+    <br>
+    <input type="text" name="email" value="{{ email }}">
+    <br>
+    <input type="number" name="token" id="token" value="token" required>
+    <label for="new_password" name>New Password:</label>
+    <input type="password" name="new_password" value="new_password" required>
+    <label for="confirm_password">Confirm Password:</label>
+    <input type="password" name="confirm_password" value="confirm_password" required>
+    <label for="user_type" class="block my-6">
+        User Type:
+        <select
+            name="user_type"
+            class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+            required>
+            <option value="user">User</option>
+            <br>
+            <option value="owner">Owner</option>
+        </select>
+    </label>
+    <button type="submit">Submit</button>
+    </form>
+    <script>
+        // Function to automatically hide flash messages after 3 seconds
+        /*document.addEventListener("DOMContentLoaded", function () {
+            var flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (message) {
+                setTimeout(function () {
+                    message.style.display = "none";
+                }, 4000);
+            });
+        });*/
+    </script>
+</body>
+</html>

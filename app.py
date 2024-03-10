@@ -434,6 +434,189 @@ def remove_car(owner_id, car_id):
 
     return redirect(url_for('login'))
 
+@app.route('/submit_token', methods=['GET', 'POST'])
+def submit_token():
+
+    if request.method == 'POST':
+        email = request.form['email']
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            flash("Invalid email!")
+            return render_template("submit_token.html")
+            
+        elif user:
+            random_number = secrets.randbelow(1000000)
+
+            token = '{:06d}'.format(random_number)
+            user.reset_token = token
+            user.reset_token_timestamp = datetime.utcnow()
+            db.session.commit()
+
+            user_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [user.email])
+            user_message.body = f'''To reset your password, visit the following link:
+                {url_for('submit_token', _external =True)} and enter this token [{user.reset_token}]
+                If you did not make this request then simply ignore this email and no changes will be made.
+                '''
+            mail.send(user_message)
+            flash("An email has been sent to you with a reset token")
+            return render_template("submit_token.html", email = email)
+        
+
+        
+        owner = Owner.query.filter_by(email=email).first()
+        if not owner:
+            flash("invalid email!")
+            return render_template("submit_token.html")
+
+        elif owner:
+            random_number = secrets.randbelow(1000000)
+            token = '{:06d}'.format(random_number)
+            owner.reset_token = token
+            owner.reset_token_timestamp = datetime.utcnow()
+            db.session.commit()
+
+            owner_message = Message("Password Reset Request", sender="cruise.carhub@gmail.com", recipients= [owner.email])
+            owner_message.body = f'''To reset your password, visit the following link: 
+                                {url_for('submit_token', _external=True)}  and enter this token [{owner.reset_token}]
+                    If you did not make this request then simply ignore this email and no changes will be made.
+
+                    '''
+            mail.send(owner_message)
+            flash("An email has been sent to you with a reset token")
+        
+            return render_template("submit_token.html")
+
+    return render_template('submit_token.html')
+
+
+
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+
+    if request.method == 'POST':
+        token = request.form["token"]
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        user_type = request.form['user_type']
+        email = request.form["email"]
+
+        if user_type == "user":
+            user = User.query.filter_by(reset_token=token, email=email).first()
+            
+            if user and user.email:
+                if token == str(user.reset_token):
+                    if user.reset_token and (user.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
+                        
+                        error_messages = []
+
+                        has_uppercase = False
+                        has_lowercase = False
+                        has_symbol = False
+
+                        if len(new_password) < 6:
+                            error_messages.append("Password must have at least 6 characters." )
+
+                        else:
+                            for char in new_password:
+                                if char.isupper():
+                                    has_uppercase = True
+                                elif char.islower():
+                                    has_lowercase = True
+                                elif char in "!@#$%^&*.()_+{}|<>?~-":
+                                    has_symbol = True
+                        
+                        if not has_uppercase:
+                            error_messages.append("Password must contain at least one uppercase letter." )
+                        if not has_lowercase:
+                            error_messages.append("Password must contain at least one lowercase letter.")
+                        if not has_symbol:
+                            error_messages.append("Password must contain at least one symbol.")
+
+                        if error_messages:
+                            flash(".".join(error_messages), "danger")
+                            return render_template("submit_token.html",messages=error_messages, email=email)
+
+
+                        if new_password == confirm_password:
+                            
+                            user.password = generate_password_hash(new_password)
+                            user.reset_token = None
+                            db.session.commit()
+
+                            flash('Password reset successful. You can now log in with your new password.')
+                            return redirect(url_for('login'))
+                        
+                        else:
+                            flash('Passwords do not match!')
+                            return redirect(url_for('submit_token'))  
+                    else:
+                        flash("Invalid or expired token!" )
+                        return redirect(url_for('forgot_password')) 
+                else:
+                        flash("Invalid or expired token!" )
+                        return redirect(url_for('forgot_password')) 
+            else:
+                return redirect(url_for("signup"))
+        
+        elif user_type == "owner":
+            owner = Owner.query.filter_by(reset_token=token, email= email).first()
+
+            if owner and owner.email:
+                if token == str(owner.reset_token):
+                    if owner.reset_token and (owner.reset_token_timestamp) < (datetime.utcnow() + timedelta(minutes=10)):
+
+                        error_messages = []
+
+                        has_uppercase = False
+                        has_lowercase = False
+                        has_symbol = False
+
+                        if len(new_password) < 6:
+                            error_messages.append("Password must have at least 6 characters.",)
+
+                        else:
+                            for char in new_password:
+                                if char.isupper():
+                                    has_uppercase = True
+                                elif char.islower():
+                                    has_lowercase = True
+                                elif char in "!@#$%^&*.()_+{}|<>?~-":
+                                    has_symbol = True
+                        
+                        if not has_uppercase:
+                            error_messages.append("Password must contain at least one uppercase letter.")
+                        if not has_lowercase:
+                            error_messages.append("Password must contain at least one lowercase letter.")
+                        if not has_symbol:
+                            error_messages.append("Password must contain at least one symbol.")
+
+                        if error_messages:
+                            flash(".".join(error_messages), "token")
+                            return render_template("submit_token.html", messages=error_messages, email=email)
+
+                        if new_password == confirm_password:
+
+                            owner.password = generate_password_hash(new_password)
+                            owner.reset_token = None
+                            db.session.commit()
+
+                            flash('Password reset successful. You can now log in with your new password.')
+                            return redirect(url_for('login'))
+                        
+                        else:
+                            flash('Passwords do not match!')
+                            return redirect(url_for('submit_token'))  
+                        
+                    else:
+                        flash("Invalid or expired token!")
+                        return redirect(url_for('forgot_password'))
+                else:
+                    flash("Invalid or expired token!")
+                    return redirect(url_for('forgot_password')) 
+            else:
+                return redirect(url_for('signup'))
 
 
 # @app.route('/delete_all_entries', methods=['GET', 'POST'])
