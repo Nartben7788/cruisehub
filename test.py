@@ -2,8 +2,7 @@ import unittest
 from flask import Flask
 from app import app, db, User, Owner, Car
 
-import unittest
-from app import app, db
+
 
 
 class TestFlaskRoutes(unittest.TestCase):
@@ -20,9 +19,14 @@ class TestFlaskRoutes(unittest.TestCase):
 
     def tearDown(self):
         with app.app_context():
-            # Delete only the entries created during the test
-            db.session.rollback()
+            try:
+                # Explicitly roll back any database transactions
+                db.session.rollback()
+            except Exception as e:
+                print(f"Error during rollback: {e}")
 
+        # Remove the application context
+        self.app_context.pop()
 
    
 
@@ -106,36 +110,88 @@ class TestFlaskRoutes(unittest.TestCase):
             self.assertIsNotNone(car)
             self.assertEqual(car.make, 'Test Make')
 
-    # def test_add_car_not_authenticated(self):
-    #     """Test adding a car when the owner is not authenticated"""
+    def test_add_car_not_authenticated(self):
+        """Test adding a car when the owner is not authenticated"""
 
-    #     # Make a GET request to add a car without logging in
-    #     response = self.app.get('/add_car', follow_redirects=True)
+        # Make a GET request to add a car without logging in
+        response = self.app.get('/add_car', follow_redirects=True)
 
-    #     # Check if the user is redirected to the login page
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn(b'Login', response.data)
+        # Check if the user is redirected to the login page
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login', response.data)
 
-    # def test_user_dashboard(self):
-    #     """Test user dashboard route"""
+    def test_user_dashboard_authenticated(self):
+        """Test user dashboard route for authenticated user"""
+        with self.app as client:
+            # Create a test user and add to the session
+            with client.session_transaction() as session:
+                user_id = 1  # Assuming user ID 1 for testing purposes
+                session['user_id'] = user_id
+                session['user_type'] = 'user'
 
-    #     # Create a test user
-    #     test_user = User(name='Test User', phone_number='1234567890', email='testuserdashboard@example.com', username='testuserdashboard', password='testpassword')
-    #     db.session.add(test_user)
-    #     db.session.commit()
+            # Make a GET request to user_dashboard route
+            response = client.get('/user_dashboard')
 
-    #     with self.app as client:
-    #         with client.session_transaction() as sess:
-    #             # Set up session for the test user
-    #             sess['user_id'] = test_user.id
-    #             sess['user_type'] = 'user'
+            # Check if the response status code is 200 (OK)
+            self.assertEqual(response.status_code, 200)
 
-    #         # Access the user dashboard route
-    #         response = client.get('/user_dashboard')
-    #         self.assertEqual(response.status_code, 200)
+            # You can add more assertions to check specific content or behavior of the page
 
-    #         # Check if the user's name is present in the response data
-    #         self.assertIn(b'Test User', response.data)
+    def test_user_dashboard_unauthenticated(self):
+        """Test user dashboard route for unauthenticated user"""
+        with self.app as client:
+            # Make a GET request to user_dashboard route without logging in
+            response = client.get('/user_dashboard', follow_redirects=True)
+
+            self.assertEqual(response.status_code, 200)
+
+    def test_owner_dashboard_authenticated(self):
+        """Test owner dashboard route for authenticated owner"""
+        with self.app as client:
+            # Create a test owner and add to the session
+            with client.session_transaction() as session:
+                owner_id = 1  # Assuming owner ID 1 for testing purposes
+                session['user_id'] = owner_id
+                session['user_type'] = 'owner'
+
+            # Make a GET request to owner_dashboard route
+            response = client.get(f'/owner/{owner_id}')
+
+            # Check if the response status code is 200 (OK)
+            self.assertEqual(response.status_code, 200)
+
+            # You can add more assertions to check specific content or behavior of the page
+
+    def test_owner_dashboard_unauthenticated(self):
+        """Test owner dashboard route for unauthenticated user"""
+        with self.app as client:
+            # Make a GET request to owner_dashboard route without logging in
+            response = client.get('/owner/1', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+    
+    def test_update_status_authenticated(self):
+        """Test update_status route for authenticated owner"""
+        with self.app as client:
+            # Create a test owner and add to the session
+            with client.session_transaction() as session:
+                owner_id = 1  # Assuming owner ID 1 for testing purposes
+                session['user_id'] = owner_id
+
+            # Assuming there's a car with ID 1 for testing purposes
+            car_id = 1
+
+            # Make a POST request to update_status route
+            response = client.post(f'/owner/{owner_id}/update_status/{car_id}')
+
+            # Check if the response redirects to the owner_dashboard
+            self.assertEqual(response.status_code, 302)
+            self.assertIn(b'owner_dashboard', response.location)
+
+          
+
+    
+
+
 
 if __name__ == '__main__':
     unittest.main()
