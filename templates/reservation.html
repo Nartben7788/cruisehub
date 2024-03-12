@@ -12,7 +12,9 @@
     <body class="bg-blue-light">
         {% include 'navigations.html' %}
 
-        <form>
+        <form action="{{ url_for('reservation', car_id=car_id) }}"
+        method="post"
+        class="mt-5 mx-auto w-1/2">
 
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages%}
                 <ul>
@@ -24,9 +26,7 @@
                     {% endfor %}
                 </ul>
             {% endif %} {% endwith %}
-            action="{{ url_for('reservation', car_id=car_id) }}"
-            method="post"
-            class="mt-5 mx-auto w-1/2"
+            
 
             <!-- Non-editable fields pre-filled from the database -->
             <label for="name" class="block my-6">
