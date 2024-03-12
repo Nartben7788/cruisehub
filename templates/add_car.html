@@ -10,6 +10,19 @@
     <h1>{{user.name}}</h1>
     <h1>Add Car</h1>
     <form method="post" action="{{ url_for('add_car') }}" enctype="multipart/form-data">
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+            {% if messages%}
+                <ul>
+                    {% for category, message in messages %}
+                        <li
+                            class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
         <label for="model">Model:</label>
         <input type="text" name="model" required><br>
 
@@ -29,5 +42,19 @@
     </form>
     <a href="{{url_for('logout')}}">LogOut</a>
     <a href="{{url_for('owner_dashboard', owner_id = user.id)}}">Back to dashboard</a>
+
+
+
+    <script>
+        // Function to automatically hide flash messages after 3 seconds
+        document.addEventListener("DOMContentLoaded", function () {
+            var flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (message) {
+                setTimeout(function () {
+                    message.style.display = "none";
+                }, 4000);
+            });
+        });
+    </script>
 </body>
 </html>

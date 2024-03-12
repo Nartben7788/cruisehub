@@ -164,6 +164,19 @@ def add_car():
         additional_info = request.form['additional_info']
         picture = save_picture(request.files['picture'], owner_id)
 
+        # Validate the price field
+        try:
+            price = float(price)  # Convert price to a float
+        except ValueError:
+            # If the price cannot be converted to a float, return an error
+            flash('Price must be a valid number', 'add')
+            return redirect(url_for('add_car'))
+
+        if price <= 0:
+            flash('Price must be greater than zero', 'add')
+            return redirect(url_for('add_car'))
+
+
         new_car = Car(
             model=model,
             make=make,
