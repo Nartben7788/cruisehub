@@ -16,7 +16,7 @@
     <nav class="container py-5">
         <ul class="flex justify-between w-full">
             <li>
-                <a href="{{ url_for('user_dashboard') }}" class="text-blue font-bold">CruiseHub</a>
+                <a href="{% if session['user_type'] == 'user' %}{{ url_for('user_dashboard') }}{% else %}{{ url_for('owner_dashboard', owner_id = user.id) }}{% endif %}" class="text-blue font-bold">CruiseHub</a>
             </li>
             <li>
                 <a href="{{url_for('logout')}}" class="hover:text-red-500">Log out</a>
@@ -54,9 +54,17 @@
     
     <br>
     <br>
+    {% if session['user_type'] == 'user' %}
       <a href='{{url_for("user_dashboard")}}'
       class="btn-primary p-2"
       >Back to User dashboard</a>
+    {% else %}
+      <a href='{{url_for("owner_dashboard", owner_id = user.id)}}'
+      class="btn-primary p-2"
+      >
+      Back to Owner dashboard
+      </a>
+    {% endif %}
 </body>
 
 </html>
