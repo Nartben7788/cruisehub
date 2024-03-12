@@ -57,12 +57,12 @@
     {% if session['user_type'] == 'user' %}
       <a href='{{url_for("user_dashboard")}}'
       class="btn-primary p-2"
-      >Back to User dashboard</a>
+      >Back to dashboard</a>
     {% else %}
       <a href='{{url_for("owner_dashboard", owner_id = user.id)}}'
       class="btn-primary p-2"
       >
-      Back to Owner dashboard
+      Back to O dashboard
       </a>
     {% endif %}
 
