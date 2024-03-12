@@ -28,7 +28,7 @@
         <div>{{car.make}} {{car.model}}</div>
         <div>
             <a href="{{url_for('car_profile', car_id = car.id)}}"
-                ><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px" , height="100px"
+                ><img src="/{{ car.picture }}" alt="{{car.picture}}" class="car-image" width="100px" , height="100px"
             /></a>
         </div>
 
@@ -68,6 +68,23 @@
                     }, 4000);
                 });
             });
+
+           
+            // Get all car images
+            const carImages = document.querySelectorAll(".car-image");
+
+            // Add mouseover event listener to each image
+            carImages.forEach((image) => {
+                image.addEventListener("mouseover", () => {
+                    image.style.transform = "scale(1.3)"; // Scale the image to 110% of its original size
+                });
+
+                // Add mouseout event listener to each image
+                image.addEventListener("mouseout", () => {
+                    image.style.transform = "scale(1)"; // Restore the image to its original size
+                });
+            });
+        
         </script>
     </body>
 </html>
