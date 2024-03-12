@@ -39,18 +39,18 @@ Error Handling: Error messages are displayed to users in case of validation erro
 File Uploads: Users can upload pictures of their cars during the listing process. Uploaded files are stored securely on the server.
 
 # Contributors
-Benjamin Teye Nartey
-Toluwanimi Sonuga
-Samson Oderinwale
-Oluwadamilola Odeboje
+#Benjamin Teye Nartey
+#Toluwanimi Sonuga
+#Samson Oderinwale
+#Oluwadamilola Odeboje
 
 # License
 This project is not licensed.
 
 # Contact
-For any inquiries or support, please contact the development team at cruisehub.carhub@gmail.com.
+For any inquiries or support, please contact the development team at cruise.carhub@gmail.com.
 
 # Acknowledgements
-Special thanks to Mohammed Saudi(instructor) for his support during the development period.
+Special thanks to Mohammed Saudi (instructor) for his support during the development period.
 
 # Website link: https://cruisehub-phi.vercel.app/
