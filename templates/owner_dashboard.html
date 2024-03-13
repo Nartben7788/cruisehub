@@ -3,9 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
         <title>Your Cars</title>
     </head>
-    <body>
+    <body class="bg-blue-light">
         {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
         <ul>
             {% for category, message in messages %}
@@ -14,48 +18,63 @@
             </li>
             {% endfor %}
         </ul>
-        {% endif %} {% endwith %}
+        {% endif %} {% endwith %} {%include "owner_navigation.html"%}
+
         <h2 class="container text-center my-10 text-6xl font-bold leading-normal">
             Welcome {{owner.name}}
         </h2>
         {%if not cars%}
         <a href="{{url_for('add_car')}}">You have No cars yet, add cars</a>
-        <a href="{{url_for('logout')}}">LogOut</a>
+
         {%else%}
+        <section class="container">
+            <h3>These are your cars</h3>
+            <div class="grid grid-cols-3 gap-x-4 gap-y-8 my-5">
+                {% for car in cars%}
+                <div class="rounded-md overflow-hidden border">
+                    <div>
+                        <a
+                            href="{{url_for('car_profile', car_id = car.id)}}"
+                            class="overflow-hidden h-60 w-full block"
+                            ><img
+                                src="/{{ car.picture }}"
+                                alt="{{car.picture}}"
+                                class="car-image w-full h-60 object-cover hover:scale-125 transition duration-100"
+                        /></a>
+                    </div>
+                    <div class="p-2">
+                        <h2 class="font-bold py-4">{{car.make}} {{car.model}}</h2>
 
-        <h3>These are your cars</h3>
-        {% for car in cars%}
-        <div>{{car.make}} {{car.model}}</div>
-        <div>
-            <a href="{{url_for('car_profile', car_id = car.id)}}"
-                ><img src="/{{ car.picture }}" alt="{{car.picture}}" width="100px" , height="100px"
-            /></a>
-        </div>
+                        {%if car.status == 'available'%}
+                        <form
+                            method="POST"
+                            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+                            <button type="submit" class="btn-primary">
+                                Take out for maintenance
+                            </button>
+                        </form>
+                        {% else %}
+                        <form
+                            method="POST"
+                            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+                            <button type="submit" class="btn-primary">
+                                Return car for reservation
+                            </button>
+                        </form>
 
-        {%if car.status == 'available'%}
-        <form
-            method="POST"
-            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
-            <button type="submit">Take out for maintenance</button>
-        </form>
-        {% else %}
-        <form
-            method="POST"
-            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
-            <button type="submit">Return car for reservation</button>
-        </form>
-
-        <form
-            method="POST"
-            action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
-            <button type="submit">Remove car from market place</button>
-        </form>
-
-        {% endif %} {% endfor %}
-
-        <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
-        <a href="{{url_for('add_car')}}">Add cars</a>
-        <a href="{{url_for('logout')}}">LogOut</a>
+                        <form
+                            method="POST"
+                            action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
+                            <button type="submit" class="btn-secondary mt-4">
+                                Remove car from market place
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
         {%endif%}
 
         <script>

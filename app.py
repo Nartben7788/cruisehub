@@ -164,6 +164,19 @@ def add_car():
         additional_info = request.form['additional_info']
         picture = save_picture(request.files['picture'], owner_id)
 
+        # Validate the price field
+        try:
+            price = float(price)  # Convert price to a float
+        except ValueError:
+            # If the price cannot be converted to a float, return an error
+            flash('Price must be a valid number', 'add')
+            return redirect(url_for('add_car'))
+
+        if price <= 0:
+            flash('Price must be greater than zero', 'add')
+            return redirect(url_for('add_car'))
+
+
         new_car = Car(
             model=model,
             make=make,
@@ -234,8 +247,22 @@ def clear_filters():
 @app.route('/car_profile/<int:car_id>')
 def car_profile(car_id):
     car = Car.query.get_or_404(car_id)
-    owner = Owner.query.get_or_404(car.owner_id)
-    return render_template('car_profile.html', car=car, owner=owner)
+    if 'user_id' in session:
+        user_id = session['user_id']
+        user_type = session['user_type']
+
+        if user_type == 'user':
+            user = User.query.get_or_404(user_id)
+        elif user_type == 'owner':
+            user = Owner.query.get_or_404(user_id)
+        else:
+            return redirect(url_for('login'))
+
+        owner = Owner.query.get_or_404(car.owner_id)
+        return render_template('car_profile.html', car=car, owner=owner, user=user)
+    else:
+        # Redirect to login if user is not logged in
+        return redirect(url_for('login'))
     
 
 @app.route('/owner_profile/<int:owner_id>')

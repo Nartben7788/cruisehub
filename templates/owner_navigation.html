@@ -1,0 +1,14 @@
+<!-- owner navigation.html -->
+<nav class="container py-5 sticky top-0 bg-blue-light z-50">
+    <div class="flex justify-between w-full">
+        <a href="#" class="text-blue font-bold">CruiseHub</a>
+
+        <div class="flex gap-4">
+            <a href="{{url_for('show_reservation', owner_id = owner.id)}}" class="hover:text-blue"
+                >Manage your Reservations</a
+            >
+            <a href="{{url_for('add_car')}}" class="hover:text-blue">Add cars</a>
+            <a href="{{url_for('logout')}}" class="hover:text-blue">Log out</a>
+        </div>
+    </div>
+</nav>
