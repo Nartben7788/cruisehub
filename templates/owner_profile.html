@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owner_profile.css') }}">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Meet {{owner.name}}</h1>
-    {% for car in cars%}
-    <div>
-        {{car.make}} {{car.model}}
-       <a href="{{url_for('car_profile', car_id = car.id)}}"><img src="/{{ car.picture }}" alt="{{car.picture}}"></a> 
-    </div>
-    {% endfor %}
-    <a href="{{url_for('user_dashboard')}}">Back to Explore fleet</a>
-    <a href="{{url_for('logout')}}">LogOut</a>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
+        <title>Document</title>
+    </head>
+    <body class="bg-blue-light">
+        <div class="container py-6">
+            <h1 class="text-6xl font-bold">Meet {{owner.name}}</h1>
+            <div class="grid grid-cols-3 gap-x-4 gap-y-8 my-6">
+                {% for car in cars%}
+                <div>
+                    <a
+                        href="{{url_for('car_profile', car_id = car.id)}}"
+                        class="h-60 overflow-hidden block"
+                        ><img
+                            src="/{{ car.picture }}"
+                            alt="{{car.picture}}"
+                            class="w-full h-full object-cover hover:scale-125 transition duration-100"
+                    /></a>
+                    <h1 class="text-xl leading-normal">{{car.make}} {{car.model}}</h1>
+                </div>
+                {% endfor %}
+            </div>
+            <a href="{{url_for('user_dashboard')}}" class="btn-secondary">Back to Explore fleet</a>
+        </div>
+    </body>
 </html>

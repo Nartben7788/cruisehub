@@ -52,7 +52,7 @@
                 <button class="btn btn-primary" disabled style="background-color: grey">OUT</button>
                 {% endif %}
             </div>
-            <a href='{{url_for("user_dashboard")}}' class="btn-primary p-2">Back to dashboard</a>
+            <a href='{{url_for("user_dashboard")}}' class="mt-4 btn-secondary p-2">Back to dashboard</a>
             {% else %}
             <div>
                 {% if car.status != 'maintenance' %}
@@ -62,7 +62,7 @@
                 <button class="btn btn-primary" disabled style="background-color: grey">OUT</button>
                 {% endif %}
             </div>
-            <a href='{{url_for("owner_dashboard", owner_id = user.id)}}' class="btn-primary p-2">
+            <a href='{{url_for("owner_dashboard", owner_id = user.id)}}' class="mt-4 btn-secondary p-2">
                 Back to dashboard
             </a>
             {% endif %}

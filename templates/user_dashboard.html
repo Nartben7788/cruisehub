@@ -59,10 +59,10 @@
         <div class="container grid grid-cols-3 gap-x-4 gap-y-8 my-5">
             {% for car in filtered_cars.items %}
             <div class="rounded-md overflow-hidden border">
-                <a href="{{ url_for('car_profile', car_id=car.id) }}">
+                <a href="{{ url_for('car_profile', car_id=car.id) }}" class="overflow-hidden h-60 w-full block">
                     <img
                         src="{{ car.picture }}"
-                        class="h-60 w-full object-cover car-image"
+                        class="h-60 w-full object-cover hover:scale-125 transition duration-100"
                         alt="Car Picture" />
                 </a>
                 <div class="p-2">
