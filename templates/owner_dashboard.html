@@ -39,7 +39,7 @@
                             ><img
                                 src="/{{ car.picture }}"
                                 alt="{{car.picture}}"
-                                class="car-image w-full h-60 object-cover transition duration-100"
+                                class="car-image w-full h-60 object-cover hover:scale-125 transition duration-100"
                         /></a>
                     </div>
                     <div class="p-2">
@@ -65,7 +65,7 @@
                         <form
                             method="POST"
                             action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
-                            <button type="submit" class="btn-primary">
+                            <button type="submit" class="btn-secondary mt-4">
                                 Remove car from market place
                             </button>
                         </form>
@@ -75,23 +75,6 @@
                 {% endfor %}
             </div>
         </section>
-        <div class="container mt-10">
-            <a
-                href="{{url_for('show_reservation', owner_id = owner.id)}}"
-                class="btn-secondary block mx-auto my-4 w-1/2 text-center"
-                >Manage your Reservations</a
-            >
-            <a
-                href="{{url_for('add_car')}}"
-                class="btn-secondary block mx-auto my-4 w-1/2 text-center"
-                >Add cars</a
-            >
-            <a
-                href="{{url_for('logout')}}"
-                class="btn-secondary block mx-auto my-4 w-1/2 text-center"
-                >LogOut</a
-            >
-        </div>
         {%endif%}
 
         <script>
@@ -102,21 +85,6 @@
                     setTimeout(function () {
                         message.style.display = "none";
                     }, 4000);
-                });
-            });
-
-            // Get all car images
-            const carImages = document.querySelectorAll(".car-image");
-
-            // Add mouseover event listener to each image
-            carImages.forEach((image) => {
-                image.addEventListener("mouseover", () => {
-                    image.style.transform = "scale(1.3)"; // Scale the image to 110% of its original size
-                });
-
-                // Add mouseout event listener to each image
-                image.addEventListener("mouseout", () => {
-                    image.style.transform = "scale(1)"; // Restore the image to its original size
                 });
             });
         </script>
