@@ -1,60 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Car</title>
-</head>
-<body>
-    <h1>{{user.name}}</h1>
-    <h1>Add Car</h1>
-    <form method="post" action="{{ url_for('add_car') }}" enctype="multipart/form-data">
-        {% with messages = get_flashed_messages(with_categories=true) %} 
-            {% if messages%}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='output.css') }}" />
+        <title>Add Car</title>
+    </head>
+    <body class="bg-blue">
+        <section class="container bg-blue-light w-1/2 my-4 py-8">
+            
+            <h1 class="text-6xl font-bold leading-normal">Add Car</h1>
+            <form method="post" action="{{ url_for('add_car') }}" enctype="multipart/form-data">
+                {% with messages = get_flashed_messages(with_categories=true) %} {% if messages%}
                 <ul>
                     {% for category, message in messages %}
-                        <li
-                            class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
-                            {{ message }}
-                        </li>
+                    <li
+                        class="flash-message absolute -top-6 right-0 bg-red-600 p-4 text-blue-light">
+                        {{ message }}
+                    </li>
                     {% endfor %}
                 </ul>
-            {% endif %}
-        {% endwith %}
+                {% endif %} {% endwith %}
 
-        <label for="model">Model:</label>
-        <input type="text" name="model" required><br>
+                <label for="model" class="block my-6"
+                    >Model:
 
-        <label for="make">Make:</label>
-        <input type="text" name="make" required><br>
+                    <input
+                        type="text"
+                        name="model"
+                        class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                        required />
+                </label>
 
-        <label for="price">Price:</label>
-        <input type="text" name="price" required><br>
+                <label for="make" class="block my-6"
+                    >Make:
 
-        <label for="additional_info">Additional Information:</label>
-        <textarea name="additional_info" required></textarea><br>
+                    <input
+                        type="text"
+                        name="make"
+                        class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                        required />
+                </label>
 
-        <label for="picture">Picture:</label>
-        <input type="file" name="picture" required><br>
+                <label for="price" class="block my-6"
+                    >Price:
 
-        <button type="submit">Add Car</button>
-    </form>
-    <a href="{{url_for('logout')}}">LogOut</a>
-    <a href="{{url_for('owner_dashboard', owner_id = user.id)}}">Back to dashboard</a>
+                    <input
+                        type="text"
+                        name="price"
+                        class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                        required />
+                </label>
 
+                <label for="additional_info" class="block my-6"
+                    >Additional Information:
 
+                    <textarea
+                        name="additional_info"
+                        class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                        required></textarea>
+                </label>
 
-    <script>
-        // Function to automatically hide flash messages after 3 seconds
-        document.addEventListener("DOMContentLoaded", function () {
-            var flashMessages = document.querySelectorAll(".flash-message");
-            flashMessages.forEach(function (message) {
-                setTimeout(function () {
-                    message.style.display = "none";
-                }, 4000);
+                <label for="picture" class="block my-6"
+                    >Picture:
+
+                    <input
+                        type="file"
+                        name="picture"
+                        class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                        required />
+                </label>
+
+                <button type="submit" class="btn-primary">Add Car</button>
+            </form>
+            <a href="{{url_for('owner_dashboard', owner_id = user.id)}}" class="btn-secondary mt-4"
+                >Back to dashboard</a
+            >
+        </section>
+
+        <script>
+            // Function to automatically hide flash messages after 3 seconds
+            document.addEventListener("DOMContentLoaded", function () {
+                var flashMessages = document.querySelectorAll(".flash-message");
+                flashMessages.forEach(function (message) {
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 4000);
+                });
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>

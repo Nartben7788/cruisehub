@@ -7,17 +7,12 @@
             rel="shortcut icon"
             type="image/png"
             href="{{ url_for('static', filename='1justlogo.png')}}" />
-        
+
         <link
             rel="stylesheet"
             type="text/css"
             href="{{ url_for('static', filename='output.css') }}" />
-        <!--
-            <link
-            rel="stylesheet"
-            type="text/css"
-            href="{{ url_for('static', filename='definitions.css') }}" />
-        -->
+
         <title>User Dashboard</title>
     </head>
     <body class="bg-blue-light">
@@ -27,7 +22,6 @@
             Welcome <span class="text-blue">{{ user.username }}</span> <br />
             Explore Our Fleets
         </h1>
-
 
         <!-- Filter Form -->
         <section class="container flex gap-3 justify-center">
