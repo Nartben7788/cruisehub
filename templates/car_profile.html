@@ -1,87 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Profile</title>
-    <link
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Car Profile</title>
+        <link
             rel="stylesheet"
             type="text/css"
-            href="{{ url_for('static', filename='output.css') }}" >
-</head>
-<body class="bg-blue-light">
-    {% include 'navigations.html' %}
+            href="{{ url_for('static', filename='output.css') }}" />
+    </head>
+    <body class="bg-blue-light">
+        <!-- Navigation bar for user Dashboard -->
+        <nav class="container py-5">
+            <ul class="flex justify-between w-full">
+                <li>
+                    <a
+                        href="{% if session['user_type'] == 'user' %}{{ url_for('user_dashboard') }}{% else %}{{ url_for('owner_dashboard', owner_id = user.id) }}{% endif %}"
+                        class="text-blue font-bold"
+                        >CruiseHub</a
+                    >
+                </li>
+                <li>
+                    <a href="{{url_for('logout')}}" class="hover:text-red-500">Log out</a>
+                </li>
+            </ul>
+        </nav>
 
-    <!-- Navigation bar for user Dashboard -->
-    <nav class="container py-5">
-        <ul class="flex justify-between w-full">
-            <li>
-                <a href="{% if session['user_type'] == 'user' %}{{ url_for('user_dashboard') }}{% else %}{{ url_for('owner_dashboard', owner_id = user.id) }}{% endif %}" class="text-blue font-bold">CruiseHub</a>
-            </li>
-            <li>
-                <a href="{{url_for('logout')}}" class="hover:text-red-500">Log out</a>
-            </li>
-        </ul>
-    </nav>
+        <div class="container">
+            <img src="/{{ car.picture }}" alt="{{car.model}} {{car.make}}" />
+            <p><strong>Model:</strong> {{ car.model }}</p>
+            <p><strong>Make:</strong> {{ car.make }}</p>
+            <p><strong>Price:</strong> ${{ car.price }} day</p>
+            <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
+            <p>
+                <strong>Owner:</strong
+                ><a href="{{url_for('owner_profile', owner_id = car.owner_id)}}">{{ owner.name}}</a>
+            </p>
+        </div>
 
-    <div class="container">
-        <img src="/{{ car.picture }}" alt="{{car.model}} {{car.make}}">
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Make:</strong> {{ car.make }}</p>
-        <p><strong>Price:</strong> ${{ car.price }} day</p>
-        <p><strong>Additional Info:</strong> {{ car.additional_info }}</p>
-        <p><strong>Owner:</strong><a href="{{url_for('owner_profile', owner_id = car.owner_id)}}">{{ owner.name}}</a> </p>
-    </div>
-
-
-
-
-    <br>
-    <br>
-    {% if session['user_type'] == 'user' %}
-        <div>
-            {% if car.status != 'maintenance' %}
-                <div class="green-status", style="color: green;">
-                    {{car.status}}
-                </div>
-                <a
-                    href="{{ url_for('reservation', car_id=car.id) }}"
-                    class="btn-primary p-2"
+        <!--Check for availability of a car-->
+        <div class="container mt-8">
+            {% if session['user_type'] == 'user' %}
+            <div>
+                {% if car.status != 'maintenance' %}
+                <div class="green-status" , style="color: green">{{car.status}}</div>
+                <a href="{{ url_for('reservation', car_id=car.id) }}" class="btn-primary p-2"
                     >Reserve</a
                 >
+                {% else %}
+                <div class="red-status" , style="color: red">Out for {{car.status}}</div>
+                <button class="btn btn-primary" disabled style="background-color: grey">OUT</button>
+                {% endif %}
+            </div>
+            <a href='{{url_for("user_dashboard")}}' class="btn-primary p-2">Back to dashboard</a>
             {% else %}
-                <div class="red-status", style="color: red;">
-                    Out for {{car.status}}
-                </div>
-                <button class="btn btn-primary" disabled style="background-color: grey;">OUT</button>
-            {% endif %}
-                </div>
-                <a href='{{url_for("user_dashboard")}}'
-                class="btn-primary p-2"
-                >Back to dashboard</a>
-    {% else %}
-        <div>
-            {% if car.status != 'maintenance' %}
-                <div class="green-status", style="color: green;">
-                    {{car.status}}
-                </div>
-            {% else %}
-                <div class="red-status", style="color: red;">
-                    Out for {{car.status}}
-                </div>
-                <button class="btn btn-primary" disabled style="background-color: grey;">OUT</button>
+            <div>
+                {% if car.status != 'maintenance' %}
+                <div class="green-status" , style="color: green">{{car.status}}</div>
+                {% else %}
+                <div class="red-status" , style="color: red">Out for {{car.status}}</div>
+                <button class="btn btn-primary" disabled style="background-color: grey">OUT</button>
+                {% endif %}
+            </div>
+            <a href='{{url_for("owner_dashboard", owner_id = user.id)}}' class="btn-primary p-2">
+                Back to dashboard
+            </a>
             {% endif %}
         </div>
-        <a href='{{url_for("owner_dashboard", owner_id = user.id)}}'
-        class="btn-primary p-2"
-        >
-        Back to dashboard
-        </a>
-    {% endif %}
-
-
-</body>
-
+    </body>
 </html>
-
-

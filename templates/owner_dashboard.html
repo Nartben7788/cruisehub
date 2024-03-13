@@ -31,50 +31,67 @@
             <h3>These are your cars</h3>
             <div class="grid grid-cols-3 gap-x-4 gap-y-8 my-5">
                 {% for car in cars%}
-                <div>
-                    <div>{{car.make}} {{car.model}}</div>
+                <div class="rounded-md overflow-hidden border">
                     <div>
-                        <a href="{{url_for('car_profile', car_id = car.id)}}"
+                        <a
+                            href="{{url_for('car_profile', car_id = car.id)}}"
+                            class="overflow-hidden h-60 w-full block"
                             ><img
                                 src="/{{ car.picture }}"
                                 alt="{{car.picture}}"
-                                class="car-image"
-                                width="100px"
-                                height="100px"
+                                class="car-image w-full h-60 object-cover transition duration-100"
                         /></a>
                     </div>
+                    <div class="p-2">
+                        <h2 class="font-bold py-4">{{car.make}} {{car.model}}</h2>
 
-                    {%if car.status == 'available'%}
-                    <form
-                        method="POST"
-                        action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
-                        <button type="submit" class="btn-primary">Take out for maintenance</button>
-                    </form>
-                    {% else %}
-                    <form
-                        method="POST"
-                        action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
-                        <button type="submit" class="btn-primary">
-                            Return car for reservation
-                        </button>
-                    </form>
+                        {%if car.status == 'available'%}
+                        <form
+                            method="POST"
+                            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+                            <button type="submit" class="btn-primary">
+                                Take out for maintenance
+                            </button>
+                        </form>
+                        {% else %}
+                        <form
+                            method="POST"
+                            action="{{ url_for('update_status', owner_id = owner.id, car_id = car.id) }}">
+                            <button type="submit" class="btn-primary">
+                                Return car for reservation
+                            </button>
+                        </form>
 
-                    <form
-                        method="POST"
-                        action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
-                        <button type="submit" class="btn-primary">
-                            Remove car from market place
-                        </button>
-                    </form>
-                    {% endif %}
+                        <form
+                            method="POST"
+                            action="{{ url_for('remove_car', owner_id = owner.id, car_id = car.id) }}">
+                            <button type="submit" class="btn-primary">
+                                Remove car from market place
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
         </section>
-
-        <a href="{{url_for('show_reservation', owner_id = owner.id)}}">Manage your Reservations</a>
-        <a href="{{url_for('add_car')}}">Add cars</a>
-        <a href="{{url_for('logout')}}">LogOut</a>
+        <div class="container mt-10">
+            <a
+                href="{{url_for('show_reservation', owner_id = owner.id)}}"
+                class="btn-secondary block mx-auto my-4 w-1/2 text-center"
+                >Manage your Reservations</a
+            >
+            <a
+                href="{{url_for('add_car')}}"
+                class="btn-secondary block mx-auto my-4 w-1/2 text-center"
+                >Add cars</a
+            >
+            <a
+                href="{{url_for('logout')}}"
+                class="btn-secondary block mx-auto my-4 w-1/2 text-center"
+                >LogOut</a
+            >
+        </div>
         {%endif%}
 
         <script>
