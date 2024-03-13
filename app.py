@@ -437,6 +437,10 @@ def remove_car(owner_id, car_id):
 
     return redirect(url_for('login'))
 
+@app.route('/forgot_password', methods = ['POST', 'GET'])
+def forgot_password():
+    return render_template('forgot_password.html')
+
 @app.route('/submit_token', methods=['GET', 'POST'])
 def submit_token():
 
