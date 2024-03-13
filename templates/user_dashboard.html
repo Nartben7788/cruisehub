@@ -119,21 +119,5 @@
         <!-- Display total number of cars -->
         <!-- <p>Total Cars: {{ total_cars_count }}</p> -->
 
-        <script>
-            // Get all car images
-            const carImages = document.querySelectorAll(".car-image");
-
-            // Add mouseover event listener to each image
-            carImages.forEach((image) => {
-                image.addEventListener("mouseover", () => {
-                    image.style.transform = "scale(1.3)"; // Scale the image to 110% of its original size
-                });
-
-                // Add mouseout event listener to each image
-                image.addEventListener("mouseout", () => {
-                    image.style.transform = "scale(1)"; // Restore the image to its original size
-                });
-            });
-        </script>
     </body>
 </html>
