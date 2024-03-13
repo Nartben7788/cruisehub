@@ -10,7 +10,7 @@
         <title>Submit Token</title>
     </head>
     <body class="bg-blue">
-        <section class="container bg-blue-light w-96">
+        <section class="container relative bg-blue-light w-1/2">
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages%}
             <ul>
                 {% for category, message in messages %}
@@ -24,18 +24,34 @@
                 Create a New Password
             </h1>
             <form action="/reset_password" method="POST">
-                <label for="token">Token:</label>
-                <br />
-                <input type="text" name="email" value="{{ email }}" />
-                <br />
-                <input type="number" name="token" id="token" placeholder="token" required />
-                <label for="new_password" name>New Password:</label>
-                <input type="password" name="new_password" value="new_password" required />
-                <label for="confirm_password">Confirm Password:</label>
+                <input
+                    type="text"
+                    name="email"
+                    disabled
+                    value="{{ email }}"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200" />
+
+                <label for="token" class="block my-6">Token:</label>
+                <input
+                    type="number"
+                    name="token"
+                    id="token"
+                    placeholder="Enter Token"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    required />
+                <label for="new_password" class="block my-6">New Password:</label>
+                <input
+                    type="password"
+                    name="new_password"
+                    placeholder="Enter New Password"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
+                    required />
+                <label for="confirm_password" class="block my-6">Confirm Password:</label>
                 <input
                     type="password"
                     name="confirm_password"
-                    placeholder="confirm_password"
+                    placeholder="Confirm New Password"
+                    class="block mt-1 w-full px-4 py-5 rounded-md bg-transparent border-2 border-gray-200"
                     required />
                 <label for="user_type" class="block my-6">
                     User Type:
