@@ -25,7 +25,7 @@
             </ol>
             {%endfor%}
         </div>
-        <a href="{{url_for('owner_dashboard', owner_id = user.id)}}" class="btn-primary"
+        <a href="{{url_for('owner_dashboard', owner_id = owner.id)}}" class="btn-primary"
             >Back to Owner dashboard</a
         >
         {%else%}
